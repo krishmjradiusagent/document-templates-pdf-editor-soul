@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="ds/radius-ui/tokens/fonts.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/fig-tokens.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/colors.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/typography.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/radius.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/spacing.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/base.css">
+  <link rel="stylesheet" href="ds/radius-ui/components/components.css">
+  <link rel="stylesheet" href="ds/radius-ui/styles.css">
+  <link rel="stylesheet" href="src/regular/style.css">
+  <script src="ds/radius-ui/_ds_bundle.js"></script>
+  <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#5A5FF2"></rect><rect x="32" y="26" width="36" height="48" rx="4" fill="#FFFFFF"></rect><rect x="38" y="36" width="24" height="3" fill="#5A5FF2"></rect><rect x="38" y="44" width="24" height="3" fill="#5A5FF2"></rect><rect x="38" y="52" width="16" height="3" fill="#5A5FF2"></rect></svg></template>
+  <style>
+    @font-face{font-family:"Phosphor";src:url("/_blob/438dda85d2d284a1882426ac5d2e0b24") format("woff2");font-weight:normal;font-style:normal;font-display:block}
+    html,body{margin:0;height:100%;overflow:hidden;background:#fff;color:#0A0A0A;font-family:"Mona Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    a{color:#5A5FF2;text-decoration:none}a:hover{color:#4449d9;text-decoration:underline}
+    .ph{line-height:1}
+    input.pff:focus,select.pff:focus{outline:2px solid #5A5FF2;outline-offset:1px}
+    body{--primary:#5A5FF2;--primary-foreground:#FFFFFF}
+    @keyframes melDot{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+    @keyframes melCaret{50%{opacity:0}}
+  </style>
+</helmet>
+<div data-screen-label="PDF filler" style="height:100vh;display:grid;grid-template-rows:56px minmax(0,1fr);background:#fff">
+
+  <header style="display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:0 16px;border-bottom:1px solid #E5E5E5">
+    <div style="display:flex;align-items:center;gap:10px;min-width:0">
+      <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="ghost" size="icon-sm" title="Back to transaction" aria-label="Back to transaction" onClick="{{ goBack }}" hint-size="32px,32px"><i class="ph ph-arrow-left" aria-hidden="true" style="font-size:16px"></i></x-import>
+      <div style="min-width:0;display:flex;flex-direction:column;gap:2px">
+        <div style="display:flex;align-items:center;gap:8px;min-width:0">
+          <span style="flex:0 1 auto;min-width:0;font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">5670 Kearny Mesa Road, San Diego</span>
+          <span style="flex:none;height:22px;display:inline-flex;align-items:center;padding:0 8px;border-radius:6px;background:#F5F5F5;color:#171717;font-size:12px;font-weight:500;white-space:nowrap">{{ subtitle }}</span>
+        </div>
+      </div>
+      
+    </div>
+
+
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;min-width:0">
+      <span style="{{ saveStyle }}"><i class="{{ saveIcon }}" aria-hidden="true" style="font-size:14px"></i>{{ saveText }}</span>
+      <sc-if value="{{ isSign }}" hint-placeholder-val="{{ false }}">
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="sm" onClick="{{ toFill }}" hint-size="120px,32px">Back to forms</x-import>
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" size="sm" onClick="{{ send }}" disabled="{{ sent }}" hint-size="120px,32px"><i class="ph ph-paper-plane-tilt" aria-hidden="true" style="font-size:16px"></i>{{ sendLabel }}</x-import>
+      </sc-if>
+    </div>
+  </header>
+
+  <div style="display:grid;grid-template-columns:300px minmax(0,1fr) 336px;min-height:0;position:relative">
+
+    <aside style="border-right:1px solid #E5E5E5;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 12px 8px 18px;flex:none">
+        <input type="checkbox" checked="{{ allSel }}" onChange="{{ toggleAll }}" aria-label="Select all documents" title="Select all" style="width:15px;height:15px;margin:0;accent-color:#5A5FF2;flex:none;cursor:pointer">
+        <span style="font-size:13px;font-weight:600;flex:1;min-width:0">Documents</span>
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.BadgeNumber" variant="neutral" hint-size="20px,20px">{{ docCount }}</x-import>
+      </div>
+      <div style="flex:1;overflow-y:auto;overflow-x:hidden;padding:0 8px 12px;display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ docList }}" as="d" hint-placeholder-count="5">
+          <div style="{{ d.style }}">
+            <input type="checkbox" checked="{{ d.sel }}" onChange="{{ d.toggle }}" aria-label="{{ d.selLabel }}" style="width:15px;height:15px;margin:2px 0 0;accent-color:#5A5FF2;flex:none;cursor:pointer">
+            <button type="button" onClick="{{ d.jump }}" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;border:0;background:transparent;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer">
+              <span style="font-size:13px;line-height:17px;font-weight:500;color:#0A0A0A;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ d.name }}</span>
+              <span style="display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden">
+                <span style="{{ d.stStyle }}"><span style="{{ d.stDot }}"></span>{{ d.st }}</span>
+                <span style="font-size:12px;color:#737373;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;font-variant-numeric:tabular-nums">{{ d.meta }}</span>
+              </span>
+            </button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:12px;border-top:1px solid #E5E5E5;flex:none;display:flex;flex-direction:column;gap:8px">
+        <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:8px;min-width:0">
+            <span style="font-size:12px;font-weight:500;color:#404040;flex:1;min-width:0;font-variant-numeric:tabular-nums">{{ selText }}</span>
+            <button type="button" onClick="{{ clearSelDocs }}" style="border:0;background:transparent;padding:0;font:inherit;font-size:12px;color:#737373;cursor:pointer" style-hover="color:#0A0A0A">Clear</button>
+          </div>
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="sm" block="{{ true }}" onClick="{{ dlSel }}" hint-size="100%,32px"><i class="ph ph-download-simple" aria-hidden="true" style="font-size:16px"></i>Download</x-import>
+        </sc-if>
+        <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="sm" block="{{ true }}" onClick="{{ addDoc }}" hint-size="100%,32px"><i class="ph ph-books" aria-hidden="true" style="font-size:16px"></i>Add document</x-import>
+        </sc-if>
+      </div>
+    </aside>
+
+    <main style="display:flex;flex-direction:column;min-width:0;min-height:0;background:#F5F5F5;position:relative">
+      <sc-if value="{{ isFill }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;left:50%;bottom:24px;transform:translateX(-50%);z-index:20;display:flex;align-items:center;gap:8px;max-width:calc(100% - 32px);padding:6px 6px 6px 14px;background:#0A0A0A;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.2),0 2px 4px -2px rgba(0,0,0,.2)" data-theme="dark">
+          <span style="font-size:12px;color:#D4D4D4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;font-variant-numeric:tabular-nums">{{ reqText }}</span>
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="sm" onClick="{{ nextField }}" dc-props="{{ nextBtnProps }}" hint-size="110px,32px">Next field<i class="ph ph-arrow-down" aria-hidden="true" style="font-size:16px"></i></x-import>
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" size="sm" onClick="{{ save }}" disabled="{{ clean }}" hint-size="84px,32px"><i class="ph ph-floppy-disk" aria-hidden="true" style="font-size:16px"></i>{{ saveBtn }}</x-import>
+        </div>
+      </sc-if>
+      <div style="display:flex;align-items:center;gap:12px;height:48px;padding:0 16px;background:#fff;border-bottom:1px solid #E5E5E5;flex:none;min-width:0;position:relative">
+        <div style="display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0;flex:1 1 auto;overflow:hidden">
+          <span title="{{ activeName }}" style="font-size:13px;line-height:16px;font-weight:600;color:#0A0A0A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0">{{ activeName }}</span>
+          <span style="display:flex;align-items:center;gap:6px;min-width:0;font-size:12px;line-height:16px;color:#737373;white-space:nowrap;overflow:hidden">
+            <sc-if value="{{ activeBadge }}" hint-placeholder-val="{{ false }}"><i class="{{ activeBadgeIcon }}" aria-hidden="true" style="font-size:13px;flex:none;color:{{ activeBadgeColor }}"></i><span style="flex:none;font-weight:500;color:{{ activeBadgeColor }}">{{ activeBadge }}</span><span aria-hidden="true" style="flex:none">·</span></sc-if>
+            <span style="flex:none;font-variant-numeric:tabular-nums">{{ activePages }}</span>
+            <span style="min-width:0;overflow:hidden;text-overflow:ellipsis">{{ focusNote }}</span>
+          </span>
+        </div>
+        <sc-if value="{{ showLegend }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ helpOpen }}" hint-placeholder-val="{{ false }}">
+            <div role="dialog" aria-label="About this form" onClick="{{ stopLegend }}" style="position:absolute;top:44px;left:16px;z-index:30;width:320px;max-width:calc(100% - 32px);box-sizing:border-box;padding:12px;background:#fff;border:1px solid #E5E5E5;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:13px;font-weight:600;flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ activeName }}</span>
+                <button type="button" aria-label="Close" title="Close" onClick="{{ toggleHelp }}" style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:0;border-radius:6px;background:transparent;color:#737373;padding:0;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph ph-x" aria-hidden="true" style="font-size:14px"></i></button>
+              </div>
+              <span style="font-size:12px;color:#737373">Library form · fields are tagged — click any field to fill</span>
+              <div style="display:flex;flex-direction:column;gap:8px">
+                <sc-for list="{{ helpGroups }}" as="hg" hint-placeholder-count="4">
+                  <div style="display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;align-items:start;min-width:0">
+                    <span style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;min-width:0"><span style="width:8px;height:8px;border-radius:2px;flex:none;background:{{ hg.c }}"></span>{{ hg.label }}</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:4px;min-width:0">
+                      <sc-for list="{{ hg.fields }}" as="hf" hint-placeholder-count="2">
+                        <button type="button" onClick="{{ hf.go }}" style="max-width:100%;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;height:22px;padding:0 6px;border:0;border-bottom:1px solid {{ hg.c }};border-radius:4px 4px 0 0;background:{{ hg.t }};font:inherit;font-size:12px;color:#0A0A0A;cursor:pointer" style-hover="filter:brightness(.97)">{{ hf.label }}</button>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+        </sc-if>
+        <sc-if value="{{ isSign }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:12px;color:#737373;white-space:nowrap;font-variant-numeric:tabular-nums">{{ sigText }}</span>
+        </sc-if>
+        <div style="flex:none;position:relative">
+          <button type="button" onClick="{{ toggleTb }}" aria-haspopup="true" aria-expanded="{{ tbOpen }}" title="Add field" aria-label="Add field" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 10px;border:1px solid {{ tbRing }};border-radius:10px;background:{{ tbBg }};font:inherit;font-size:13px;font-weight:500;color:#0A0A0A;cursor:pointer;white-space:nowrap;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)" style-hover="background:#F5F5F5" style-active="transform:scale(.98)"><i class="ph ph-plus" aria-hidden="true" style="font-size:16px;color:#5A5FF2"></i><sc-if value="{{ addLbl }}" hint-placeholder-val="{{ true }}"><span>Add field</span></sc-if><i class="ph ph-caret-down" aria-hidden="true" style="font-size:12px;color:#737373"></i></button>
+        </div>
+        <sc-if value="{{ tbOpen }}" hint-placeholder-val="{{ false }}">
+        <div role="toolbar" aria-label="Add fields" onClick="{{ stopEv }}" style="position:absolute;top:calc(100% + 6px);right:12px;z-index:25;display:flex;flex-wrap:wrap;align-items:center;gap:2px;min-width:0;max-width:calc(100% - 24px);box-sizing:border-box;padding:4px;background:#fff;border:1px solid {{ tbRing }};border-radius:12px;box-shadow:{{ tbShadow }};transition:box-shadow .18s ease,border-color .18s ease">
+          <sc-if value="{{ tbTitle }}" hint-placeholder-val="{{ true }}">
+            <span style="font-size:12px;font-weight:600;color:#404040;padding:0 8px 0 6px;white-space:nowrap;flex:none">Add fields</span>
+          </sc-if>
+          <sc-if value="{{ isSign }}" hint-placeholder-val="{{ false }}">
+            <div style="position:relative;flex:none">
+              <button type="button" onClick="{{ toggleRMenu }}" aria-haspopup="listbox" aria-expanded="{{ rMenu }}" title="New fields are assigned to" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;border:1px solid #E5E5E5;border-radius:8px;background:#fff;font:inherit;font-size:12px;font-weight:500;color:#0A0A0A;cursor:pointer;white-space:nowrap" style-hover="background:#FAFAFA"><span style="{{ curR.swatch }}"></span>{{ curR.name }}<i class="ph ph-caret-down" aria-hidden="true" style="font-size:12px;color:#737373"></i></button>
+              <sc-if value="{{ rMenu }}" hint-placeholder-val="{{ false }}">
+                <div role="listbox" onClick="{{ stopEv }}" style="position:absolute;top:calc(100% + 8px);z-index:40;background:#fff;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);padding:4px;display:flex;flex-direction:column;gap:2px;left:0;width:240px">
+                  <sc-for list="{{ recipList }}" as="r" hint-placeholder-count="3">
+                    <button type="button" role="option" onClick="{{ r.pick }}" style="{{ r.rowStyle }}">
+                      <span style="font-size:12px;color:#737373;width:10px;text-align:center;font-variant-numeric:tabular-nums;flex:none">{{ r.order }}</span>
+                      <span style="{{ r.swatch }}"></span>
+                      <span style="display:flex;flex-direction:column;gap:1px;min-width:0;flex:1">
+                        <span style="font-size:13px;font-weight:500;color:#0A0A0A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.name }}</span>
+                        <span style="font-size:12px;color:#737373;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.meta }}</span>
+                      </span>
+                      <sc-if value="{{ r.on }}" hint-placeholder-val="{{ false }}"><i class="ph ph-check" aria-hidden="true" style="font-size:14px;color:#5A5FF2;flex:none"></i></sc-if>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+            <span style="width:1px;height:20px;background:#E5E5E5;margin:0 4px;flex:none"></span>
+          </sc-if>
+          <sc-for list="{{ tbTools }}" as="t" hint-placeholder-count="7">
+            <sc-if value="{{ t.sep }}" hint-placeholder-val="{{ false }}"><span style="width:1px;height:20px;background:#E5E5E5;margin:0 4px;flex:none"></span></sc-if>
+            <sc-if value="{{ t.tool }}" hint-placeholder-val="{{ true }}">
+              <div role="button" tabindex="0" draggable="true" onDragStart="{{ t.onDragStart }}" onClick="{{ t.onClick }}" title="{{ t.tip }}" aria-label="{{ t.tip }}" style="display:flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:32px;box-sizing:border-box;padding:0 8px;border-radius:8px;cursor:grab;flex:none;color:#262626" style-hover="background:#F5F5F5" style-active="transform:scale(.97)">
+                <i class="{{ t.icon }}" aria-hidden="true" style="font-size:16px;flex:none;color:{{ t.fg }}"></i>
+                <sc-if value="{{ tbLabels }}" hint-placeholder-val="{{ true }}"><span style="font-size:12px;font-weight:500;white-space:nowrap">{{ t.label }}</span></sc-if>
+              </div>
+            </sc-if>
+          </sc-for>
+          <sc-if value="{{ isFill }}" hint-placeholder-val="{{ true }}">
+            <span style="width:1px;height:20px;background:#E5E5E5;margin:0 4px;flex:none"></span>
+            <div style="position:relative;flex:none">
+              <button type="button" onClick="{{ toggleData }}" aria-haspopup="menu" aria-expanded="{{ dataMenu }}" title="Drop a field linked to Radius data" aria-label="Radius data" style="display:flex;align-items:center;gap:6px;height:32px;padding:0 8px;border:0;border-radius:8px;background:transparent;font:inherit;font-size:12px;font-weight:500;color:#262626;cursor:pointer;white-space:nowrap" style-hover="background:#F5F5F5"><i class="ph ph-link-simple" aria-hidden="true" style="font-size:16px;color:#5A5FF2"></i><sc-if value="{{ tbLabels }}" hint-placeholder-val="{{ true }}"><span>Radius data</span></sc-if><i class="ph ph-caret-down" aria-hidden="true" style="font-size:12px;color:#737373"></i></button>
+              <sc-if value="{{ dataMenu }}" hint-placeholder-val="{{ false }}">
+                <div role="menu" onClick="{{ stopEv }}" style="position:absolute;top:calc(100% + 8px);z-index:40;background:#fff;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);padding:4px;display:flex;flex-direction:column;gap:2px;right:0;width:260px;max-height:360px;overflow-y:auto">
+                  <sc-for list="{{ dataGroups }}" as="g" hint-placeholder-count="3">
+                    <span style="font-size:12px;color:#737373;padding:6px 8px 2px">{{ g.label }}</span>
+                    <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2">
+                      <div role="menuitem" draggable="true" onDragStart="{{ it.onDragStart }}" onClick="{{ it.onClick }}" style="display:flex;flex-direction:column;gap:1px;padding:6px 8px;border-radius:6px;cursor:grab;min-width:0;overflow:hidden" style-hover="background:#F5F5F5">
+                        <span style="font-size:12px;font-weight:500;color:#262626;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.label }}</span>
+                        <span style="font-size:12px;color:#737373;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.value }}</span>
+                      </div>
+                    </sc-for>
+                  </sc-for>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+        </div>
+        </sc-if>
+
+      </div>
+
+      <sc-if value="{{ offer }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;gap:10px;padding:8px 16px;background:#F7F7FE;border-bottom:1px solid #E4E4FB;flex:none">
+          <i class="ph ph-link-simple" aria-hidden="true" style="font-size:16px;color:#5A5FF2"></i>
+          <span style="font-size:13px;flex:1;min-width:0">{{ offerText }}</span>
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="ghost" size="xs" onClick="{{ dismissOffer }}" hint-size="70px,24px">Not now</x-import>
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" size="xs" onClick="{{ applyOffer }}" hint-size="90px,24px">Apply to all</x-import>
+        </div>
+      </sc-if>
+
+      <div ref="{{ scrollRef }}" onScroll="{{ onScroll }}" onClick="{{ clearSel }}" style="flex:1;overflow:auto;position:relative;padding:24px 16px 120px">
+        <sc-for list="{{ docsView }}" as="doc" hint-placeholder-count="2">
+          <section id="{{ doc.anchor }}" style="display:flex;flex-direction:column;align-items:safe center;gap:16px;margin-bottom:40px;zoom:{{ zoom }}">
+            <sc-if value="{{ doc.showHead }}" hint-placeholder-val="{{ false }}">
+            <div style="width:720px;display:flex;align-items:center;gap:8px">
+              <span style="font-size:12px;font-weight:600;color:#404040;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ doc.name }}</span>
+              <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Badge" variant="{{ doc.badgeVariant }}" hint-size="84px,20px"><i class="{{ doc.badgeIcon }}" aria-hidden="true" style="font-size:12px"></i>{{ doc.badge }}</x-import>
+              <span style="flex:1"></span>
+              <span style="font-size:12px;color:#737373;font-variant-numeric:tabular-nums">{{ doc.pageCount }}</span>
+            </div>
+            </sc-if>
+            <sc-if value="{{ doc.needsFields }}" hint-placeholder-val="{{ false }}">
+              <div role="alert" style="width:720px;box-sizing:border-box;display:flex;align-items:center;gap:10px;padding:10px 12px 10px 14px;border:1px solid #FCD9BD;border-radius:10px;background:#FFF7ED;color:#9A3412;font-size:13px;line-height:18px">
+                <i class="ph ph-warning" aria-hidden="true" style="font-size:18px;color:#EA580C;flex:none"></i>
+                <span style="flex:1;min-width:0;font-weight:500">No fields on this uploaded PDF yet.</span>
+                <button type="button" onClick="{{ doc.autoTag }}" style="display:inline-flex;align-items:center;gap:8px;min-height:32px;flex:none;padding:6px 14px 6px 11px;border:1px solid #E4E4FB;border-radius:12px;background:linear-gradient(100deg,#F7F7FE 0%,#FCFAFD 48%,#FFFBF8 100%);font:500 13px/17px 'Mona Sans',sans-serif;cursor:pointer" style-hover="border-color:#C9CAF8;box-shadow:0 2px 12px rgba(90,95,242,.16)" style-active="transform:scale(.98)"><svg class="msp" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" style="flex:0 0 auto;color:#6D6EF3"><path d="M12 2c.6 5 4 8.4 9 9-5 .6-8.4 4-9 9-.6-5-4-8.4-9-9 5-.6 8.4-4 9-9z" fill="currentColor"></path></svg><span class="mlab" style="background:var(--mel-gradient,linear-gradient(90deg,#7B7FF5,#5A5FF2,#F08068,#F0A468));-webkit-background-clip:text;background-clip:text;color:transparent">Auto-tag with Mel</span></button>
+                <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="sm" onClick="{{ doc.addFields }}" hint-size="120px,32px">Add manually</x-import>
+              </div>
+            </sc-if>
+            <sc-for list="{{ doc.pages }}" as="pg" hint-placeholder-count="1">
+              <div onPointerDown="{{ pg.onDown }}" onDragOver="{{ pg.onDragOver }}" onDrop="{{ pg.onDrop }}" style="width:720px;min-height:932px;background:#fff;position:relative;padding:56px 60px 64px;box-sizing:border-box;box-shadow:0 1px 3px 0 rgba(0,0,0,.1),0 1px 2px -1px rgba(0,0,0,.1);display:flex;flex-direction:column;gap:10px;font-size:12px;line-height:18px;color:#171717">
+                <sc-for list="{{ pg.lines }}" as="ln" hint-placeholder-count="6">
+                  <sc-if value="{{ ln.isH1 }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:18px;line-height:24px;font-weight:700;letter-spacing:-.01em;text-wrap:pretty">{{ ln.v }}</div>
+                  </sc-if>
+                  <sc-if value="{{ ln.isKicker }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#737373;font-weight:600">{{ ln.v }}</div>
+                  </sc-if>
+                  <sc-if value="{{ ln.isH2 }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-size:12px;font-weight:700;margin-top:14px;padding-bottom:4px;border-bottom:1px solid #171717">{{ ln.v }}</div>
+                  </sc-if>
+                  <sc-if value="{{ ln.isP }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:0;text-wrap:pretty;color:#262626">{{ ln.v }}</p>
+                  </sc-if>
+                  <sc-if value="{{ ln.isRef }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:grid;grid-template-columns:28px minmax(0,1fr);gap:8px;align-items:start;padding:8px 0;border-bottom:1px solid #F0F0F0">
+                      <span style="font-weight:700;font-variant-numeric:tabular-nums">{{ ln.num }}</span>
+                      <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                        <button type="button" onClick="{{ ln.go }}" title="Go to the source field" style="align-self:flex-start;display:inline-flex;align-items:center;gap:4px;border:0;background:transparent;padding:0;font:inherit;font-size:11px;font-weight:600;color:#4B50E0;cursor:pointer" style-hover="text-decoration:underline"><i class="ph ph-arrow-bend-up-left" aria-hidden="true" style="font-size:12px"></i>{{ ln.src }}</button>
+                        <p style="margin:0;color:#262626;white-space:pre-wrap;overflow-wrap:anywhere">{{ ln.v }}</p>
+                      </div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ ln.isRow }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;column-gap:8px;row-gap:8px;min-height:28px">
+                      <sc-for list="{{ ln.segs }}" as="s" hint-placeholder-count="2">
+                        <sc-if value="{{ s.isText }}" hint-placeholder-val="{{ true }}"><span style="padding-bottom:4px">{{ s.v }}</span></sc-if>
+                        <sc-if value="{{ s.isField }}" hint-placeholder-val="{{ false }}">
+                          <span style="position:relative;display:inline-flex;align-items:center;gap:6px">
+                            <input class="pff" data-pf="{{ s.pf }}" value="{{ s.value }}" placeholder="{{ s.ph }}" readOnly="{{ s.ro }}" onChange="{{ s.onChange }}" onFocus="{{ s.onFocus }}" onBlur="{{ s.onBlur }}" title="{{ s.label }}" style="{{ s.style }}">
+                            <sc-if value="{{ s.isDate }}" hint-placeholder-val="{{ false }}">
+                              <button type="button" aria-label="Pick date" title="Pick date" onClick="{{ s.onPick }}" style="position:absolute;right:3px;top:3px;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border:0;border-radius:5px;background:{{ s.pickBg }};box-shadow:inset 0 0 0 1px {{ s.pickRing }};color:{{ s.pickC }};padding:0;cursor:pointer" style-hover="filter:brightness(.96)" style-active="transform:scale(.94)"><i class="ph ph-calendar-blank" aria-hidden="true" style="font-size:12px"></i></button>
+                            </sc-if>
+                            <sc-if value="{{ s.datePop }}" hint-placeholder-val="{{ false }}">
+                              <div onClick="{{ s.stop }}" style="position:absolute;top:32px;right:0;z-index:30;background:#FFFFFF;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);padding:8px">
+                                <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Calendar" value="{{ s.dateVal }}" onChange="{{ s.onDate }}" hint-size="252px,280px"></x-import>
+                              </div>
+                            </sc-if>
+                            <sc-if value="{{ s.ovChip }}" hint-placeholder-val="{{ false }}">
+                              <button type="button" onClick="{{ s.goToa }}" title="{{ s.ovTip }}" style="flex:none;display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border:1px solid #C9CAF8;border-radius:6px;background:#EEEEFE;color:#4B50E0;font:inherit;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer" style-hover="background:#E4E4FB" style-active="transform:scale(.98)"><i class="ph ph-arrow-bend-down-right" aria-hidden="true" style="font-size:12px"></i>{{ s.ovLbl }}</button>
+                            </sc-if>
+                          </span>
+                        </sc-if>
+                        <sc-if value="{{ s.isCalc }}" hint-placeholder-val="{{ false }}">
+                          <span title="{{ s.tip }}" style="{{ s.style }}"><i class="ph ph-function" aria-hidden="true" style="font-size:13px;color:#737373;flex:none"></i><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.value }}</span></span>
+                        </sc-if>
+                        <sc-if value="{{ s.isArea }}" hint-placeholder-val="{{ false }}">
+                          <span style="display:flex;flex-direction:column;gap:6px;width:{{ s.w }}px;max-width:100%;position:relative">
+                            <sc-if value="{{ s.ovMargin }}" hint-placeholder-val="{{ false }}">
+                              <span aria-hidden="true" style="position:absolute;left:-58px;top:86px;width:52px;display:flex;flex-direction:column;align-items:flex-end;gap:1px;font-size:10px;line-height:12px;font-weight:600;color:#4B50E0;text-align:right"><span>Line 6+</span><span style="display:inline-flex;align-items:center;gap:2px">{{ s.ovCode }} ¶{{ s.ovN }}<i class="ph ph-arrow-down" aria-hidden="true" style="font-size:10px"></i></span></span>
+                            </sc-if>
+                            <textarea class="pff" data-pf="{{ s.pf }}" value="{{ s.value }}" placeholder="{{ s.ph }}" readOnly="{{ s.ro }}" onChange="{{ s.onChange }}" onFocus="{{ s.onFocus }}" onBlur="{{ s.onBlur }}" title="{{ s.label }}" style="{{ s.style }}"></textarea>
+                            <sc-if value="{{ s.showFoot }}" hint-placeholder-val="{{ false }}">
+                              <span style="font-size:11px;color:#171717;font-style:italic">{{ s.ovRef }}</span>
+                            </sc-if>
+                            <sc-if value="{{ s.showMeter }}" hint-placeholder-val="{{ true }}">
+                              <span style="display:flex;align-items:center;gap:8px;min-height:22px;flex-wrap:wrap">
+                                <span style="{{ s.meterStyle }}">{{ s.meter }}</span>
+                                <sc-if value="{{ s.ovChip }}" hint-placeholder-val="{{ false }}">
+                                  <button type="button" onClick="{{ s.goToa }}" style="display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border:1px solid #C9CAF8;border-radius:6px;background:#EEEEFE;color:#4B50E0;font:inherit;font-size:11px;font-weight:600;white-space:nowrap;cursor:pointer" style-hover="background:#E4E4FB" style-active="transform:scale(.98)">View on {{ s.ovCode }} ¶{{ s.ovN }}<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:12px"></i></button>
+                                </sc-if>
+                              </span>
+                            </sc-if>
+                          </span>
+                        </sc-if>
+                        <sc-if value="{{ s.isCb }}" hint-placeholder-val="{{ false }}">
+                          <label style="display:inline-flex;align-items:center;gap:8px;padding:3px 6px 3px 3px;border-radius:6px;cursor:pointer;background:{{ s.bg }}">
+                            <input type="checkbox" data-pf="{{ s.pf }}" checked="{{ s.checked }}" disabled="{{ s.ro }}" onChange="{{ s.onChange }}" style="width:15px;height:15px;margin:0;accent-color:#5A5FF2">
+                            <span>{{ s.label }}</span>
+                          </label>
+                        </sc-if>
+                        <sc-if value="{{ s.isSigFill }}" hint-placeholder-val="{{ false }}">
+                          <span style="display:inline-flex;flex-direction:column;gap:4px;width:188px">
+                            <span style="height:30px;border-bottom:1px solid #171717;display:flex;align-items:flex-end;padding:0 4px 4px;color:#A3A3A3;font-size:12px;gap:6px"><i class="ph ph-signature" aria-hidden="true" style="font-size:14px"></i>Signed in envelope</span>
+                            <span style="font-size:11px;color:#737373">{{ s.label }}</span>
+                          </span>
+                        </sc-if>
+                        <sc-if value="{{ s.isSigTag }}" hint-placeholder-val="{{ false }}">
+                          <span style="display:inline-flex;flex-direction:column;gap:4px;width:188px;position:relative">
+                            <button type="button" onClick="{{ s.onClick }}" style="{{ s.tagStyle }}"><i class="{{ s.tagIcon }}" aria-hidden="true" style="font-size:14px"></i><span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ s.tagText }}</span></button>
+                            <span style="font-size:11px;color:#737373">{{ s.label }}</span>
+                            <sc-if value="{{ s.pop }}" hint-placeholder-val="{{ false }}">
+                              <div onClick="{{ s.stop }}" style="position:absolute;top:40px;left:0;z-index:20;width:220px;background:#fff;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);padding:4px">
+                                <div style="font-size:12px;color:#737373;padding:6px 8px 4px">Assign to</div>
+                                <sc-for list="{{ s.popItems }}" as="pi" hint-placeholder-count="3">
+                                  <button type="button" onClick="{{ pi.pick }}" style="display:flex;align-items:center;gap:8px;width:100%;border:0;background:{{ pi.bg }};border-radius:6px;padding:7px 8px;font:inherit;font-size:13px;text-align:left;cursor:pointer;color:#0A0A0A" style-hover="background:#F5F5F5">
+                                    <span style="{{ pi.swatch }}"></span><span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ pi.name }}</span>
+                                    <sc-if value="{{ pi.on }}" hint-placeholder-val="{{ false }}"><i class="ph ph-check" aria-hidden="true" style="font-size:14px;color:#5A5FF2"></i></sc-if>
+                                  </button>
+                                </sc-for>
+                              </div>
+                            </sc-if>
+                          </span>
+                        </sc-if>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </sc-for>
+
+                <sc-if value="{{ pg.emptyHint }}" hint-placeholder-val="{{ false }}">
+                  <div style="margin-top:auto;display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px dashed #D4D4D4;border-radius:10px;color:#737373;font-size:12px">
+                    <i class="ph ph-arrow-left" aria-hidden="true" style="font-size:16px"></i>
+                    <span style="flex:1">Uploaded PDF — no tagged fields. Drag signature, date and data fields from the left panel onto this page.</span>
+                  </div>
+                </sc-if>
+
+                <sc-for list="{{ pg.placed }}" as="p" hint-placeholder-count="0">
+                  <div onPointerDown="{{ p.onPointerDown }}" onClick="{{ p.onSelect }}" style="{{ p.style }}">
+                    <i class="{{ p.icon }}" aria-hidden="true" style="font-size:14px;flex:none;color:{{ p.fg }}"></i>
+                    <sc-if value="{{ p.isInput }}" hint-placeholder-val="{{ false }}">
+                      <input class="pff" value="{{ p.value }}" placeholder="{{ p.label }}" readOnly="{{ p.ro }}" onChange="{{ p.onChange }}" onPointerDown="{{ p.stop }}" style="flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:12px;color:#0A0A0A;padding:0;outline:none">
+                    </sc-if>
+                    <sc-if value="{{ p.isDate }}" hint-placeholder-val="{{ false }}">
+                      <button type="button" aria-label="Pick date" title="Pick date" onClick="{{ p.onPick }}" onPointerDown="{{ p.stop }}" style="flex:none;width:20px;height:20px;display:flex;align-items:center;justify-content:center;border:0;border-radius:5px;background:{{ s.pickBg }};box-shadow:inset 0 0 0 1px {{ s.pickRing }};color:{{ s.pickC }};padding:0;cursor:pointer" style-hover="filter:brightness(.96)" style-active="transform:scale(.94)"><i class="ph ph-calendar-blank" aria-hidden="true" style="font-size:12px"></i></button>
+                    </sc-if>
+                    <sc-if value="{{ p.datePop }}" hint-placeholder-val="{{ false }}">
+                      <div onClick="{{ p.stop }}" onPointerDown="{{ p.stop }}" style="position:absolute;top:calc(100% + 6px);right:0;z-index:30;background:#FFFFFF;border:1px solid #E5E5E5;border-radius:10px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);padding:8px;cursor:default">
+                        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Calendar" value="{{ p.dateVal }}" onChange="{{ p.onDate }}" hint-size="252px,280px"></x-import>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ p.isCb }}" hint-placeholder-val="{{ false }}">
+                      <input type="checkbox" checked="{{ p.checked }}" disabled="{{ p.ro }}" onChange="{{ p.onToggle }}" onPointerDown="{{ p.stop }}" style="width:15px;height:15px;margin:0;accent-color:#5A5FF2">
+                    </sc-if>
+                    <sc-if value="{{ p.isSelect }}" hint-placeholder-val="{{ false }}">
+                      <select class="pff" value="{{ p.value }}" disabled="{{ p.ro }}" onChange="{{ p.onChange }}" onPointerDown="{{ p.stop }}" style="flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:12px;color:#0A0A0A">
+                        <option value="">Choose…</option><option value="Yes">Yes</option><option value="No">No</option><option value="N/A">N/A</option>
+                      </select>
+                    </sc-if>
+                    <sc-if value="{{ p.isStatic }}" hint-placeholder-val="{{ false }}">
+                      <span style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:12px;color:{{ p.fg }};font-weight:500">{{ p.text }}</span>
+                    </sc-if>
+                    <sc-if value="{{ p.sel }}" hint-placeholder-val="{{ false }}">
+                      <button type="button" aria-label="Remove field" title="Remove field" onClick="{{ p.onDelete }}" onPointerDown="{{ p.stop }}" style="position:absolute;top:-9px;right:-9px;width:18px;height:18px;border-radius:50%;border:1px solid #E5E5E5;background:#fff;display:grid;place-items:center;cursor:pointer;padding:0;color:#404040"><i class="ph ph-x" aria-hidden="true" style="font-size:10px"></i></button>
+                    </sc-if>
+                  </div>
+                </sc-for>
+                <div style="position:absolute;bottom:22px;left:60px;right:60px;display:flex;justify-content:space-between;font-size:10px;color:#A3A3A3"><span>{{ pg.foot }}</span><span>{{ pg.label }}</span></div>
+              </div>
+            </sc-for>
+          </section>
+        </sc-for>
+      </div>
+    </main>
+
+    <aside style="border-left:1px solid #E5E5E5;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden;background:#fff">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 12px 12px 16px;border-bottom:1px solid #F0F0F0;flex:none">
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAzIiBoZWlnaHQ9IjEwMyIgdmlld0JveD0iMCAwIDEwMyAxMDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNTcuMzc0MSAzNy4xOTFDNjUuOTU1NSAyNi40MzQ4IDgxLjc5NDUgMjYuNDM0OCA5MC4zNzU4IDM3LjE5MUM5Ni45OTIyIDQ1LjQ4NDIgOTYuOTkyMiA1Ny41MTk0IDkwLjM3NTggNjUuODEyNkM4MS43OTQ1IDc2LjU2ODggNjUuOTU1NSA3Ni41Njg4IDU3LjM3NDEgNjUuODEyNkwzOS4wMzU1IDQyLjgyNjNDMzMuODczOSAzNi4zNTY1IDI0LjM4MzUgMzYuMzU2NSAxOS4yMjE5IDQyLjgyNjNDMTUuMjE1MSA0Ny44NDg2IDE1LjIxNTEgNTUuMTU1IDE5LjIyMTkgNjAuMTc3M0MyNC4zODM1IDY2LjY0NzEgMzMuODczOSA2Ni42NDcxIDM5LjAzNTUgNjAuMTc3M0w0NS40OTIxIDUyLjA4NDRMNDYuOTI5OCA1My4yMzE1TDQwLjQ3MzMgNjEuMzI0NEMzNC41NzUzIDY4LjcxNzEgMjMuNjgyMSA2OC43MTcxIDE3Ljc4NDEgNjEuMzI0NEMxMy4yNDE5IDU1LjYzMTEgMTMuMjQxOSA0Ny4zNzI1IDE3Ljc4NDEgNDEuNjc5MkMyMy42ODIxIDM0LjI4NjUgMzQuNTc1MyAzNC4yODY1IDQwLjQ3MzMgNDEuNjc5Mkw1OC44MTE5IDY0LjY2NTZDNjYuNjU2OSA3NC40OTg4IDgxLjA5MyA3NC40OTg4IDg4LjkzODEgNjQuNjY1NUM5NS4wMTkxIDU3LjA0MzMgOTUuMDE5MSA0NS45NjAzIDg4LjkzODEgMzguMzM4QzgxLjA5MyAyOC41MDQ4IDY2LjY1NjkgMjguNTA0OCA1OC44MTE5IDM4LjMzOEw1My4wNDQ2IDQ1LjU2N0w1MS42MDY4IDQ0LjQxOTlMNTcuMzc0MSAzNy4xOTFaTTEyLjYyNzggMzcuMTkxQzIxLjIwOTIgMjYuNDM0OCAzNy4wNDgyIDI2LjQzNDggNDUuNjI5NSAzNy4xOTFMNjMuOTY4MiA2MC4xNzczQzY5LjEyOTggNjYuNjQ3MSA3OC42MjAyIDY2LjY0NzEgODMuNzgxOCA2MC4xNzczQzg3Ljc4ODYgNTUuMTU1IDg3Ljc4ODYgNDcuODQ4NiA4My43ODE4IDQyLjgyNjNDNzguNjIwMiAzNi4zNTY1IDY5LjEyOTggMzYuMzU2NSA2My45NjgyIDQyLjgyNjNMNTcuNTExNiA1MC45MTkyTDU2LjA3MzggNDkuNzcyMUw2Mi41MzA0IDQxLjY3OTJDNjguNDI4NCAzNC4yODY1IDc5LjMyMTYgMzQuMjg2NSA4NS4yMTk2IDQxLjY3OTJDODkuNzYxNyA0Ny4zNzI1IDg5Ljc2MTcgNTUuNjMxMSA4NS4yMTk2IDYxLjMyNDRDNzkuMzIxNiA2OC43MTcxIDY4LjQyODQgNjguNzE3MSA2Mi41MzA0IDYxLjMyNDRMNDQuMTkxOCAzOC4zMzhDMzYuMzQ2NyAyOC41MDQ4IDIxLjkxMDYgMjguNTA0OCAxNC4wNjU2IDM4LjMzOEM3Ljk4NDU1IDQ1Ljk2MDMgNy45ODQ1NSA1Ny4wNDMzIDE0LjA2NTYgNjQuNjY1NUMyMS45MTA2IDc0LjQ5ODggMzYuMzQ2NyA3NC40OTg4IDQ0LjE5MTcgNjQuNjY1Nkw0OS45NTkgNTcuNDM2Nkw1MS4zOTY4IDU4LjU4MzdMNDUuNjI5NSA2NS44MTI2QzM3LjA0ODIgNzYuNTY4OCAyMS4yMDkyIDc2LjU2ODggMTIuNjI3OCA2NS44MTI2QzYuMDExNDMgNTcuNTE5NCA2LjAxMTQzIDQ1LjQ4NDIgMTIuNjI3OCAzNy4xOTFaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMjc3NDBfNTQxKSI+PC9wYXRoPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzI3NzQwXzU0MSIgeDE9IjI5LjU4MzciIHkxPSIxOS4yNzkzIiB4Mj0iMjYuMjgxNSIgeTI9Ijc4LjY2NSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBvZmZzZXQ9IjAuMTU1OTY2IiBzdG9wLWNvbG9yPSIjN0I3RkY1Ij48L3N0b3A+CjxzdG9wIG9mZnNldD0iMC40NDkiIHN0b3AtY29sb3I9IiM1QTVGRjIiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIwLjc1OTA4NiIgc3RvcC1jb2xvcj0iI0YwODA2OCI+PC9zdG9wPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGMEE0NjgiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBBNDY4Ij48L3N0b3A+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+" alt="" aria-hidden="true" style="width:28px;height:28px;flex:none">
+        <span style="flex:1;min-width:0;font-size:14px;line-height:18px;font-weight:600;color:#0A0A0A">Mel</span>
+        <button type="button" onClick="{{ newChat }}" title="New chat" aria-label="New chat" style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:8px;background:transparent;color:#525252;cursor:pointer;padding:0" style-hover="background:#F5F5F5;color:#0A0A0A" style-active="transform:scale(.96)"><i class="ph ph-note-pencil" aria-hidden="true" style="font-size:18px"></i></button>
+      </div>
+      <div style="flex:1;min-height:0;position:relative;display:flex;flex-direction:column">
+      <div ref="{{ chatRef }}" onScroll="{{ onChatScroll }}" style="flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;display:flex;flex-direction:column;gap:18px">
+        <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="1">
+          <sc-if value="{{ m.isMe }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;min-width:0">
+              <div style="max-width:85%;background:#F5F5F5;border-radius:14px 14px 4px 14px;padding:9px 12px;font-size:13px;line-height:19px;color:#0A0A0A;overflow-wrap:anywhere;white-space:pre-line">{{ m.text }}</div>
+              <span style="font-size:12px;line-height:16px;color:#A3A3A3;font-variant-numeric:tabular-nums">{{ m.at }}</span>
+            </div>
+          </sc-if>
+          <sc-if value="{{ m.isMel }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;min-width:0">
+              <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAzIiBoZWlnaHQ9IjEwMyIgdmlld0JveD0iMCAwIDEwMyAxMDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNTcuMzc0MSAzNy4xOTFDNjUuOTU1NSAyNi40MzQ4IDgxLjc5NDUgMjYuNDM0OCA5MC4zNzU4IDM3LjE5MUM5Ni45OTIyIDQ1LjQ4NDIgOTYuOTkyMiA1Ny41MTk0IDkwLjM3NTggNjUuODEyNkM4MS43OTQ1IDc2LjU2ODggNjUuOTU1NSA3Ni41Njg4IDU3LjM3NDEgNjUuODEyNkwzOS4wMzU1IDQyLjgyNjNDMzMuODczOSAzNi4zNTY1IDI0LjM4MzUgMzYuMzU2NSAxOS4yMjE5IDQyLjgyNjNDMTUuMjE1MSA0Ny44NDg2IDE1LjIxNTEgNTUuMTU1IDE5LjIyMTkgNjAuMTc3M0MyNC4zODM1IDY2LjY0NzEgMzMuODczOSA2Ni42NDcxIDM5LjAzNTUgNjAuMTc3M0w0NS40OTIxIDUyLjA4NDRMNDYuOTI5OCA1My4yMzE1TDQwLjQ3MzMgNjEuMzI0NEMzNC41NzUzIDY4LjcxNzEgMjMuNjgyMSA2OC43MTcxIDE3Ljc4NDEgNjEuMzI0NEMxMy4yNDE5IDU1LjYzMTEgMTMuMjQxOSA0Ny4zNzI1IDE3Ljc4NDEgNDEuNjc5MkMyMy42ODIxIDM0LjI4NjUgMzQuNTc1MyAzNC4yODY1IDQwLjQ3MzMgNDEuNjc5Mkw1OC44MTE5IDY0LjY2NTZDNjYuNjU2OSA3NC40OTg4IDgxLjA5MyA3NC40OTg4IDg4LjkzODEgNjQuNjY1NUM5NS4wMTkxIDU3LjA0MzMgOTUuMDE5MSA0NS45NjAzIDg4LjkzODEgMzguMzM4QzgxLjA5MyAyOC41MDQ4IDY2LjY1NjkgMjguNTA0OCA1OC44MTE5IDM4LjMzOEw1My4wNDQ2IDQ1LjU2N0w1MS42MDY4IDQ0LjQxOTlMNTcuMzc0MSAzNy4xOTFaTTEyLjYyNzggMzcuMTkxQzIxLjIwOTIgMjYuNDM0OCAzNy4wNDgyIDI2LjQzNDggNDUuNjI5NSAzNy4xOTFMNjMuOTY4MiA2MC4xNzczQzY5LjEyOTggNjYuNjQ3MSA3OC42MjAyIDY2LjY0NzEgODMuNzgxOCA2MC4xNzczQzg3Ljc4ODYgNTUuMTU1IDg3Ljc4ODYgNDcuODQ4NiA4My43ODE4IDQyLjgyNjNDNzguNjIwMiAzNi4zNTY1IDY5LjEyOTggMzYuMzU2NSA2My45NjgyIDQyLjgyNjNMNTcuNTExNiA1MC45MTkyTDU2LjA3MzggNDkuNzcyMUw2Mi41MzA0IDQxLjY3OTJDNjguNDI4NCAzNC4yODY1IDc5LjMyMTYgMzQuMjg2NSA4NS4yMTk2IDQxLjY3OTJDODkuNzYxNyA0Ny4zNzI1IDg5Ljc2MTcgNTUuNjMxMSA4NS4yMTk2IDYxLjMyNDRDNzkuMzIxNiA2OC43MTcxIDY4LjQyODQgNjguNzE3MSA2Mi41MzA0IDYxLjMyNDRMNDQuMTkxOCAzOC4zMzhDMzYuMzQ2NyAyOC41MDQ4IDIxLjkxMDYgMjguNTA0OCAxNC4wNjU2IDM4LjMzOEM3Ljk4NDU1IDQ1Ljk2MDMgNy45ODQ1NSA1Ny4wNDMzIDE0LjA2NTYgNjQuNjY1NUMyMS45MTA2IDc0LjQ5ODggMzYuMzQ2NyA3NC40OTg4IDQ0LjE5MTcgNjQuNjY1Nkw0OS45NTkgNTcuNDM2Nkw1MS4zOTY4IDU4LjU4MzdMNDUuNjI5NSA2NS44MTI2QzM3LjA0ODIgNzYuNTY4OCAyMS4yMDkyIDc2LjU2ODggMTIuNjI3OCA2NS44MTI2QzYuMDExNDMgNTcuNTE5NCA2LjAxMTQzIDQ1LjQ4NDIgMTIuNjI3OCAzNy4xOTFaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMjc3NDBfNTQxKSI+PC9wYXRoPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzI3NzQwXzU0MSIgeDE9IjI5LjU4MzciIHkxPSIxOS4yNzkzIiB4Mj0iMjYuMjgxNSIgeTI9Ijc4LjY2NSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBvZmZzZXQ9IjAuMTU1OTY2IiBzdG9wLWNvbG9yPSIjN0I3RkY1Ij48L3N0b3A+CjxzdG9wIG9mZnNldD0iMC40NDkiIHN0b3AtY29sb3I9IiM1QTVGRjIiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIwLjc1OTA4NiIgc3RvcC1jb2xvcj0iI0YwODA2OCI+PC9zdG9wPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGMEE0NjgiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBBNDY4Ij48L3N0b3A+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+" alt="" aria-hidden="true" style="width:24px;height:24px;margin-top:-2px">
+            <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+              <div style="display:flex;align-items:baseline;gap:6px;min-width:0"><span style="font-size:13px;line-height:18px;font-weight:600;color:#0A0A0A">Mel</span><span style="font-size:12px;line-height:16px;color:#A3A3A3;font-variant-numeric:tabular-nums">{{ m.at }}</span></div>
+              <div style="font-size:13px;line-height:20px;color:#171717;white-space:pre-line;text-wrap:pretty;overflow-wrap:anywhere">{{ m.shown }}{{ m.caret }}</div>
+              <sc-if value="{{ m.ready }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+                  <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
+                    <div style="border:1px solid #E5E5E5;border-radius:12px;overflow:hidden">
+                      <div style="padding:10px 12px;font-size:12px;color:#737373;border-bottom:1px solid #E5E5E5">{{ m.cardTitle }}</div>
+                      <sc-for list="{{ m.items }}" as="it" hint-placeholder-count="3">
+                        <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:8px 12px;border-bottom:1px solid #F0F0F0">
+                          <span style="font-size:13px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                          <span style="font-size:13px;font-variant-numeric:tabular-nums;text-align:right">{{ it.value }}</span>
+                          <span style="grid-column:1/-1;font-size:12px;color:#737373;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.forms }}</span>
+                        </div>
+                      </sc-for>
+                      <sc-if value="{{ m.pending }}" hint-placeholder-val="{{ true }}">
+                        <div style="display:flex;gap:8px;padding:10px 12px;justify-content:flex-end">
+                          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="ghost" size="sm" onClick="{{ m.onSkip }}" hint-size="100px,32px">Only this form</x-import>
+                          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" size="sm" onClick="{{ m.onApply }}" hint-size="100px,32px">Fill all</x-import>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ m.done }}" hint-placeholder-val="{{ false }}">
+                        <div style="display:flex;align-items:center;gap:6px;padding:9px 12px;font-size:12px;color:#737373"><i class="ph ph-check" aria-hidden="true" style="font-size:14px;color:#6DA544"></i>{{ m.doneText }}</div>
+                      </sc-if>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ m.hasStats }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px">
+                      <sc-for list="{{ m.stats }}" as="st" hint-placeholder-count="3">
+                        <div style="{{ st.card }}">
+                          <span style="{{ st.codeStyle }}">{{ st.code }}</span>
+                          <span style="{{ st.numStyle }}">{{ st.n }}</span>
+                          <span style="font-size:12px;line-height:16px;color:#404040;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ st.label }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ m.hasJump }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-wrap:wrap;gap:6px">
+                      <sc-for list="{{ m.jumps }}" as="j" hint-placeholder-count="2">
+                        <button type="button" onClick="{{ j.go }}" style-hover="border-color:#C9CAF8;box-shadow:0 2px 12px rgba(90,95,242,.16)" style-active="transform:scale(.98)" style="display:inline-flex;align-items:center;gap:6px;height:24px;max-width:100%;min-width:0;padding:0 10px 0 8px;border:1px solid #E4E4FB;border-radius:12px;background:linear-gradient(100deg,#F7F7FE 0%,#FCFAFD 48%,#FFFBF8 100%);font-family:inherit;font-size:12px;line-height:16px;font-weight:500;cursor:pointer">
+                          <svg class="msp" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" style="flex:0 0 auto;color:#6D6EF3"><path d="M12 2c.6 5 4 8.4 9 9-5 .6-8.4 4-9 9-.6-5-4-8.4-9-9 5-.6 8.4-4 9-9z" fill="currentColor"></path></svg>
+                          <span class="mlab" style="background:var(--mel-gradient,linear-gradient(90deg,#7B7FF5,#5A5FF2,#F08068,#F0A468));-webkit-background-clip:text;background-clip:text;color:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ j.label }}</span>
+                        </button>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                <div style="display:flex;align-items:center;gap:2px;margin-left:-4px">
+                  <button type="button" onClick="{{ m.copy }}" title="Copy" aria-label="Copy message" style="width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:6px;background:transparent;cursor:pointer;font-size:14px;padding:0;color:#A3A3A3" style-hover="background:#F5F5F5;color:#404040"><i class="ph ph-copy" aria-hidden="true"></i></button>
+                  <button type="button" onClick="{{ m.up }}" title="Helpful" aria-label="Helpful" style="{{ m.upStyle }}" style-hover="background:#F5F5F5"><i class="ph ph-thumbs-up" aria-hidden="true"></i></button>
+                  <button type="button" onClick="{{ m.down }}" title="Not helpful" aria-label="Not helpful" style="{{ m.downStyle }}" style-hover="background:#F5F5F5"><i class="ph ph-thumbs-down" aria-hidden="true"></i></button>
+                </div>
+              </div>
+              </sc-if>
+            </div>
+            </div>
+          </sc-if>
+        </sc-for>
+        <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+          <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;align-items:center">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAzIiBoZWlnaHQ9IjEwMyIgdmlld0JveD0iMCAwIDEwMyAxMDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNTcuMzc0MSAzNy4xOTFDNjUuOTU1NSAyNi40MzQ4IDgxLjc5NDUgMjYuNDM0OCA5MC4zNzU4IDM3LjE5MUM5Ni45OTIyIDQ1LjQ4NDIgOTYuOTkyMiA1Ny41MTk0IDkwLjM3NTggNjUuODEyNkM4MS43OTQ1IDc2LjU2ODggNjUuOTU1NSA3Ni41Njg4IDU3LjM3NDEgNjUuODEyNkwzOS4wMzU1IDQyLjgyNjNDMzMuODczOSAzNi4zNTY1IDI0LjM4MzUgMzYuMzU2NSAxOS4yMjE5IDQyLjgyNjNDMTUuMjE1MSA0Ny44NDg2IDE1LjIxNTEgNTUuMTU1IDE5LjIyMTkgNjAuMTc3M0MyNC4zODM1IDY2LjY0NzEgMzMuODczOSA2Ni42NDcxIDM5LjAzNTUgNjAuMTc3M0w0NS40OTIxIDUyLjA4NDRMNDYuOTI5OCA1My4yMzE1TDQwLjQ3MzMgNjEuMzI0NEMzNC41NzUzIDY4LjcxNzEgMjMuNjgyMSA2OC43MTcxIDE3Ljc4NDEgNjEuMzI0NEMxMy4yNDE5IDU1LjYzMTEgMTMuMjQxOSA0Ny4zNzI1IDE3Ljc4NDEgNDEuNjc5MkMyMy42ODIxIDM0LjI4NjUgMzQuNTc1MyAzNC4yODY1IDQwLjQ3MzMgNDEuNjc5Mkw1OC44MTE5IDY0LjY2NTZDNjYuNjU2OSA3NC40OTg4IDgxLjA5MyA3NC40OTg4IDg4LjkzODEgNjQuNjY1NUM5NS4wMTkxIDU3LjA0MzMgOTUuMDE5MSA0NS45NjAzIDg4LjkzODEgMzguMzM4QzgxLjA5MyAyOC41MDQ4IDY2LjY1NjkgMjguNTA0OCA1OC44MTE5IDM4LjMzOEw1My4wNDQ2IDQ1LjU2N0w1MS42MDY4IDQ0LjQxOTlMNTcuMzc0MSAzNy4xOTFaTTEyLjYyNzggMzcuMTkxQzIxLjIwOTIgMjYuNDM0OCAzNy4wNDgyIDI2LjQzNDggNDUuNjI5NSAzNy4xOTFMNjMuOTY4MiA2MC4xNzczQzY5LjEyOTggNjYuNjQ3MSA3OC42MjAyIDY2LjY0NzEgODMuNzgxOCA2MC4xNzczQzg3Ljc4ODYgNTUuMTU1IDg3Ljc4ODYgNDcuODQ4NiA4My43ODE4IDQyLjgyNjNDNzguNjIwMiAzNi4zNTY1IDY5LjEyOTggMzYuMzU2NSA2My45NjgyIDQyLjgyNjNMNTcuNTExNiA1MC45MTkyTDU2LjA3MzggNDkuNzcyMUw2Mi41MzA0IDQxLjY3OTJDNjguNDI4NCAzNC4yODY1IDc5LjMyMTYgMzQuMjg2NSA4NS4yMTk2IDQxLjY3OTJDODkuNzYxNyA0Ny4zNzI1IDg5Ljc2MTcgNTUuNjMxMSA4NS4yMTk2IDYxLjMyNDRDNzkuMzIxNiA2OC43MTcxIDY4LjQyODQgNjguNzE3MSA2Mi41MzA0IDYxLjMyNDRMNDQuMTkxOCAzOC4zMzhDMzYuMzQ2NyAyOC41MDQ4IDIxLjkxMDYgMjguNTA0OCAxNC4wNjU2IDM4LjMzOEM3Ljk4NDU1IDQ1Ljk2MDMgNy45ODQ1NSA1Ny4wNDMzIDE0LjA2NTYgNjQuNjY1NUMyMS45MTA2IDc0LjQ5ODggMzYuMzQ2NyA3NC40OTg4IDQ0LjE5MTcgNjQuNjY1Nkw0OS45NTkgNTcuNDM2Nkw1MS4zOTY4IDU4LjU4MzdMNDUuNjI5NSA2NS44MTI2QzM3LjA0ODIgNzYuNTY4OCAyMS4yMDkyIDc2LjU2ODggMTIuNjI3OCA2NS44MTI2QzYuMDExNDMgNTcuNTE5NCA2LjAxMTQzIDQ1LjQ4NDIgMTIuNjI3OCAzNy4xOTFaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMjc3NDBfNTQxKSI+PC9wYXRoPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzI3NzQwXzU0MSIgeDE9IjI5LjU4MzciIHkxPSIxOS4yNzkzIiB4Mj0iMjYuMjgxNSIgeTI9Ijc4LjY2NSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBvZmZzZXQ9IjAuMTU1OTY2IiBzdG9wLWNvbG9yPSIjN0I3RkY1Ij48L3N0b3A+CjxzdG9wIG9mZnNldD0iMC40NDkiIHN0b3AtY29sb3I9IiM1QTVGRjIiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIwLjc1OTA4NiIgc3RvcC1jb2xvcj0iI0YwODA2OCI+PC9zdG9wPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGMEE0NjgiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBBNDY4Ij48L3N0b3A+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+" alt="" aria-hidden="true" style="width:24px;height:24px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:12px;line-height:16px;color:#737373">{{ typingDots }}Reading your forms…</div>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ chatUp }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ toBottom }}" title="Scroll to latest" aria-label="Scroll to latest" style="position:absolute;left:50%;bottom:10px;transform:translateX(-50%);width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;border:1px solid #E5E5E5;border-radius:50%;background:#fff;color:#404040;box-shadow:0 4px 12px rgba(0,0,0,.08);cursor:pointer;padding:0" style-hover="background:#F5F5F5"><i class="ph ph-arrow-down" aria-hidden="true" style="font-size:16px"></i></button>
+      </sc-if>
+      </div>
+      <div style="padding:12px 16px 16px;border-top:1px solid #F0F0F0;display:flex;flex-direction:column;gap:10px;flex:none">
+        <sc-if value="{{ showSugs }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:6px">
+            <sc-for list="{{ sugs }}" as="sg" hint-placeholder-count="3">
+              <button type="button" onClick="{{ sg.go }}" style="display:inline-flex;align-items:center;gap:6px;min-height:28px;max-width:100%;min-width:0;padding:4px 10px 4px 8px;border:1px solid #E4E4FB;border-radius:10px;background:linear-gradient(100deg,#F7F7FE 0%,#FCFAFD 48%,#FFFBF8 100%);font:500 12px/16px 'Mona Sans',sans-serif;text-align:left;cursor:pointer" style-hover="border-color:#C9CAF8;box-shadow:0 2px 12px rgba(90,95,242,.16)" style-active="transform:scale(.98)">
+                <svg class="msp" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" style="flex:0 0 auto;color:#6D6EF3"><path d="M12 2c.6 5 4 8.4 9 9-5 .6-8.4 4-9 9-.6-5-4-8.4-9-9 5-.6 8.4-4 9-9z" fill="currentColor"></path></svg>
+                <span class="mlab" style="background:var(--mel-gradient,linear-gradient(90deg,#7B7FF5,#5A5FF2,#F08068,#F0A468));-webkit-background-clip:text;background-clip:text;color:transparent">{{ sg.label }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:6px;border:1.5px solid transparent;border-radius:14px;padding:10px 8px 8px 12px;background:linear-gradient(#fff,#fff) padding-box,linear-gradient(90deg,#F08068,#F0A468 30%,#7B7FF5 75%,#5A5FF2) border-box">
+          <textarea value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" rows="2" placeholder="Describe the deal — price, dates, commission, sellers…" aria-label="Message Mel" style="width:100%;min-width:0;border:0;outline:none;resize:none;font:inherit;font-size:13px;line-height:19px;color:#0A0A0A;background:transparent;max-height:120px;padding:0"></textarea>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px">
+            <span style="font-size:12px;line-height:16px;color:#A3A3A3">Shift + Enter for new line</span>
+            <sc-if value="{{ streaming }}" hint-placeholder-val="{{ false }}">
+              <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="icon-sm" aria-label="Stop Mel" title="Stop" onClick="{{ stopStream }}" hint-size="32px,32px"><i class="ph ph-stop" aria-hidden="true" style="font-size:14px"></i></x-import>
+            </sc-if>
+            <sc-if value="{{ notStreaming }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" size="icon-sm" aria-label="Send to Mel" title="Send" disabled="{{ sendOff }}" onClick="{{ sendDraft }}" hint-size="32px,32px"><i class="ph ph-arrow-up" aria-hidden="true" style="font-size:16px"></i></x-import>
+            </sc-if>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <sc-if value="{{ libOpen }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Document library" onClick="{{ stopEv }}" style="position:fixed;left:8px;bottom:66px;z-index:60;width:380px;max-width:calc(100vw - 16px);max-height:calc(100vh - 140px);display:flex;flex-direction:column;background:#fff;border:1px solid #E5E5E5;border-radius:14px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;padding:12px 12px 8px 16px;flex:none">
+        <span style="font-size:14px;font-weight:600;flex:1;min-width:0">Document library</span>
+        <span style="font-size:12px;color:#737373;font-variant-numeric:tabular-nums">{{ libCount }}</span>
+        <button type="button" aria-label="Close" title="Close" onClick="{{ closeLib }}" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:0;border-radius:6px;background:transparent;color:#737373;padding:0;cursor:pointer" style-hover="background:#F5F5F5;color:#0A0A0A"><i class="ph ph-x" aria-hidden="true" style="font-size:14px"></i></button>
+      </div>
+      <div style="display:flex;gap:8px;padding:0 12px 10px 16px;flex:none">
+        <div style="flex:1;min-width:0;position:relative;display:flex;align-items:center">
+          <i class="ph ph-magnifying-glass" aria-hidden="true" style="position:absolute;left:10px;font-size:14px;color:#737373"></i>
+          <input value="{{ libQ }}" onChange="{{ onLibQ }}" placeholder="Search forms" aria-label="Search forms" style="width:100%;height:32px;box-sizing:border-box;padding:0 10px 0 30px;border:1px solid #E5E5E5;border-radius:8px;font:inherit;font-size:13px;outline:none;box-shadow:0 1px 2px 0 rgba(0,0,0,.05)">
+        </div>
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="sm" onClick="{{ upload }}" hint-size="112px,32px"><i class="ph ph-upload-simple" aria-hidden="true" style="font-size:16px"></i>Upload PDF</x-import>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:6px 8px 8px;display:flex;flex-direction:column;gap:2px;border-top:1px solid #F0F0F0">
+        <sc-for list="{{ libItems }}" as="li" hint-placeholder-count="6">
+          <div style="display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;gap:10px;padding:8px;border-radius:8px;min-width:0" style-hover="background:#FAFAFA">
+            <span style="justify-self:start;height:22px;display:inline-flex;align-items:center;padding:0 7px;border-radius:6px;background:#F5F5F5;font-size:11px;font-weight:600;color:#404040;white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis;box-sizing:border-box">{{ li.code }}</span>
+            <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+              <span style="font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ li.name }}</span>
+              <span style="font-size:12px;color:#737373;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ li.desc }}</span>
+            </span>
+            <sc-if value="{{ li.notIn }}" hint-placeholder-val="{{ true }}">
+              <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="xs" onClick="{{ li.add }}" hint-size="60px,24px"><i class="ph ph-plus" aria-hidden="true" style="font-size:12px"></i>Add</x-import>
+            </sc-if>
+            <sc-if value="{{ li.inP }}" hint-placeholder-val="{{ false }}">
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;color:#41701F;font-weight:500;white-space:nowrap"><i class="ph ph-check" aria-hidden="true" style="font-size:13px"></i>In packet</span>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </sc-if>
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:100;background:#0A0A0A;color:#fff;font-size:13px;padding:10px 14px;border-radius:10px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);display:flex;align-items:center;gap:8px"><i class="ph ph-check-circle" aria-hidden="true" style="font-size:16px;color:#6DA544"></i>{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;onBack&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;function&quot;},&quot;overflowMode&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Move all to TOA&quot;,&quot;Fit, move the rest&quot;],&quot;default&quot;:&quot;Move all to TOA&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Text overflow&quot;},&quot;formState&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;California&quot;,&quot;Other states&quot;],&quot;default&quot;:&quot;California&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Text overflow&quot;}}">
+const SHARED=new Set(['addr','city','county','seller1','seller2','agent','lic','brokerage','apn','lp','ls','le','comm','bcomm','pp','dep','loan','unit','assess']);
+const LBL={addr:'Property address',city:'City',county:'County',apn:"Assessor's parcel no.",seller1:'Seller 1',seller2:'Seller 2',agent:'Listing agent',lic:'DRE license no.',brokerage:'Brokerage',lp:'Listing price',ls:'Listing start',le:'Listing end',comm:'Listing compensation',bcomm:"Buyer's broker compensation",excl:'Items excluded',incl:'Items included',terms:'Additional terms',pre1978:'Built before 1978',hoa:'In an HOA',nolead:'No knowledge of lead-based paint',norec:'No reports or records available',pp:'Purchase price',dep:'Initial deposit',loan:'First loan amount',bal:'Balance of down payment',commAmt:'Listing compensation ($)',unit:'Unit / lot',assess:'Monthly assessment',special:'Special assessments pending',adate:'Date'};
+const REQ=new Set(['addr','city','county','apn','seller1','agent','lic','brokerage','lp','ls','le','comm','bcomm','pp']);
+const RECIPS=[
+ {id:'nz',name:'Nora Zeglaya',role:'Seller',c:'#5A5FF2',bg:'#EEEEFE'},
+ {id:'jc',name:'James Collins',role:'Seller',c:'#0F766E',bg:'#E6F4F1'},
+ {id:'ag',name:'Ashutosh iOSacc',role:'Listing agent',c:'#EA580C',bg:'#FFF1E8'}
+];
+const CAP={excl:60,incl:60,terms:300};
+const fitText=(v,cap,mode)=>{if(v.length<=cap)return null;if(mode==='all')return{head:'',tail:v};const lim=cap-14;let cut=v.lastIndexOf(' ',lim);if(cut<lim*.6)cut=lim;return{head:v.slice(0,cut).trimEnd(),tail:v.slice(cut).trimStart()}};
+const A=(k,w)=>({t:'ta',k,w});
+const LINES={terms:5},LH=18,PADT=4;
+let _cv=null;
+const wrapLines=(text,w)=>{if(!_cv)_cv=document.createElement('canvas').getContext('2d');_cv.font='12px "Mona Sans", sans-serif';const out=[];text.split('\n').forEach(par=>{let line='';par.split(/(\s+)/).forEach(wd=>{const t=line+wd;if(_cv.measureText(t).width>w&&line.trim()){out.push(line.trimEnd());line=wd.trimStart()}else line=t});out.push(line)});return out};
+const lineFit=(v,w,max,mode)=>{const L=wrapLines(v,w);if(L.length<=max)return null;const tail=L.slice(max).join(' ').trim();if(!tail)return null;return mode==='all'?{head:'',tail:v,extra:L.length-max,total:L.length}:{head:L.slice(0,max).join('\n'),tail,extra:L.length-max,total:L.length}};
+const T=v=>({t:'text',v}),F=(k,w)=>({t:'f',k,w}),C=(k)=>({t:'cb',k}),S=(label,rid,kind)=>({t:'sig',label,rid,kind:kind||'sig'});
+const H1=v=>({k:'h1',v}),K=v=>({k:'kicker',v}),H2=v=>({k:'h2',v}),P=v=>({k:'p',v}),R=(...s)=>({k:'row',s});
+const Cx=(k,w)=>({t:'calc',k,w});
+const SIGS=[R(S('Seller 1 signature','nz'),S('Date','nz','date'),S('Seller 2 signature','jc')),R(S('Date','jc','date'),S('Broker / agent signature','ag'),S('Date','ag','date'))];
+const G=(title,intro,foot)=>({kind:'library',foot,pages:[[K('California Association of Realtors®'),H1(title),P(intro),H2('Property and parties'),R(T('Property address'),F('addr',440)),R(T('Seller'),F('seller1',240),T('Seller'),F('seller2',240)),R(T('Agent'),F('agent',230),T('DRE lic.'),F('lic',150)),...SIGS]]});
+const DOCS={
+ cover:{name:'Transaction cover sheet',code:'Cover',kind:'library',foot:'Radius Agent Realty · Cover sheet',pages:[[
+  K('Radius Agent Realty'),H1('Transaction cover sheet'),P('Listing side · Nor Cal Standard Residential Purchase'),
+  H2('Property'),R(T('Property address'),F('addr',440)),R(T('City'),F('city',200),T('County'),F('county',180)),R(T("Assessor's parcel no."),F('apn',200)),
+  H2('Sellers'),R(T('Seller 1'),F('seller1',260)),R(T('Seller 2'),F('seller2',260)),
+  H2('Listing terms'),R(T('Listing price'),F('lp',180)),R(T('Listing period'),F('ls',120),T('to'),F('le',120)),R(T('Listing compensation'),F('comm',70),T('%   Buyer’s broker'),F('bcomm',70),T('%')),
+  R(T('Compensation at listing price'),Cx('commAmt',160)),
+  H2('Listing agent'),R(T('Agent'),F('agent',230),T('DRE lic.'),F('lic',150)),R(T('Brokerage'),F('brokerage',280))
+ ]]},
+ rla:{name:'RLA Residential Listing Agreement',code:'RLA',kind:'library',foot:'RLA · Revised 6/25',pages:[[
+  K('California Association of Realtors®'),H1('Residential listing agreement'),P('Exclusive authorization and right to sell'),
+  H2('1. Exclusive right to sell'),
+  R(T('Seller(s)'),F('seller1',210),T('and'),F('seller2',210)),
+  R(T('hereby employs and grants'),F('brokerage',260),T('(“Broker”)')),
+  R(T('beginning on'),F('ls',120),T('and ending at 11:59 p.m. on'),F('le',120)),
+  R(T('the exclusive and irrevocable right to sell the real property in the City of'),F('city',150)),
+  R(T('County of'),F('county',150),T("Assessor's parcel no."),F('apn',170)),
+  R(T('described as'),F('addr',460)),
+  H2('2. Listing price and terms'),
+  R(T('The listing price shall be'),F('lp',170),T('Dollars, on the following terms: all cash, conventional or FHA/VA financing.')),
+  H2('3. Property condition'),
+  R(C('pre1978'),C('hoa')),
+  P('Seller represents that, unless otherwise specified in writing, Seller is unaware of any recorded notice of default, pending bankruptcy or litigation affecting the property.')
+ ],[
+  H2('4. Compensation to broker'),
+  P('Notice: The amount or rate of real estate commissions is not fixed by law. They are set by each broker individually and may be negotiable between Seller and Broker.'),
+  R(T('Seller agrees to pay Broker'),F('comm',70),T('percent of the listing price, or')),
+  R(T('Estimated at the listing price'),Cx('commAmt',150)),
+  R(T('Compensation offered to buyer’s broker'),F('bcomm',70),T('percent')),
+  H2('5. Items excluded and included'),
+  R(T('Excluded'),F('excl',400)),R(T('Included'),F('incl',400)),
+  H2('6. Additional terms'),
+  R(A('terms',600)),
+  H2('7. Signatures'),
+  P('By signing below, Seller acknowledges that Seller has read, understands, received a copy of and agrees to the terms of this agreement.'),
+  ...SIGS
+ ]]},
+ ad:{name:'AD Disclosure Regarding Agency Relationship',code:'AD',kind:'library',foot:'AD · Revised 12/24',pages:[[
+  K('California Association of Realtors®'),H1('Disclosure regarding real estate agency relationship'),
+  P('A Seller’s agent under a listing agreement with the Seller acts as the agent for the Seller only. A Seller’s agent or a subagent of that agent has a fiduciary duty of utmost care, integrity, honesty and loyalty in dealings with the Seller.'),
+  P('To the Buyer and the Seller: a duty of honest and fair dealing and good faith, and a duty to disclose all facts known to the agent materially affecting the value or desirability of the property.'),
+  H2('Acknowledgment'),
+  R(T('Seller'),F('seller1',240),T('Seller'),F('seller2',240)),
+  R(T('Property'),F('addr',470)),
+  R(T('Agent'),F('agent',230),T('DRE lic.'),F('lic',150)),
+  R(T('Real estate broker (firm)'),F('brokerage',300)),
+  ...SIGS
+ ]]},
+ bca:{name:'BCA Broker Compensation Advisory',code:'BCA',kind:'library',foot:'BCA · Revised 6/24',pages:[[
+  K('California Association of Realtors®'),H1('Broker compensation advisory'),
+  P('The amount of compensation a broker receives is not set by law and is fully negotiable. This advisory explains how compensation may be paid and by whom.'),
+  H2('Property and terms'),
+  R(T('Property address'),F('addr',440)),
+  R(T('Listing price'),F('lp',170)),
+  R(T('Listing compensation'),F('comm',70),T('%   Offered to buyer’s broker'),F('bcomm',70),T('%')),
+  H2('Seller acknowledgment'),
+  R(T('Seller'),F('seller1',240),T('Seller'),F('seller2',240)),
+  ...SIGS
+ ]]},
+ hoa:{name:'HOA governing documents acknowledgment.pdf',code:'HOA',kind:'uploaded',foot:'Uploaded Sep 24 · 1 page',pages:[[
+  K('Kearny Mesa Owners Association'),H1('Acknowledgment of receipt of governing documents'),
+  P('The undersigned Seller acknowledges that the association has been requested to provide the current declaration, bylaws, articles of incorporation, operating rules, budget and the most recent reserve study for the property referenced below.'),
+  P('Seller agrees to deliver all documents received from the association to Buyer within the time specified in the purchase agreement, and understands that the association may charge a fee for preparation.'),
+  P('Property: ______________________________________________   Unit/Lot: ____________'),
+  P('Monthly assessment: $______________   Special assessments pending:  Yes  /  No'),
+  P('Seller: _______________________________   Date: _______________'),
+  P('Seller: _______________________________   Date: _______________')
+ ]]},
+ toa:{name:'TOA Text Overflow Addendum',code:'TOA',kind:'library',auto:true,foot:'TOA · Auto-generated from overflowing fields',pages:[[]]},
+ adm:{name:'ADM Addendum',code:'ADM',kind:'library',auto:true,foot:'ADM · Auto-generated from overflowing fields',pages:[[]]},
+ hoair:{name:'HOA-IR Homeowner Association Information Request',code:'HOA-IR',rule:true,...G('Homeowner association information request','Seller asks the association for the governing documents and disclosures Buyer is entitled to receive, and authorizes delivery to Buyer.','HOA-IR · Revised 6/24')},
+ avid:{name:'AVID Agent Visual Inspection Disclosure',code:'AVID',...G('Agent visual inspection disclosure','The listing agent’s reasonably competent and diligent visual inspection of the reasonably and normally accessible areas of the property.','AVID · Revised 12/24')},
+ spq:{name:'SPQ Seller Property Questionnaire',code:'SPQ',...G('Seller property questionnaire','Seller discloses known facts about the condition of the property, past repairs and the neighborhood.','SPQ · Revised 6/25')},
+ sbsa:{name:'SBSA Statewide Buyer and Seller Advisory',code:'SBSA',...G('Statewide buyer and seller advisory','Advises Buyer and Seller of issues that may affect the property and the transaction, and who is responsible for investigating them.','SBSA · Revised 6/25')},
+ rpa:{name:'RPA Residential Purchase Agreement',code:'RPA',kind:'library',foot:'RPA · Revised 12/24',pages:[[
+  K('California Association of Realtors®'),H1('Residential purchase agreement'),P('Excerpt · purchase price and financing'),
+  H2('3. Purchase price and financing'),
+  R(T('Purchase price'),F('pp',170)),
+  R(T('Initial deposit'),F('dep',150)),
+  R(T('First loan amount'),F('loan',150)),
+  R(T('Balance of down payment'),Cx('bal',150)),
+  P('Balance of down payment = purchase price − initial deposit − first loan amount. It recalculates as you type.'),
+  H2('Property and parties'),
+  R(T('Property address'),F('addr',440)),
+  R(T('Seller'),F('seller1',240),T('Seller'),F('seller2',240)),
+  ...SIGS
+ ]]},
+ fld:{name:'FLD Lead-Based Paint Disclosure',code:'FLD',kind:'library',rule:true,foot:'FLD · Revised 12/24',pages:[[
+  K('California Association of Realtors®'),H1('Lead-based paint and lead-based paint hazards disclosure'),
+  P('Every purchaser of any interest in residential real property on which a residential dwelling was built prior to 1978 is notified that such property may present exposure to lead from lead-based paint.'),
+  H2('Seller’s disclosure'),
+  R(T('Property address'),F('addr',440)),
+  R(C('nolead')),R(C('norec')),
+  R(T('Seller'),F('seller1',240),T('Seller'),F('seller2',240)),
+  ...SIGS
+ ]]}
+};
+DOCS.hoa.tagged=[[DOCS.hoa.pages[0][0],DOCS.hoa.pages[0][1],DOCS.hoa.pages[0][2],DOCS.hoa.pages[0][3],R(T('Property'),F('addr',380),T('Unit/Lot'),F('unit',110)),R(T('Monthly assessment'),F('assess',140),C('special')),...SIGS]];
+const KEYS={};Object.keys(DOCS).forEach(id=>{const s=new Set();DOCS[id].pages.forEach(pg=>pg.forEach(l=>(l.s||[]).forEach(x=>{if(x.k)s.add(x.k)})));KEYS[id]=s});
+const SIGT=[['sig','Signature','ph ph-signature'],['init','Initials','ph ph-pen-nib'],['dsig','Date signed','ph ph-calendar-check'],['name','Full name','ph ph-user']];
+const FORMT=[['text','Text','ph ph-text-t'],['date','Date','ph ph-calendar-blank'],['cb','Checkbox','ph ph-check-square'],['drop','Dropdown','ph ph-caret-circle-down']];
+const FT={};[...SIGT,...FORMT,['data','Radius data','ph ph-link-simple'],['radio','Radio','ph ph-radio-button']].forEach(([t,label,icon])=>FT[t]={label,icon});
+const SIGNER=new Set(SIGT.map(x=>x[0]));
+const DATAG=[['Transaction',['addr','city','county']],['Sellers',['seller1','seller2']],['Agent & brokerage',['agent','lic','brokerage']]];
+const PSIZE={text:[200,30],sig:[190,36],init:[90,36],dsig:[140,30],name:[180,30],date:[130,30],cb:[130,30],radio:[130,30],drop:[150,30],data:[220,30]};
+const fmt=d=>String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+'/'+d.getFullYear();
+const DATEK=new Set(['ls','le','adate']);
+const CATS={prop:{hint:'Address, parcel, items',label:'Property',c:'#2563EB',t1:'#DBEAFE',t2:'#EFF6FF'},ppl:{hint:'Sellers, agent, brokerage',label:'Parties',c:'#0F766E',t1:'#CCE8E2',t2:'#E6F4F1'},money:{hint:'Price, compensation',label:'Money',c:'#15803D',t1:'#D5EED9',t2:'#ECF7EE'},date:{hint:'Listing term',label:'Dates',c:'#EA580C',t1:'#FFE0CC',t2:'#FFF1E8'}};
+const CATK={addr:'prop',city:'prop',county:'prop',apn:'prop',excl:'prop',incl:'prop',terms:'prop',seller1:'ppl',seller2:'ppl',agent:'ppl',lic:'ppl',brokerage:'ppl',lp:'money',comm:'money',bcomm:'money',ls:'date',le:'date',adate:'date'};
+const catOf=k=>CATS[CATK[k]]||CATS.prop;
+const pDate=v=>{const m=/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(v||'');return m?new Date(+m[3],m[1]-1,+m[2]):null};
+const MON={jan:0,feb:1,mar:2,apr:3,may:4,jun:5,jul:6,aug:7,sep:8,oct:9,nov:10,dec:11};
+const num=v=>{const n=parseFloat(String(v||'').replace(/[^\d.]/g,''));return isNaN(n)?null:n};
+const usd=n=>'$'+Math.round(n).toLocaleString('en-US');
+const CALC={commAmt:{tip:'Calculated: listing price × listing compensation %',f:g=>{const p=num(g('lp')),r=num(g('comm'));return p!=null&&r!=null?usd(p*r/100):''}},
+ bal:{tip:'Calculated: purchase price − initial deposit − first loan amount',f:g=>{const p=num(g('pp'));return p==null?'':usd(p-(num(g('dep'))||0)-(num(g('loan'))||0))}}};
+const RULES={pre1978:{doc:'fld',text:'Built before 1978 — I added FLD Lead-Based Paint Disclosure to this packet. It’s required for pre-1978 homes, and I’ve already filled the address and sellers.'},hoa:{doc:'hoair',text:'The property is in an HOA — I added HOA-IR Homeowner Association Information Request to this packet, with the address and sellers filled.'}};
+// Backend config: which fields can overflow, and the addendum each one maps to
+const OVF={terms:'toa',excl:'adm',incl:'adm'};
+const ADDS=['toa','adm'];
+const STATE_ADD={California:{toa:{code:'TOA',name:'TOA Text Overflow Addendum',h1:'Text overflow addendum No. 1',ref:'Text Overflow Addendum',kicker:'California Association of Realtors®',foot:'TOA · Auto-generated from overflowing fields'},adm:{code:'ADM',name:'ADM Addendum',h1:'Addendum No. 1',ref:'Addendum',kicker:'California Association of Realtors®',foot:'ADM · Auto-generated from overflowing fields'}},
+ Other:{toa:{code:'ADD-T',name:'ADD-T Text overflow addendum (state form)',h1:'Text overflow addendum',ref:'Text Overflow Addendum',kicker:'State association form',foot:'State text overflow addendum · auto-generated'},adm:{code:'ADD',name:'ADD General addendum (state form)',h1:'Addendum',ref:'Addendum',kicker:'State association form',foot:'State general addendum · auto-generated'}}};
+const LIB=['rla','ad','bca','fld','hoair','avid','spq','sbsa','rpa'];
+const LIBDESC={rla:'Listing · exclusive right to sell',ad:'Agency · required on every side',bca:'Compensation · listing side',fld:'Disclosure · homes built before 1978',hoair:'HOA · request governing documents',avid:'Disclosure · agent inspection',spq:'Disclosure · seller questionnaire',sbsa:'Advisory · buyer and seller',rpa:'Offer · price, deposit and financing'};
+
+class Component extends DCLogic {
+  scrollRef=React.createRef();chatRef=React.createRef();_said={toa:1};
+  state={
+    order:['cover','rla','ad','bca','hoa','toa'],mode:'fill',dirty:false,savedAt:new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),touched:{rla:1},tagged:{},sel:{},libOpen:false,libQ:'',dlMenu:false,dataMenu:false,env:null,pulse:false,active:'rla',focus:null,offer:null,
+    vals:{addr:'5670 Kearny Mesa Road',city:'San Diego',county:'San Diego',seller1:'Nora Zeglaya',seller2:'James Collins',agent:'Ashutosh iOSacc',lic:'02184577',brokerage:'Radius Agent Realty','rla.terms':'Seller to leave the washer, dryer and garage refrigerator. Seller will complete the termite repairs noted in the 09/12 inspection report before closing, using a licensed contractor, and provide receipts to Buyer. Seller may stay in the property for up to 5 days after closing at no cost, provided it is left broom-clean. Sale is not contingent on Seller finding replacement housing. Seller will give Buyer a $2,500 credit at closing toward replacing the kitchen range. Seller will order the HOA documents within 3 days of acceptance and pay the transfer fee. Seller will provide both garage remotes, all keys and the gate code at closing.'},
+    placed:[],palette:false,selP:null,activeR:'nz',leftView:'docs',sigA:{},sigPop:null,sent:false,saving:false,
+    msgs:[{from:'mel',text:'I filled property, seller and agent details from the transaction. Describe the deal in your own words — price, dates, commission, sellers — and I’ll fill every matching field across the packet.',at:new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})},{from:'mel',text:'Additional terms on the RLA are too long for the box, so I moved the full text to TOA Text Overflow Addendum ¶1. The field now reads “See attached Text Overflow Addendum ¶1”, and sellers sign the TOA in the same envelope.',jumps:[{label:'Go to TOA',id:'toa'},{label:'Go to the field',pf:'rla.terms'}],at:new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}],
+    draft:'',typing:false,toast:null,usedSugs:{},fb:{},chatUp:false
+  };
+  componentDidMount(){
+    const pick=q=>Object.keys(DOCS).find(id=>q&&q.toUpperCase().startsWith(DOCS[id].code+' '));
+    let q0='';try{q0=(window.parent!==window&&window.parent.__pfDoc)||''}catch(e){console.warn('[pdf-filler] parent doc unavailable '+e)}
+    const q=q0||new URLSearchParams(location.search).get('doc')||'';
+    this._initDoc=pick(q)||'rla';setTimeout(()=>this.jump(this._initDoc||pick(q)||'rla',false),60);
+    this._onMsg=e=>{if(e.data&&e.data.type==='pf-doc'){const id=pick(e.data.doc||'');if(id)setTimeout(()=>this.openDoc(id),60)}};window.addEventListener('message',this._onMsg);
+    const c=this.scrollRef.current;window.addEventListener('click',this._closeR);window.addEventListener('keydown',this._escL);
+    if(c&&window.ResizeObserver){this._ro=new ResizeObserver(()=>{const z=Math.min(1.2,Math.max(.25,(c.clientWidth-32)/720));const tw=c.clientWidth;const upd={};if(Math.abs(z-(this.state.zoom||1))>.005)upd.zoom=z;if(this.state.tbW!==tw)upd.tbW=tw;if(Object.keys(upd).length)this.setState(upd,()=>{if(upd.zoom&&this._initDoc){const d=this._initDoc;this._initDoc=null;setTimeout(()=>this.jump(d,false),30)}})});this._ro.observe(c)}
+  }
+  componentWillUnmount(){clearInterval(this._ti);if(this._ro)this._ro.disconnect();window.removeEventListener('click',this._closeR);window.removeEventListener('keydown',this._escL)}
+  _closeR=()=>{const st=this.state;if(st.rMenu||st.dlMenu||st.dataMenu||st.libOpen||st.tbOpen)this.setState({rMenu:false,dlMenu:false,dataMenu:false,libOpen:false,tbOpen:false});if(this.state.legendOpen||this.state.helpOpen)this.setState({legendOpen:false,helpOpen:false})};
+  _escL=e=>{if(e.key==='Escape')this.setState({tbOpen:false,legendOpen:false,helpOpen:false,rMenu:false,dlMenu:false,dataMenu:false,libOpen:false})};
+  key(doc,k){return SHARED.has(k)?k:doc+'.'+k}
+  get(doc,k){return this.state.vals[this.key(doc,k)]}
+  set(doc,k,v,extra){this.setState(s=>({vals:{...s.vals,[this.key(doc,k)]:v},touched:{...s.touched,[doc]:1},...(extra||{})}));this.saved()}
+  saved(){if(!this.state.dirty)this.setState({dirty:true})}
+  applyState(){const st=STATE_ADD[this.props.formState==='Other states'?'Other':'California'];ADDS.forEach(a=>Object.assign(DOCS[a],st[a]))}
+  docState(id){if(ADDS.includes(id))return'filled';let req=0,done=0;KEYS[id].forEach(k=>{if(REQ.has(k)){req++;if(this.get(id,k))done++}});if(req&&done===req)return'filled';return this.state.touched[id]?'progress':'none'}
+  save(quiet){const at=this.tm(),st={};this.state.order.forEach(id=>{st[DOCS[id].code]=this.docState(id)});this.setState({dirty:false,savedAt:at});try{if(window.parent!==window&&window.parent.__pfSaved)window.parent.__pfSaved(st,at)}catch(e){console.warn('[save] could not notify CRM '+e)}if(!quiet)this.toastMsg('Saved to transaction documents · '+at);return at}
+  download(ids){if(!ids.length)return;const at=this.state.dirty?this.save(true):(this.state.savedAt||this.tm());this.setState({dlMenu:false});this.toastMsg((ids.length===1?DOCS[ids[0]].code+'.pdf':ids.length+' documents (.zip)')+' · version saved '+at)}
+  pulse(){this.setState({pulse:true});clearTimeout(this._pt);this._pt=setTimeout(()=>this.setState({pulse:false}),1400)}
+  toastMsg(t){this.setState({toast:t});clearTimeout(this._tt);this._tt=setTimeout(()=>this.setState({toast:null}),2200)}
+  jump(id,smooth=true){const c=this.scrollRef.current,el=document.getElementById('pf-doc-'+id);if(!c||!el){console.warn('[jump] missing '+id);return}this._jumping=id;clearTimeout(this._jt);this._jt=setTimeout(()=>{this._jumping=null},2500);c.scrollTo({top:c.scrollTop+el.getBoundingClientRect().top-c.getBoundingClientRect().top-16,behavior:smooth?'smooth':'auto'});this.setState({active:id})}
+  onScroll=()=>{const c=this.scrollRef.current;if(!c)return;if(this._jumping){clearTimeout(this._jt);this._jt=setTimeout(()=>{this._jumping=null},160);return}const o=this.state.order;let cur=o[0];const probe=c.getBoundingClientRect().top+c.clientHeight*.4;for(const id of o){const el=document.getElementById('pf-doc-'+id);if(el&&el.getBoundingClientRect().top<=probe)cur=id}if(c.scrollTop+c.clientHeight>=c.scrollHeight-8)cur=o[o.length-1];if(cur!==this.state.active)this.setState(s=>({active:cur,selP:null,leftView:DOCS[cur].kind==='uploaded'?'fields':(s.leftView==='fields'&&!this.canField(cur)?'docs':s.leftView)}))};
+  canField(){return false}
+  openDoc(id){this.jump(id);this.setState({leftView:this.canField(id)?'fields':'docs'})}
+  othersNeeding(doc,k){return this.state.order.filter(id=>id!==doc&&KEYS[id].has(k)&&!this.get(id,k))}
+  addRuleDoc(d='fld'){if(this.state.order.includes(d))return false;this.setState(s=>{const o=[...s.order];o.splice(Math.max(0,o.indexOf('rla'))+1,0,d);return{order:o}});return true}
+  addLib(d){if(this.state.order.includes(d)){this.jump(d);return}this.setState(s=>({order:[...s.order.filter(x=>!ADDS.includes(x)),d,...s.order.filter(x=>ADDS.includes(x))]}),()=>this.jump(d));this.saved();this.toastMsg('Added '+DOCS[d].code+' to the packet')}
+  autoTag(d){if(this.state.tagged[d]||!DOCS[d].tagged)return;this.setState({typing:true});setTimeout(()=>{DOCS[d].pages=DOCS[d].tagged;const ks=new Set();DOCS[d].pages.forEach(pg=>pg.forEach(l=>(l.s||[]).forEach(x=>{if(x.k)ks.add(x.k)})));KEYS[d]=ks;this.setState(st=>({typing:false,tagged:{...st.tagged,[d]:true}}));this.saved();this.pushMel({text:'I read '+DOCS[d].name.replace('.pdf','')+' and tagged 4 fields — property address, unit/lot, monthly assessment and special assessments — plus the signature and date lines. Property address came in from the transaction. Check the tags; you can move or remove any of them.',jumps:[{label:'Go to '+DOCS[d].code,id:d}]})},900)}
+  toggleCb(doc,k,v){
+    this.set(doc,k,v);
+    const r=RULES[k];if(r&&v&&this.addRuleDoc(r.doc))this.pushMel({text:r.text,jumps:[{label:'Go to '+DOCS[r.doc].code,id:r.doc}]});
+  }
+  tm(){return new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'})}
+  pushMel(m){const n=(m.text||'').split(/\s+/).length,t0=Math.max(Date.now(),this._se||0),dur=Math.min(2400,n*35);this._se=t0+dur;
+    this.setState(s=>({msgs:[...s.msgs,{from:'mel',at:this.tm(),...m,t0,dur}]}),()=>this.scrollChat(true));this.tick()}
+  tick(){if(this._ti)return;this._ti=setInterval(()=>{if(Date.now()>=(this._se||0)){clearInterval(this._ti);this._ti=null}this.forceUpdate()},40)}
+  componentDidUpdate(){if(!this.state.chatUp)this.scrollChat();this.syncToa()}
+  ovMode(){return (this.props.overflowMode??'Move all to TOA')==='Move all to TOA'?'all':'rest'}
+  overflows(){const out=[],mode=this.ovMode(),cnt={};this.state.order.forEach(id=>{if(ADDS.includes(id))return;DOCS[id].pages.forEach(pg=>pg.forEach(l=>(l.s||[]).forEach(x=>{if(!x.k||!OVF[x.k]||!(CAP[x.k]||LINES[x.k]))return;const pf=this.key(id,x.k),v=this.state.vals[pf]||'',r=x.t==='ta'?lineFit(v,x.w-16,LINES[x.k],mode):fitText(v,CAP[x.k],mode);if(r&&!out.some(o=>o.pf===pf)){const add=OVF[x.k];cnt[add]=(cnt[add]||0)+1;out.push({id,k:x.k,pf,add,n:cnt[add],...r})}})))});return out}
+  refTxt(o){return 'See attached '+DOCS[o.add].ref+' ¶'+o.n}
+  syncToa(){this.applyState();const ov=this.overflows(),o=this.state.order;let next=o;const said=[];
+    ADDS.forEach(a=>{const has=ov.some(x=>x.add===a),inO=next.includes(a);
+      if(has&&!inO){next=[...next,a];if(!this._said[a]){this._said[a]=1;said.push(ov.find(x=>x.add===a))}}
+      else if(!has&&inO){next=next.filter(x=>x!==a);this._said[a]=0}});
+    if(next!==o)this.setState(s=>({order:next,active:next.includes(s.active)?s.active:'rla'}));
+    said.forEach(x=>this.pushMel({text:LBL[x.k]+' on '+DOCS[x.id].code+' is too long for its box, so I moved the full text to '+DOCS[x.add].name+' ¶'+x.n+'. The field now reads “'+this.refTxt(x)+'”, and sellers sign the addendum in the same envelope.',jumps:[{label:'Go to '+DOCS[x.add].code,id:x.add},{label:'Go to the field',pf:x.pf}]}))}
+  goField(pf){const el=document.querySelector('[data-pf="'+pf+'"]'),c=this.scrollRef.current;if(!el||!c){console.warn('[goField] missing '+pf);return}const r=el.getBoundingClientRect(),cr=c.getBoundingClientRect();c.scrollTo({top:c.scrollTop+r.top-cr.top-160,behavior:'smooth'});el.focus({preventScroll:true})}
+  toaPages(ov,a){const v=this.state.vals,sel=[v.seller1,v.seller2].filter(Boolean).join(' and '),M=DOCS[a],mine=ov.filter(o=>o.add===a);
+    return[[K(M.kicker),H1(M.h1),
+      P('This addendum is given in connection with the property known as '+(v.addr||'—')+', '+(v.city||'—')+', in which '+(sel||'—')+' is referred to as “Seller”.'),
+      H2('Continued text'),
+      ...mine.map(o=>({k:'ref',num:'¶'+o.n,src:'From '+DOCS[o.id].code+' · '+LBL[o.k]+' — field reads “'+this.refTxt(o)+'”',v:o.tail,pf:o.pf})),
+      P('Each paragraph above contains the full text of the field it names and is part of the document this addendum is attached to.'),
+      ...SIGS]]}
+  scrollChat(force){const c=this.chatRef.current;if(!c)return;if(force||!this.state.chatUp){this._pinT=Date.now()+60;c.scrollTop=c.scrollHeight}}
+  stopStream=()=>{this._se=0;this.setState(s=>({msgs:s.msgs.map(m=>m.dur?{...m,t0:0,dur:0}:m)}))};
+  onChatScroll=()=>{const c=this.chatRef.current;if(!c)return;if(this._pinT&&Date.now()<this._pinT)return;const up=c.scrollHeight-c.scrollTop-c.clientHeight>80;if(up!==this.state.chatUp)this.setState({chatUp:up})};
+  missing(){const out=[];this.state.order.forEach(id=>{let n=0;KEYS[id].forEach(k=>{if(REQ.has(k)&&!this.get(id,k))n++});if(n)out.push([id,n])});return out}
+  nextField=()=>{
+    for(const id of this.state.order){for(const pg of DOCS[id].pages)for(const l of pg)for(const x of (l.s||[]))if(x.t==='f'&&REQ.has(x.k)&&!this.get(id,x.k)){
+      const el=document.querySelector('[data-pf="'+id+'.'+x.k+'"]'),c=this.scrollRef.current;
+      if(el&&c){const r=el.getBoundingClientRect(),cr=c.getBoundingClientRect();c.scrollTo({top:c.scrollTop+r.top-cr.top-160,behavior:'smooth'});el.focus({preventScroll:true})}
+      return}}
+    this.toastMsg('All required fields are filled');
+  };
+  parse(text){
+    const o={},t=text.toLowerCase();
+    for(const m of text.matchAll(/\$\s?([\d,.]+)\s*(k|m|million)?/gi)){let n=parseFloat(m[1].replace(/,/g,''));const u=(m[2]||'').toLowerCase();if(u==='k')n*=1e3;if(u==='m'||u==='million')n*=1e6;const pre=t.slice(Math.max(0,m.index-28),m.index),val='$'+Math.round(n).toLocaleString('en-US');
+      if(/deposit/.test(pre))o.dep=val;else if(/loan/.test(pre))o.loan=val;else if(/purchase|offer|sale price/.test(pre))o.pp=val;else if(!o.lp)o.lp=val}
+    const sn=text.match(/sellers?\s+(?:is\s+|are\s+|:\s*)?([A-Z][a-z]+\s+[A-Z][a-z]+)(?:\s+(?:and|&)\s+([A-Z][a-z]+\s+[A-Z][a-z]+))?/);if(sn){o.seller1=sn[1];if(sn[2])o.seller2=sn[2]}
+    const un=text.match(/(?:unit|lot)\s*#?\s*(\w[\w-]*)/i);if(un)o.unit=un[1];
+    const pcts=[...text.matchAll(/(\d+(?:\.\d+)?)\s?%/g)].map(x=>x[1]);if(pcts[0])o.comm=pcts[0];if(pcts[1])o.bcomm=pcts[1];
+    const sm=t.match(/(?:from|starting|start|beginning)\s+(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})/);
+    const dm=t.match(/(\d+)[\s-]*day/);
+    if(sm){const d=new Date(2026,MON[sm[1]],+sm[2]);o.ls=fmt(d);if(dm){const e=new Date(d);e.setDate(e.getDate()+(+dm[1]));o.le=fmt(e)}}
+    const ym=t.match(/built\s*(?:in\s*)?(\d{4})/);if(ym)o.built=+ym[1];
+    const am=text.match(/apn\s*#?\s*([\d-]{6,})/i);if(am)o.apn=am[1];
+    if(/\bhoa\b/.test(t)&&!/no hoa/.test(t))o.hoa=true;
+    return o;
+  }
+  sendText(text){
+    if(!text.trim())return;
+    if(Date.now()<(this._se||0))this.stopStream();
+    this.setState(s=>({msgs:[...s.msgs,{from:'me',text,at:this.tm()}],draft:'',typing:true,chatUp:false}),()=>this.scrollChat(true));
+    setTimeout(()=>{this.setState({typing:false});this.reply(text)},650);
+  }
+  fillForMe(){
+    const o=this.parse('List at $1,450,000 for 90 days from Oct 1, 2.5% to us, 2% to buyer’s broker, built 1972, APN 421-310-12');
+    const vals={...this.state.vals},forms=new Set();let n=0;
+    this.state.order.forEach(id=>Object.keys(o).forEach(k=>{if(k!=='built'&&KEYS[id].has(k)&&!vals[this.key(id,k)]){vals[this.key(id,k)]=o[k];n++;forms.add(id)}}));
+    if(KEYS.rla&&!vals['rla.pre1978']){vals['rla.pre1978']=true;n++;forms.add('rla')}
+    this.setState(s=>({vals,touched:{...s.touched,...Object.fromEntries([...forms].map(f=>[f,1]))}}));this.saved();
+    const left=this.state.order.reduce((a,id)=>{let c=0;KEYS[id].forEach(k=>{if(REQ.has(k)&&!vals[this.key(id,k)])c++});return a+c},0);
+    this.pushMel({text:n?'Filled '+n+' field'+(n>1?'s':'')+' across '+forms.size+' form'+(forms.size>1?'s':'')+' from the listing terms on this transaction: '+o.lp+', '+o.ls+' – '+o.le+', '+o.comm+'% listing / '+o.bcomm+'% buyer’s broker, APN '+o.apn+'.'+(left?'\n\n'+left+' still need you.':'\n\nEverything required is filled — review, then Save.'):'Nothing left for me to fill — every field I have data for is already done.'});
+    if(this.addRuleDoc())this.pushMel({text:'Built in 1972 — I added FLD Lead-Based Paint Disclosure to this packet. It’s required for homes built before 1978.',jumps:[{label:'Go to FLD',id:'fld'}]});
+  }
+  reply(text){
+    if(/for me/i.test(text)){this.fillForMe();return}
+    if(/missing|left|remaining/i.test(text)){
+      const m=this.missing();
+      if(!m.length){this.pushMel({text:'Nothing required is missing. You can move on to signing.'});return}
+      const tot=m.reduce((a,b)=>a+b[1],0);
+      this.pushMel({text:tot+' required field'+(tot>1?'s':'')+' left across '+m.length+' form'+(m.length>1?'s':'')+'.',stats:m.map(([id,n])=>({code:DOCS[id].code,n})),jumps:m.map(([id])=>({label:'Go to '+DOCS[id].code,id}))});return;
+    }
+    if(/explain|what is|bca/i.test(text)&&!/\$/.test(text)){this.pushMel({text:'The BCA tells the sellers that commission isn’t set by law and is negotiable, and records what you’re offering the buyer’s broker. It reuses the listing price and both compensation rates from the RLA.'});return}
+    const o=this.parse(text);
+    const keys=Object.keys(o).filter(k=>k!=='built'&&k!=='hoa');
+    if(!keys.length&&!o.built&&!o.hoa){this.pushMel({text:'I couldn’t find deal details in that. Try the price, listing period, commission rates, sellers, APN or the year the home was built.'});return}
+    const vals={...this.state.vals},touched={...this.state.touched},items=[];
+    keys.forEach(k=>{const tg=this.state.order.filter(id=>KEYS[id].has(k));if(!tg.length)return;tg.forEach(id=>{vals[this.key(id,k)]=o[k];touched[id]=1});items.push({label:LBL[k],value:(k==='comm'||k==='bcomm')?o[k]+'%':o[k],forms:tg.map(id=>DOCS[id].code).join(' · ')})});
+    const cbs=[];if(o.built&&o.built<1978)cbs.push('pre1978');if(o.hoa)cbs.push('hoa');
+    cbs.forEach(k=>{const tg=this.state.order.filter(id=>KEYS[id].has(k));tg.forEach(id=>{vals[id+'.'+k]=true;touched[id]=1});if(tg.length)items.push({label:LBL[k],value:'Yes',forms:tg.map(id=>DOCS[id].code).join(' · ')})});
+    this.setState({vals,touched});this.saved();
+    const nf=items.length,forms=new Set(items.flatMap(i=>i.forms.split(' · ')));
+    const unused=keys.filter(k=>!this.state.order.some(id=>KEYS[id].has(k)));
+    this.pushMel({text:nf?'Filled '+nf+' value'+(nf>1?'s':'')+' everywhere they appear, across '+forms.size+' form'+(forms.size>1?'s':'')+'.'+(unused.length?' '+unused.map(k=>LBL[k]).join(', ')+(unused.length>1?' aren’t':' isn’t')+' in this packet yet.':''):'None of those fields are in this packet yet.',card:nf?{title:'Filled from your message',items,state:'done',doneText:'Same value reused in every matching field'}:null});
+    cbs.forEach(k=>{const r=RULES[k];if(r&&this.addRuleDoc(r.doc))this.pushMel({text:r.text,jumps:[{label:'Go to '+DOCS[r.doc].code,id:r.doc}]})});
+  }
+  resolveCard(mi,apply){
+    this.setState(s=>{
+      const msgs=[...s.msgs],m={...msgs[mi]},card={...m.card},vals={...s.vals};let n=0;
+      if(apply)card.prop.forEach(p=>p.targets.forEach(id=>{vals[id+'.'+p.k]=p.v;n++}));
+      card.state=apply?'done':'skipped';card.doneText=apply?'Filled '+n+' fields across '+new Set(card.prop.flatMap(p=>p.targets)).size+' forms':'Kept in '+DOCS[s.active].code+' only';
+      m.card=card;msgs[mi]=m;return{msgs,vals};
+    });this.saved();
+  }
+  addPlaced(doc,page,type,x,y,k){
+    const [w,h]=PSIZE[type];const id='pl'+Date.now();
+    this.setState(s=>({active:doc,placed:[...s.placed,{id,doc,page,type,k:k||null,x:Math.max(8,Math.min(720-w-8,x-w/2)),y:Math.max(8,Math.min(932-h-8,y-h/2)),w,h,value:'',checked:false,rid:type==='data'?null:(SIGNER.has(type)||s.mode==='sign'?s.activeR:null)}],selP:id,palette:false}));this.saved();
+  }
+  clickPlace(type,k){const s=this.state,n=s.placed.filter(p=>p.doc===s.active).length;this.addPlaced(s.active,0,type,360,360+(n%10)*44,k)}
+  toolDrag(e,payload){e.dataTransfer.setData('text/pf',payload);e.dataTransfer.effectAllowed='copy'}
+  dragPlaced(e,p){
+    if(e.button!==0)return;e.stopPropagation();
+    const sx=e.clientX,sy=e.clientY,ox=p.x,oy=p.y,z=this.state.zoom||1;this.setState({selP:p.id});
+    const mv=ev=>this.setState(s=>({placed:s.placed.map(q=>q.id===p.id?{...q,x:Math.max(0,Math.min(720-q.w,ox+(ev.clientX-sx)/z)),y:Math.max(0,Math.min(932-q.h,oy+(ev.clientY-sy)/z))}:q)}));
+    const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);this.saved()};
+    window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);
+  }
+  updP(id,patch){this.setState(s=>{const p=s.placed.find(q=>q.id===id);return{placed:s.placed.map(q=>q.id===id?{...q,...patch}:q),touched:p?{...s.touched,[p.doc]:1}:s.touched}});this.saved()}
+
+  renderVals(){
+    this.applyState();const s=this.state,fill=s.mode==='fill',sign=!fill,all=this.ovMode()==='all';
+    const vis=sign&&s.env?s.order.filter(id=>s.env.includes(id)):s.order;
+    const rById=Object.fromEntries(RECIPS.map(r=>[r.id,r]));
+    const ov=this.overflows(),ovBy=Object.fromEntries(ov.map(o=>[o.pf,o]));
+    const docStats=id=>{let req=0,done=0;KEYS[id].forEach(k=>{if(REQ.has(k)){req++;if(this.get(id,k))done++}});return{req,done}};
+    let sigTotal=0;const sigPer={nz:0,jc:0,ag:0};
+    const docsView=vis.map((id,vi)=>{
+      const D=DOCS[id],srcP=ADDS.includes(id)?this.toaPages(ov,id):D.pages,n=srcP.length;
+      const pages=srcP.map((pg,pi)=>({
+        label:'Page '+(pi+1)+' of '+n,foot:D.foot,
+        emptyHint:false,
+        onDown:()=>{const st=this.state;if(st.active!==id||(st.leftView!=='fields'&&this.canField(id)))this.setState({active:id,leftView:this.canField(id)?'fields':st.leftView})},
+        onDragOver:e=>{e.preventDefault()},
+        onDrop:e=>{e.preventDefault();const t=e.dataTransfer.getData('text/pf');if(!t)return;const r=e.currentTarget.getBoundingClientRect(),z=r.width/720||1;const [type,k]=t.split(':');if(!PSIZE[type]){console.warn('[onDrop] unknown field '+t);return}this.addPlaced(id,pi,type,(e.clientX-r.left)/z,(e.clientY-r.top)/z,k)},
+        lines:pg.map((l,li)=>({isH1:l.k==='h1',isKicker:l.k==='kicker',isH2:l.k==='h2',isP:l.k==='p',isRow:l.k==='row',v:l.v,isRef:l.k==='ref',num:l.num,src:l.src,go:e=>{if(e)e.stopPropagation();this.goField(l.pf)},
+          segs:(l.s||[]).map((x,si)=>{
+            if(x.t==='text')return{isText:true,v:x.v};
+            if(x.t==='f'){
+              const v=this.get(id,x.k)||'',req=REQ.has(x.k),foc=s.focus===id+'.'+x.k;
+              const bg=sign?'transparent':(req?(v?'#F7F7FE':'#EEEEFE'):'#F5F5F5'),bc=sign?'#171717':(req?'#5A5FF2':'#A3A3A3');
+              const isD=DATEK.has(x.k)&&!sign,dk='f:'+id+'.'+x.k,ovo=ovBy[this.key(id,x.k)];
+              return{isField:true,pf:id+'.'+x.k,value:sign&&ovo?(ovo.head?ovo.head+' ':'')+this.refTxt(ovo):v,ovChip:fill&&!!ovo,ovN:ovo?ovo.n:'',ovLbl:ovo?'Moves to '+DOCS[ovo.add].code+' ¶'+ovo.n:'',ovTip:ovo?'Prints as “'+this.refTxt(ovo)+'”':'',goToa:e=>{e.stopPropagation();this.jump(ovo.add)},ph:fill?(req?'Required':''):'',ro:sign,label:LBL[x.k],
+                isDate:isD,pickBg:'#FFFFFF',pickRing:req?'#C9CAF8':'#E5E5E5',pickC:req?'#5A5FF2':'#525252',datePop:isD&&s.datePop===dk,dateVal:pDate(v),stop:e=>e.stopPropagation(),
+                onPick:e=>{e.stopPropagation();this.setState({datePop:s.datePop===dk?null:dk,active:id})},
+                onDate:d=>{this.set(id,x.k,fmt(d),{datePop:null});const tg=!SHARED.has(x.k)?this.othersNeeding(id,x.k):[];if(tg.length)this.setState({offer:{k:x.k,v:fmt(d),from:id,targets:tg}})},
+                style:'width:'+x.w+'px;height:26px;box-sizing:border-box;border:0;border-bottom:'+(foc?'2px':'1px')+' solid '+bc+';border-radius:4px 4px 0 0;'+(foc?'box-shadow:0 0 0 2px #E4E4FB;':'')+'background:'+bg+';padding:0 '+(isD?'28px':'6px')+' 0 6px;font:inherit;font-size:12px;color:#0A0A0A;font-variant-numeric:tabular-nums',
+                onChange:e=>this.set(id,x.k,e.target.value),
+                onFocus:()=>this.setState({focus:id+'.'+x.k,active:id}),
+                onBlur:e=>{const val=e.target.value;const tg=!SHARED.has(x.k)&&val?this.othersNeeding(id,x.k):[];this.setState({focus:null,offer:tg.length?{k:x.k,v:val,from:id,targets:tg}:s.offer&&s.offer.k===x.k?null:this.state.offer})}};
+            }
+            if(x.t==='ta'){
+              const v=this.get(id,x.k)||'',cat={t2:'#F5F5F5',c:'#A3A3A3'},ovo=ovBy[this.key(id,x.k)],max=LINES[x.k]||5;
+              const used=v?Math.min(max,wrapLines(v,x.w-16).length):0,rows=ovo?Math.max(max,ovo.total):max,cut=PADT+max*LH;
+              const bgFill=ovo&&!all?'linear-gradient(to bottom,'+cat.t2+' 0,'+cat.t2+' '+cut+'px,#5A5FF2 '+cut+'px,#5A5FF2 '+(cut+1)+'px,#EEEEFE '+(cut+1)+'px)':cat.t2;
+              return{isArea:true,pf:id+'.'+x.k,w:x.w,label:LBL[x.k],ro:sign,
+                ph:fill?(all?'Type additional terms. If they run past 5 lines, the full text moves to an addendum.':'Type additional terms. The box holds 5 lines — keep typing and the rest continues on an addendum page.'):'',
+                value:sign&&ovo?(all?this.refTxt(ovo):ovo.head):v,
+                showMeter:fill,showFoot:sign&&!!ovo&&!all,ovChip:!!ovo,ovMargin:!!ovo&&!all,ovN:ovo?ovo.n:'',ovCode:ovo?DOCS[ovo.add].code:'',ovRef:ovo?this.refTxt(ovo):'',goToa:e=>{e.stopPropagation();this.jump(ovo.add)},
+                meter:ovo?(all?'Too long for this box. The full text moves to '+DOCS[ovo.add].code+' ¶'+ovo.n+' and the form prints “'+this.refTxt(ovo)+'”.':'Lines 1–'+max+' print here · '+ovo.extra+' more line'+(ovo.extra>1?'s':'')+' continue on Text Overflow Addendum ¶'+ovo.n):(v?used+' of '+max+' lines used':max+' lines fit on the form'),
+                meterStyle:'font-size:11px;font-variant-numeric:tabular-nums;font-weight:'+(ovo?600:400)+';color:'+(ovo?'#4B50E0':'#737373'),
+                style:'display:block;width:100%;height:'+((sign?max:rows)*LH+PADT*2)+'px;box-sizing:border-box;resize:none;border:0;border-bottom:1px solid '+(sign?'#171717':cat.c)+';border-radius:4px 4px 0 0;background:'+(sign?'transparent':bgFill)+';padding:'+PADT+'px 6px;font:inherit;font-size:12px;line-height:'+LH+'px;color:#0A0A0A;overflow:hidden;transition:height .12s ease',
+                onChange:e=>this.set(id,x.k,e.target.value),onFocus:()=>this.setState({focus:id+'.'+x.k,active:id}),onBlur:()=>this.setState({focus:null})};
+            }
+            if(x.t==='calc'){const Cc=CALC[x.k],val=Cc?Cc.f(k=>this.get(id,k)):'';return{isCalc:true,value:val||(fill?'Calculated':''),tip:Cc?Cc.tip:'',style:'display:inline-flex;align-items:center;gap:6px;width:'+x.w+'px;height:26px;box-sizing:border-box;padding:0 6px;border-bottom:1px '+(sign?'solid #171717':'dashed #A3A3A3')+';border-radius:4px 4px 0 0;background:'+(sign?'transparent':'#FAFAFA')+';font-size:12px;font-variant-numeric:tabular-nums;color:'+(val?'#0A0A0A':'#A3A3A3')}}
+            if(x.t==='cb'){const v=!!this.get(id,x.k);return{isCb:true,pf:id+'.'+x.k,checked:v,label:LBL[x.k],ro:sign,bg:v?'#F7F7FE':'transparent',onChange:e=>this.toggleCb(id,x.k,e.target.checked)}}
+            if(x.t==='sig'){
+              if(fill)return{isSigFill:true,label:x.label};
+              const sid=id+'.'+pi+'.'+li+'.'+si,rid=s.sigA[sid]||x.rid,r=rById[rid];sigTotal++;sigPer[rid]++;
+              const isDate=x.kind==='date',open=s.sigPop===sid;
+              return{isSigTag:true,label:x.label,tagIcon:isDate?'ph ph-calendar-blank':'ph ph-signature',tagText:(isDate?'Date signed · ':'Sign · ')+r.name,
+                tagStyle:'height:30px;width:100%;display:flex;align-items:center;gap:6px;padding:0 8px;border:1px solid '+r.c+';border-radius:6px;background:'+r.bg+';color:'+r.c+';font:inherit;font-size:12px;font-weight:500;cursor:pointer;min-width:0;overflow:hidden'+(open?';box-shadow:0 0 0 3px '+r.bg:''),
+                pop:open,stop:e=>e.stopPropagation(),
+                onClick:e=>{e.stopPropagation();this.setState({sigPop:open?null:sid})},
+                popItems:RECIPS.map(q=>({name:q.name+' · '+q.role,on:q.id===rid,bg:q.id===rid?'#F5F5F5':'transparent',swatch:'width:10px;height:10px;border-radius:3px;flex:none;background:'+q.c,pick:e=>{e.stopPropagation();this.setState(st=>({sigA:{...st.sigA,[sid]:q.id},sigPop:null}))}}))};
+            }
+            return{isText:true,v:''};
+          })})),
+        placed:s.placed.filter(p=>p.doc===id&&p.page===pi).map(p=>{
+          const r=p.rid?rById[p.rid]:null,sel=s.selP===p.id,isSigT=SIGNER.has(p.type),isData=p.type==='data';
+          const staticT=isSigT||isData||(sign&&r);
+          const fg=r?r.c:'#5A5FF2',bgc=r?r.bg:'#F7F7FE';
+          if(r){sigPer[p.rid]++;if(sign)sigTotal++}
+          const ft=FT[p.type]||FT.text;
+          return{sel,fg,icon:ft.icon,value:p.value,checked:p.checked,label:ft.label,ro:sign,
+            isInput:!staticT&&(p.type==='text'||p.type==='date'),isDate:!staticT&&!sign&&p.type==='date',datePop:s.datePop==='p:'+p.id,dateVal:pDate(p.value),
+            onPick:e=>{e.stopPropagation();this.setState({datePop:s.datePop==='p:'+p.id?null:'p:'+p.id})},
+            onDate:d=>{this.updP(p.id,{value:fmt(d)});this.setState({datePop:null})},isCb:!staticT&&(p.type==='cb'||p.type==='radio'),isSelect:!staticT&&p.type==='drop',isStatic:staticT,
+            text:isData?(this.get(p.doc,p.k)||LBL[p.k]):ft.label+(r?' · '+r.name:''),
+            style:'position:absolute;left:'+p.x+'px;top:'+p.y+'px;width:'+p.w+'px;height:'+p.h+'px;box-sizing:border-box;display:flex;align-items:center;gap:6px;padding:0 '+(sel?7:8)+'px;border:'+(sel?'2px solid':'1px dashed')+' '+fg+';border-radius:6px;background:'+(sel?'transparent':bgc)+';cursor:move;user-select:none;z-index:5',
+            onPointerDown:e=>this.dragPlaced(e,p),onSelect:e=>{e.stopPropagation();this.setState({selP:p.id})},stop:e=>e.stopPropagation(),
+            onChange:e=>this.updP(p.id,{value:e.target.value}),onToggle:e=>this.updP(p.id,{checked:e.target.checked}),
+            onDelete:e=>{e.stopPropagation();this.setState(st=>({placed:st.placed.filter(q=>q.id!==p.id),selP:null}))}};
+        })
+      }));
+      const nf=fill&&D.kind==='uploaded'&&!s.tagged[id]&&!s.placed.some(p=>p.doc===id);
+      return{anchor:'pf-doc-'+id,showHead:false,needsFields:nf,autoTag:e=>{if(e)e.stopPropagation();this.autoTag(id)},addFields:e=>{if(e)e.stopPropagation();this.jump(id);this.pulse()},name:D.name,badge:D.auto?'Auto-added':s.tagged[id]?'Tagged by Mel':D.kind==='uploaded'?'Uploaded':(D.rule?'Required by rule':'Library'),badgeVariant:D.auto||s.tagged[id]?'indigo':D.kind==='uploaded'?'amber':(D.rule?'indigo':'blue'),badgeIcon:D.auto?'ph ph-stack-plus':s.tagged[id]?'ph ph-magic-wand':D.kind==='uploaded'?'ph ph-upload-simple':(D.rule?'ph ph-seal-check':'ph ph-books'),pageCount:n+' page'+(n>1?'s':''),pages};
+    });
+    let reqAll=0,doneAll=0;
+    const STS={none:['Start filling','#F5F5F5','#404040','#A3A3A3'],progress:['In progress','#FFF7ED','#C2410C','#EA580C'],filled:['Completed','#F2F9EF','#41701F','#6DA544']};
+    const docList=vis.map(id=>{
+      const D=DOCS[id],st=docStats(id),on=s.active===id,up=D.kind==='uploaded'&&!s.tagged[id],np=s.placed.filter(p=>p.doc===id).length;
+      if(!up&&!D.auto){reqAll+=st.req;doneAll+=st.done}
+      const S=STS[this.docState(id)],nOv=ov.filter(o=>o.add===id).length;
+      const meta=D.auto?nOv+' ¶ · auto-added':up?(np?np+' field'+(np>1?'s':''):'No fields yet'):(st.req?st.done+'/'+st.req+' required':'');
+      return{name:D.name,meta,sel:!!s.sel[id],selLabel:'Select '+D.name,
+        toggle:e=>{const c=e.target.checked;this.setState(x=>({sel:{...x.sel,[id]:c}}))},
+        st:S[0],stStyle:'flex:none;display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:9999px;background:'+S[1]+';color:'+S[2]+';font-size:11px;font-weight:600;white-space:nowrap',stDot:'width:6px;height:6px;border-radius:50%;background:'+S[3],
+        style:'display:flex;flex:none;align-items:flex-start;gap:10px;width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid '+(on?'#5A5FF2':'transparent')+';border-radius:8px;background:'+(on?'#F7F7FE':'transparent')+';min-width:0;overflow:hidden',
+        jump:()=>this.jump(id)};
+    });
+    const selIds=vis.filter(id=>s.sel[id]);
+    const AD=DOCS[s.active]||DOCS.cover,activeUp=AD.kind==='uploaded';
+    let focusNote=fill?(activeUp?'Uploaded PDF · add fields from the toolbar, or let Mel auto-tag them':'Library form · fields are tagged — click any field to fill'):'Signature fields are tagged from the library layout — click a tag to reassign';
+    if(s.focus){const [d,k]=s.focus.split('.');const uses=s.order.filter(id=>KEYS[id].has(k)).length;focusNote=LBL[k]+(SHARED.has(k)?' · from transaction · linked in '+uses+' form'+(uses>1?'s':''):(uses>1?' · also in '+(uses-1)+' other form'+(uses>2?'s':''):''))+(OVF[k]?' · overflows to '+DOCS[OVF[k]].code:'')}
+    const off=s.offer;
+    const left=this.missing().reduce((a,b)=>a+b[1],0),locked=false;
+    const stepBtn=a=>'display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 12px 0 6px;border:0;border-radius:8px;font:inherit;font-size:13px;font-weight:500;cursor:'+(!a&&locked?'not-allowed;opacity:.5':'pointer')+';color:'+(a?'#0A0A0A':'#737373')+';background:'+(a?'#fff':'transparent')+(a?';box-shadow:0 1px 2px 0 rgba(0,0,0,.08)':'');
+    const stepNum=a=>'width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:600;background:'+(a?'#5A5FF2':'#E5E5E5')+';color:'+(a?'#fff':'#737373');
+    const sugDefs=[
+      ['missing','What’s still missing?'],['forme','Fill it for me'],['bca','Explain the BCA']
+    ].filter(x=>!s.usedSugs[x[0]]);
+    const now=Date.now(),streaming=now<(this._se||0);
+    const caretEl=React.createElement('span',{key:'c',style:{display:'inline-block',width:2,height:14,marginLeft:2,verticalAlign:'-2px',background:'#5A5FF2',animation:'melCaret 1s steps(1) infinite'}});
+    const typingDots=React.createElement('span',{style:{display:'inline-flex',gap:3,alignItems:'center'}},[0,1,2].map(i=>React.createElement('span',{key:i,style:{width:5,height:5,borderRadius:'50%',background:'#737373',animation:'melDot 1.2s ease-in-out '+(i*.15)+'s infinite'}})));
+    return{
+      goBack:()=>{if(this.state.dirty)this.save(true);if(this.props.onBack){this.props.onBack();return}if(window.parent!==window&&window.parent.__pfOpen){window.parent.__pfOpen('crm');return}location.href='index.html?txd=1'},
+      subtitle:(fill?'Listing packet':'Envelope draft')+' · '+vis.length+' documents',
+      saveText:s.dirty?'Unsaved changes':'Saved '+s.savedAt,saveIcon:s.dirty?'ph ph-pencil-simple':'ph ph-cloud-check',saveStyle:'display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;flex:none;white-space:nowrap;color:'+(s.dirty?'#737373':'#15803D'),
+      save:()=>this.save(),clean:!s.dirty,saveBtn:s.dirty?'Save':'Saved',
+      dlMenu:!!s.dlMenu,toggleDl:e=>{if(e&&e.stopPropagation)e.stopPropagation();this.setState({dlMenu:!s.dlMenu,dataMenu:false,rMenu:false})},
+      dlItems:[['This document · '+AD.code,'ph ph-file-text',[s.active],false],['Selected · '+selIds.length,'ph ph-check-square',selIds,!selIds.length],['All documents · '+vis.length,'ph ph-files',vis,false]].map(([label,icon,ids,off])=>({label,icon,off,go:()=>this.download(ids),style:'display:flex;align-items:center;gap:8px;width:100%;padding:7px 8px;border:0;border-radius:6px;background:transparent;font:inherit;font-size:13px;color:#0A0A0A;text-align:left;cursor:'+(off?'not-allowed;opacity:.45':'pointer')})),
+      dlNote:s.dirty?'Saves your changes first, then downloads':'Latest saved version · '+s.savedAt,
+      isFill:fill,isSign:sign,sent:s.sent,sendLabel:s.sent?'Sent':'Send envelope',
+      stepFillStyle:stepBtn(fill),stepSignStyle:stepBtn(sign),stepFillNum:stepNum(fill),stepSignNum:stepNum(sign),
+      toFill:()=>this.setState({mode:'fill',sigPop:null,palette:false,env:null}),
+      signLocked:locked,signLockTitle:locked?'Fill '+left+' required field'+(left>1?'s':'')+' to continue':'',
+      toSign:()=>{if(s.mode==='sign')return;this.setState({env:null});const m=this.missing().reduce((a,b)=>a+b[1],0);this.setState({mode:'sign',palette:false,focus:null,offer:null});this.pushMel({text:'Moved '+s.order.length+' documents into the envelope. Signature and date fields came pre-tagged from the library layouts — click any tag to reassign it, or add fields to the uploaded PDF.'+(m?'\n\nHeads up: '+m+' required field'+(m>1?'s are':' is')+' still empty.':''),jumps:m?[{label:'Back to forms',mode:'fill'}]:null})},
+      send:()=>{this.setState({sent:true});this.toastMsg('Envelope sent to 3 signers');this.pushMel({text:'Sent. Nora signs first, then James, then you. I’ll let you know as each signature comes in.'})},
+      docCount:String(vis.length),docList,
+      allSel:vis.length>0&&selIds.length===vis.length,toggleAll:e=>{const c=e.target.checked;this.setState({sel:c?Object.fromEntries(vis.map(id=>[id,true])):{}})},
+      hasSel:selIds.length>0,noSel:!selIds.length,selText:selIds.length+' selected',clearSelDocs:()=>this.setState({sel:{}}),dlSel:()=>this.download(selIds),
+      envSel:()=>{const m=selIds.filter(id=>this.docState(id)!=='filled').length;this.setState({mode:'sign',env:selIds,sel:{},focus:null,offer:null,active:selIds[0]});setTimeout(()=>this.jump(selIds[0]),80);this.pushMel({text:'Started an envelope with '+selIds.length+' document'+(selIds.length>1?'s':'')+'. '+(m?m+' of them '+(m>1?'aren’t':'isn’t')+' completed yet — you can still send, or go back and finish first.':'All of them are completed.'),jumps:m?[{label:'Back to forms',mode:'fill'}]:null})},
+      tbTools:(fill?[['text'],['date'],['cb'],['drop'],null,['sig'],['init']]:[['sig'],['init'],['dsig'],['name'],null,['text'],['cb']]).map(x=>{if(!x)return{sep:true,tool:false};const t=x[0],f=FT[t],sg=SIGNER.has(t);return{sep:false,tool:true,label:f.label,icon:f.icon,tip:f.label+(sg?' · signer fills in the envelope':'')+' — click or drag onto '+AD.code,fg:sg?rById[s.activeR].c:'#404040',onDragStart:e=>this.toolDrag(e,t),onClick:()=>this.clickPlace(t)}}),
+      tbLabels:!s.tbW||s.tbW>=(fill?720:760),tbTitle:fill&&(!s.tbW||s.tbW>=820),
+      tbRing:s.pulse?'#5A5FF2':'#E5E5E5',tbShadow:s.pulse?'0 0 0 4px #E4E4FB,0 4px 6px -1px rgba(0,0,0,.1)':'0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1)',
+      tbOpen:!!s.tbOpen,addLbl:!s.tbW||s.tbW>=420,tbBg:s.tbOpen?'#F5F5F5':'#fff',toggleTb:e=>{e.stopPropagation();this.setState({tbOpen:!s.tbOpen,dataMenu:false,dlMenu:false,rMenu:false})},dataMenu:!!s.dataMenu,toggleData:e=>{e.stopPropagation();this.setState({dataMenu:!s.dataMenu,dlMenu:false})},
+      libOpen:!!s.libOpen,libQ:s.libQ,onLibQ:e=>this.setState({libQ:e.target.value}),closeLib:()=>this.setState({libOpen:false}),libCount:LIB.length+' forms',
+      libItems:LIB.filter(id=>{const q=s.libQ.trim().toLowerCase();return !q||DOCS[id].name.toLowerCase().includes(q)||(LIBDESC[id]||'').toLowerCase().includes(q)}).map(id=>{const inP=s.order.includes(id);return{code:DOCS[id].code,name:DOCS[id].name.replace(DOCS[id].code+' ',''),desc:LIBDESC[id],inP,notIn:!inP,add:e=>{if(e&&e.stopPropagation)e.stopPropagation();this.addLib(id)}}}),
+      upload:()=>this.toastMsg('Choose a PDF to upload — Mel can auto-tag its fields'),
+      docBadges:s.order.map(id=>{const on=s.active===id;return{code:DOCS[id].code,name:DOCS[id].name,open:()=>this.openDoc(id),
+        style:'flex:none;height:22px;display:inline-flex;align-items:center;padding:0 8px;border:1px solid '+(on?'#C9CAF8':'#E5E5E5')+';border-radius:6px;background:'+(on?'#EEEEFE':'#FFFFFF')+';color:'+(on?'#4B50E0':'#404040')+';font:inherit;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer'}}),
+      recipList:RECIPS.map((r,i)=>{const on=s.activeR===r.id;return{order:i+1,name:r.name,on,meta:r.role+' · '+sigPer[r.id]+' field'+(sigPer[r.id]===1?'':'s'),swatch:'width:10px;height:10px;border-radius:3px;flex:none;background:'+r.c,
+        rowStyle:'display:flex;align-items:center;gap:8px;width:100%;padding:6px 8px;border:0;border-radius:6px;background:'+(on?'#F5F5F5':'transparent')+';font:inherit;text-align:left;cursor:pointer;min-width:0;overflow:hidden',
+        pick:()=>this.setState(st=>{const selp=st.placed.find(q=>q.id===st.selP);return{rMenu:false,activeR:r.id,placed:selp&&selp.rid?st.placed.map(q=>q.id===selp.id?{...q,rid:r.id}:q):st.placed}})}}),
+      rMenu:!!s.rMenu,toggleRMenu:e=>{e.stopPropagation();this.setState({rMenu:!s.rMenu})},stopEv:e=>e.stopPropagation(),
+      curR:(()=>{const i=RECIPS.findIndex(r=>r.id===s.activeR),r=RECIPS[i];return{order:i+1,name:r.name,meta:r.role+' · '+sigPer[r.id]+' field'+(sigPer[r.id]===1?'':'s'),swatch:'width:10px;height:10px;border-radius:3px;flex:none;background:'+r.c}})(),
+      showFields:s.leftView==='fields'&&(sign||activeUp),showDocs:!(s.leftView==='fields'&&(sign||activeUp)),fieldsTitle:'Add fields to '+AD.code,
+      backToDocs:()=>this.setState({leftView:'docs',selP:null}),
+      docPos:(s.order.indexOf(s.active)+1)+' of '+s.order.length+' · '+(activeUp?'Uploaded':(AD.rule?'Required by rule':'Library')),
+      noPrev:s.order.indexOf(s.active)<=0,noNext:s.order.indexOf(s.active)>=s.order.length-1,
+      prevDoc:()=>{const i=s.order.indexOf(s.active);if(i>0)this.openDoc(s.order[i-1])},
+      nextDoc:()=>{const i=s.order.indexOf(s.active);if(i<s.order.length-1)this.openDoc(s.order[i+1])},
+      formToolsTitle:fill?'Fields you fill now':'Fields the signer fills',
+      sigTools:SIGT.map(([t,label,icon])=>({label,icon,fg:rById[s.activeR].c,onDragStart:e=>this.toolDrag(e,t),onClick:()=>this.clickPlace(t)})),
+      formTools:FORMT.map(([t,label,icon])=>({label,icon,fg:sign?rById[s.activeR].c:'#404040',onDragStart:e=>this.toolDrag(e,t),onClick:()=>this.clickPlace(t)})),
+      dataGroups:DATAG.map(([label,ks])=>({label,items:ks.map(k=>({label:LBL[k],value:s.vals[k]||'—',onDragStart:e=>this.toolDrag(e,'data:'+k),onClick:()=>{this.setState({dataMenu:false});this.clickPlace('data',k)}}))})),
+      addDoc:e=>{if(e&&e.stopPropagation)e.stopPropagation();this.setState({libOpen:!s.libOpen,libQ:''})},
+      activeName:AD.name,focusNote:(fill&&!activeUp&&!s.focus)?'':focusNote,showLegend:fill&&!activeUp,legend:[{label:'Required',c:'#5A5FF2'},{label:'Optional',c:'#A3A3A3'}],legendOpen:!!s.legendOpen,toggleLegend:e=>{e.stopPropagation();this.setState({legendOpen:!s.legendOpen,helpOpen:false})},
+      helpOpen:!!s.helpOpen,toggleHelp:e=>{e.stopPropagation();this.setState({helpOpen:!s.helpOpen,legendOpen:false})},
+      helpGroups:[['Required','#5A5FF2','#EEEEFE',true],['Optional','#A3A3A3','#F5F5F5',false]].map(([label,c,t,rq])=>{const ks=[...(KEYS[s.active]||[])].filter(k=>REQ.has(k)===rq&&LBL[k]&&!CALC[k]);return{label,c,t,fields:ks.map(k=>({label:LBL[k],go:e=>{e.stopPropagation();this.setState({helpOpen:false});const el=document.querySelector('[data-pf="'+s.active+'.'+k+'"]');if(el){el.focus({preventScroll:false})}}}))}}).filter(g=>g.fields.length),stopLegend:e=>e.stopPropagation(),
+      reqText:doneAll+' of '+reqAll+' required',sigText:sigTotal+' fields · 3 signers',nextField:this.nextField,nextBtnProps:{style:{color:'#FFFFFF',borderColor:'#404040',background:'#171717'}},
+      offer:!!off,offerText:off?'Use “'+(off.k==='comm'||off.k==='bcomm'?off.v+'%':off.v)+'” for '+LBL[off.k].toLowerCase()+' in '+off.targets.map(id=>DOCS[id].code).join(', ')+' too?':'',
+      dismissOffer:()=>this.setState({offer:null}),
+      applyOffer:()=>{const o=s.offer;this.setState(st=>{const v={...st.vals};o.targets.forEach(id=>{v[id+'.'+o.k]=o.v});return{vals:v,offer:null}});this.saved();this.toastMsg('Filled in '+o.targets.length+' more form'+(o.targets.length>1?'s':''))},
+      scrollRef:this.scrollRef,onScroll:this.onScroll,
+      clearSel:()=>{if(s.selP||s.sigPop||s.datePop)this.setState({selP:null,sigPop:null,datePop:null})},
+      docsView,zoom:s.zoom||1,...(()=>{const a=docsView.find(d=>d.anchor==='pf-doc-'+s.active)||{};return{activeBadgeColor:({blue:'#2563EB',indigo:'#5A5FF2',amber:'#B45309'})[a.badgeVariant]||'#737373',activePages:a.pageCount||'',activeBadge:a.badge||'',activeBadgeVariant:a.badgeVariant,activeBadgeIcon:a.badgeIcon}})(),
+      msgs:s.msgs.map((m,i)=>{const p=m.dur?Math.max(0,Math.min(1,(now-m.t0)/m.dur)):1,tok=(m.text||'').split(/(\s+)/),f=s.fb[i];
+        const ib='width:24px;height:24px;display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:6px;background:transparent;cursor:pointer;font-size:14px;padding:0;color:';
+        return{isMe:m.from==='me',isMel:m.from==='mel'&&now>=(m.t0||0),text:m.text,at:m.at||'',
+        shown:p>=1?m.text:tok.slice(0,Math.ceil(p*tok.length)).join(''),ready:p>=1,caret:p<1?caretEl:null,
+        copy:()=>{if(!navigator.clipboard){console.warn('[copy] clipboard unavailable');return}navigator.clipboard.writeText(m.text).then(()=>this.toastMsg('Copied')).catch(e=>console.warn('[copy] '+e))},
+        up:()=>this.setState(st=>({fb:{...st.fb,[i]:st.fb[i]==='up'?null:'up'}})),down:()=>this.setState(st=>({fb:{...st.fb,[i]:st.fb[i]==='down'?null:'down'}})),
+        upStyle:ib+(f==='up'?'#5A5FF2':'#A3A3A3'),downStyle:ib+(f==='down'?'#DC2626':'#A3A3A3'),
+        hasCard:!!m.card,cardTitle:m.card&&m.card.title,items:m.card?m.card.items:[],pending:m.card&&m.card.state==='pending',done:m.card&&m.card.state!=='pending',doneText:m.card&&m.card.doneText,
+        onApply:()=>this.resolveCard(i,true),onSkip:()=>this.resolveCard(i,false),
+        hasStats:!!(m.stats&&m.stats.length),
+        stats:(m.stats||[]).map(x=>{const t=x.n>=5?['#B91C1C','#FEF2F2','#FECACA']:x.n>=3?['#C2410C','#FFF7ED','#FED7AA']:['#A16207','#FEFCE8','#FDE68A'];
+          return{code:x.code,n:String(x.n),label:'field'+(x.n>1?'s':'')+' left',
+            card:'display:flex;flex-direction:column;gap:2px;min-width:0;overflow:hidden;padding:10px 12px;border:1px solid '+t[2]+';border-radius:10px;background:'+t[1],
+            codeStyle:'font-size:12px;line-height:16px;font-weight:600;color:'+t[0]+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis',
+            numStyle:'font-size:24px;line-height:28px;font-weight:600;color:'+t[0]+';font-variant-numeric:tabular-nums'}}),
+        hasJump:!!(m.jumps&&m.jumps.length),jumps:(m.jumps||[]).map(j=>({label:j.label,go:()=>j.mode?this.setState({mode:j.mode}):j.pf?this.goField(j.pf):this.jump(j.id)}))}}),
+      typing:s.typing,typingDots,streaming,notStreaming:!streaming,sendOff:!s.draft.trim(),stopStream:this.stopStream,
+      statusText:s.typing?'Thinking…':streaming?'Writing…':'Online',
+      statusDot:'width:6px;height:6px;border-radius:50%;background:'+(s.typing||streaming?'#5A5FF2':'#6DA544'),
+      chatRef:this.chatRef,onChatScroll:this.onChatScroll,chatUp:s.chatUp,
+      toBottom:()=>{const c=this.chatRef.current;if(c)c.scrollTo({top:c.scrollHeight,behavior:'smooth'})},
+      newChat:()=>{this._se=0;this.setState({msgs:[{from:'mel',at:this.tm(),text:'New chat. Tell me the listing terms — price, dates, commission — and I’ll fill the forms.'}],usedSugs:{},fb:{},chatUp:false})},
+      showSugs:fill&&sugDefs.length>0,
+      sugs:sugDefs.map(([k,label])=>({label,go:()=>{this.setState(st=>({usedSugs:{...st.usedSugs,[k]:1}}));this.sendText(label)}})),
+      draft:s.draft,onDraft:e=>this.setState({draft:e.target.value}),
+      onKey:e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();this.sendText(s.draft)}},
+      sendDraft:()=>this.sendText(s.draft),
+      toast:s.toast
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,855 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Defaults-1-Select-cilv.dc.html": {
+      "h": 900,
+      "page": "page-ysjd6w",
+      "title": "1 · Select mode copy",
+      "w": 1440,
+      "x": -3674,
+      "y": -194
+    },
+    "Defaults-2-Search-52yw.dc.html": {
+      "h": 900,
+      "page": "page-ysjd6w",
+      "title": "2 · Search while selecting copy",
+      "w": 1440,
+      "x": -2154,
+      "y": -194
+    },
+    "Defaults-3-Menu-mp21.dc.html": {
+      "h": 900,
+      "page": "page-ysjd6w",
+      "title": "3 · Set as default menu copy",
+      "w": 1440,
+      "x": -634,
+      "y": -194
+    },
+    "Defaults-4-Drafts-8ny9.dc.html": {
+      "h": 900,
+      "page": "page-ysjd6w",
+      "title": "4 · Drafts get skipped copy",
+      "w": 1440,
+      "x": 886,
+      "y": -194
+    },
+    "Defaults-5-Toast-bpcx.dc.html": {
+      "h": 900,
+      "page": "page-ysjd6w",
+      "title": "5 · Confirmation + undo copy",
+      "w": 1440,
+      "x": 2406,
+      "y": -194
+    },
+    "Defaults-6-Badges-t1lm.dc.html": {
+      "h": 900,
+      "page": "page-ysjd6w",
+      "title": "6 · Default for column copy",
+      "w": 1440,
+      "x": 3926,
+      "y": -194
+    },
+    "Main-rke2-7etz.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "page-ysjd6w",
+      "title": "Document Templates v2 copy",
+      "w": 1440,
+      "x": -5164,
+      "y": -194
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Document Templates v2",
+      "w": 1440,
+      "x": -549,
+      "y": -1386
+    },
+    "PDF-Filler-Mobile-Screen-b963.dc.html": {
+      "h": 844,
+      "is_interactive": true,
+      "page": "page-2k1bwl",
+      "title": "PDF Filler Mobile Screen copy",
+      "w": 390,
+      "x": 283,
+      "y": -342
+    },
+    "PDF-Filler-Mobile-omt9.dc.html": {
+      "h": 940,
+      "is_interactive": true,
+      "page": "page-2k1bwl",
+      "title": "PDF Filler Mobile copy",
+      "w": 520,
+      "x": -317,
+      "y": -342
+    },
+    "PDF-Filler.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "page": "page-2k1bwl",
+      "title": "PDF Filler (web)",
+      "w": 1440,
+      "x": 753,
+      "y": -342
+    },
+    "B1-1-Upload-Details.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "1 · Upload: details first",
+      "w": 1440,
+      "x": 0,
+      "y": 240
+    },
+    "B1-2-Upload-Drop.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "2 · Upload: drop files",
+      "w": 1440,
+      "x": 1520,
+      "y": 240
+    },
+    "B1-3-Assign-Menu.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "3 · Assign later: Set as default",
+      "w": 1440,
+      "x": 0,
+      "y": 1840
+    },
+    "B1-4-Assign-Done.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "4 · Assign later: confirmed",
+      "w": 1440,
+      "x": 1520,
+      "y": 1840
+    },
+    "B1-5-Mel-Autofill.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "5 · Mel autofills tag",
+      "w": 1440,
+      "x": 0,
+      "y": 3440
+    },
+    "B1-6-Table-Columns.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "6 · Table: new columns",
+      "w": 1440,
+      "x": 0,
+      "y": 5040
+    },
+    "B1-7-Filters-Open.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "7 · Filters popover",
+      "w": 1440,
+      "x": 1520,
+      "y": 5040
+    },
+    "B1-8-Filter-Chips.dc.html": {
+      "h": 900,
+      "page": "page-b1fb",
+      "title": "8 · Active filter chips",
+      "w": 1440,
+      "x": 3040,
+      "y": 5040
+    },
+    "B2-Editor.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "0 · Tag editor · all new parts",
+      "w": 1440,
+      "x": 0,
+      "y": 240
+    },
+    "B2-N1-Name-Place.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "1 · Name tag · place and set up",
+      "w": 1440,
+      "x": 0,
+      "y": 1840
+    },
+    "B2-N2-Name-Missing.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "2 · Name tag · signer not on every deal",
+      "w": 1440,
+      "x": 1520,
+      "y": 1840
+    },
+    "B2-T1-Format-Single.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "3 · Formatting · one tag",
+      "w": 1440,
+      "x": 0,
+      "y": 3440
+    },
+    "B2-T2-Format-Multi.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "4 · Formatting · several tags",
+      "w": 1440,
+      "x": 1520,
+      "y": 3440
+    },
+    "B2-T3-Format-Overflow.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "5 · Formatting · text too big",
+      "w": 1440,
+      "x": 3040,
+      "y": 3440
+    },
+    "B2-R1-Radio-Create.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "6 · Radio group · create",
+      "w": 1440,
+      "x": 0,
+      "y": 5040
+    },
+    "B2-R2-Radio-Errors.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "7 · Radio group · errors",
+      "w": 1440,
+      "x": 1520,
+      "y": 5040
+    },
+    "B2-R3-Radio-Add-Option.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "8 · Radio group · add option on page",
+      "w": 1440,
+      "x": 3040,
+      "y": 5040
+    },
+    "B2-C1-Checkbox-Select-Group.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "9 · Checkbox group · create",
+      "w": 1440,
+      "x": 0,
+      "y": 6640
+    },
+    "B2-C2-Checkbox-Rule.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "10 · Checkbox group · selection rule",
+      "w": 1440,
+      "x": 1520,
+      "y": 6640
+    },
+    "B2-C3-Checkbox-In-Group.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "11 · Checkbox group · one box selected",
+      "w": 1440,
+      "x": 3040,
+      "y": 6640
+    },
+    "B2-C4-Checkbox-Rule-Error.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "12 · Checkbox group · impossible rule",
+      "w": 1440,
+      "x": 4560,
+      "y": 6640
+    },
+    "B2-S1-Marquee.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "13 · Select · drag a box",
+      "w": 1440,
+      "x": 0,
+      "y": 8240
+    },
+    "B2-S2-Selected-Align.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "14 · Select · align bar",
+      "w": 1440,
+      "x": 1520,
+      "y": 8240
+    },
+    "B2-S3-Aligned.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "15 · Select · done + undo",
+      "w": 1440,
+      "x": 3040,
+      "y": 8240
+    },
+    "B2-S4-Mixed-Types.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "16 · Select · mixed types",
+      "w": 1440,
+      "x": 4560,
+      "y": 8240
+    },
+    "B2-D1-Label-Link.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "17 · Data label · link dates",
+      "w": 1440,
+      "x": 0,
+      "y": 9840
+    },
+    "B2-D2-Label-Conflict.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "18 · Data label · type conflict",
+      "w": 1440,
+      "x": 1520,
+      "y": 9840
+    },
+    "B2-K1-Rule-Empty.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "19 · Rules · empty",
+      "w": 1440,
+      "x": 0,
+      "y": 11440
+    },
+    "B2-K2-Rule-Editor.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "20 · Rules · editor (radio)",
+      "w": 1440,
+      "x": 1520,
+      "y": 11440
+    },
+    "B2-K3-Rule-Pick.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "21 · Rules · pick on document",
+      "w": 1440,
+      "x": 3040,
+      "y": 11440
+    },
+    "B2-K4-Rule-Overview.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "22 · Rules · overview",
+      "w": 1440,
+      "x": 4560,
+      "y": 11440
+    },
+    "B2-K5-Rule-Checkbox.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "23 · Rules · checkbox trigger",
+      "w": 1440,
+      "x": 6080,
+      "y": 11440
+    },
+    "B2-K6-Rule-Dependent.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "24 · Rules · tag in 2 rules",
+      "w": 1440,
+      "x": 7600,
+      "y": 11440
+    },
+    "B2-K7-Rule-Delete-Trigger.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "25 · Rules · delete trigger",
+      "w": 1440,
+      "x": 9120,
+      "y": 11440
+    },
+    "B2-K8-Rule-Preview.dc.html": {
+      "h": 900,
+      "page": "page-b2fb",
+      "title": "26 · Rules · preview as signer",
+      "w": 1440,
+      "x": 10640,
+      "y": 11440
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-30T05:49:57Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/artifact/LWPKZhvNAyVUJ3KmkWrm3N",
+      "copiedAt": "2026-10-30T05:49:57Z",
+      "namespace": "radius-ui",
+      "title": "Radius UI Design System",
+      "version": null
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "note-7b1x1e": {
+      "kind": "title1",
+      "maxW": 8000,
+      "page": "page-ysjd6w",
+      "text": "Mark templates as default",
+      "w": 240,
+      "x": -5164,
+      "y": -534
+    },
+    "b1-t-upload": {
+      "kind": "title1",
+      "page": "page-b1fb",
+      "text": "Upload: no transaction type",
+      "maxW": 2960,
+      "x": 0,
+      "y": 0
+    },
+    "b1-t-assign": {
+      "kind": "title1",
+      "page": "page-b1fb",
+      "text": "Assign transaction type later",
+      "maxW": 2960,
+      "x": 0,
+      "y": 1600
+    },
+    "b1-t-mel": {
+      "kind": "title1",
+      "page": "page-b1fb",
+      "text": "Mel autofills",
+      "maxW": 2960,
+      "x": 0,
+      "y": 3200
+    },
+    "b1-t-table": {
+      "kind": "title1",
+      "page": "page-b1fb",
+      "text": "Table columns + filters",
+      "maxW": 4480,
+      "x": 0,
+      "y": 4800
+    },
+    "b1-s1": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 1180,
+      "text": "1 · Upload: details first\nWhat: upload opens with State, Area (NY only) and Document type (optional). Transaction type is removed.\nWhy: Jessica #1. Build the library first, assign transaction types later.\nRule: Continue is always on. No document type → ID has no side (CA-0001)."
+    },
+    "b1-s2": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 1180,
+      "text": "2 · Upload: drop files\nWhat: summary bar shows State · Document type with Edit. Every file dropped next inherits these.\nRule: batch upload goes straight to the editor."
+    },
+    "b1-s3": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 2780,
+      "text": "3 · Assign later: Set as default\nWhat: Select mode → tick a template with no document type (CA-0001) → Set as default.\nRule: the menu lists Purchase and Listing types. The first tick greys out the other side. Templates with no type can join either side."
+    },
+    "b1-s4": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 2780,
+      "text": "4 · Assign later: confirmed\nWhat: toast with Undo. The row's Document type fills in from the transaction type picked (Purchase).\nRule: Undo reverts both the default and the document type."
+    },
+    "b1-s5": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 4380,
+      "text": "5 · Mel autofills\nWhat: per-tag checkbox in the tag properties panel. Ticked tags show an indigo sparkle on the PDF.\nWhy: Ashuthosh. Mel chat and autofill need this flag from SOUL.\nRule: agents can still edit a value Mel filled."
+    },
+    "b1-s6": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 5980,
+      "text": "6 · Table: new columns\nWhat: new Document type column (Purchase, Listing, Not set). Last edited → Last updated, with date and time.\nWhy: Jessica #11."
+    },
+    "b1-s7": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 5980,
+      "text": "7 · Filters popover\nWhat: bar keeps Search, State, Area. The rest moves into Filters: Transaction type (list opens to the right), Tag status, Document type, Last updated, Mel autofill.\nWhy: Jessica #12.\nRule: filters apply live. Badge counts active filters. Done closes."
+    },
+    "b1-s8": {
+      "page": "page-b1fb",
+      "w": 640,
+      "size": "m",
+      "x": 3040,
+      "y": 5980,
+      "text": "8 · Active filter chips\nWhat: each active filter shows as a chip under the bar, with a red ×. Clear all resets.\nRule: in Select mode the Transaction type chip is locked."
+    },
+    "b2-t-0": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "Overview · tag editor (shared component)",
+      "maxW": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "b2-s-0-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 1180,
+      "text": "Shared component behind every Batch 2 artboard.\nWhat: new tags (Name, Radio group, Checkbox group) in the palette. Every tag gets Formatting, Data label and Conditional logic in the Field tab.\nBadges on tags: link = shares a data label, branch = triggers a rule, eye = shown by a rule."
+    },
+    "b2-t-1": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "#10 Name tag",
+      "maxW": 2960,
+      "x": 0,
+      "y": 1600
+    },
+    "b2-s-1-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 2780,
+      "text": "Use case: TC drops a Name tag for Buyer 1.\nWhat: teal fill and user icon so it never reads as a plain Text tag. Show Full / First / Last. Fills from the signer on the transaction and can't be typed over in the template.\nRule: the signer badge colour still shows who it belongs to."
+    },
+    "b2-s-1-1": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 2780,
+      "text": "Edge: Seller 2 is optional on many deals.\nWhat: warning in the panel. Required turns off and locks for optional signers.\nRule: no Seller 2 on the deal → field prints blank, never blocks signing."
+    },
+    "b2-t-2": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "#2 Text styling",
+      "maxW": 4480,
+      "x": 0,
+      "y": 3200
+    },
+    "b2-s-2-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 4380,
+      "text": "Use case: make the property address bold and blue.\nWhat: Formatting section has font, size, colour swatches, B / I / U and text alignment, with a live preview. The tag on the PDF updates as you change it.\nRule: applies to text, name, date, number and dropdown tags."
+    },
+    "b2-s-2-1": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 4380,
+      "text": "Use case: set 3 finance fields to the same style in one go.\nWhat: select several tags → Formatting edits all. Values that differ show Mixed. Bold shows as half-on.\nRule: picking a value overwrites Mixed for all selected."
+    },
+    "b2-s-2-2": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 3040,
+      "y": 4380,
+      "text": "Edge: 14 pt and a long lender name don't fit the box.\nWhat: red tag on the page, warning in the panel, Size field red.\nRule: 'Shrink text to fit' on by default, 7 pt floor. Below that the text is cut off and the warning stays."
+    },
+    "b2-t-3": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "#3 Radio group (always required)",
+      "maxW": 4480,
+      "x": 0,
+      "y": 4800
+    },
+    "b2-s-3-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 5980,
+      "text": "Use case: Financing type with Cash / Loan / Seller carry.\nWhat: dashed group frame with name tab on the page. Option list with drag to reorder. Click a circle to set a default.\nRule: Required is always on and locked. Signer must pick exactly one."
+    },
+    "b2-s-3-1": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 5980,
+      "text": "Edges: (a) deleting down to 1 option is blocked, so the × greys out at 2. (b) Two options both named Cash shows an inline error, and the tags turn red.\nRule: you can't approve tags until these are fixed."
+    },
+    "b2-s-3-2": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 3040,
+      "y": 5980,
+      "text": "Use case: the form has a 4th box to tag.\nWhat: '+ Add option' in the mini toolbar → click to place, repeats until Esc or Done. The group frame grows to fit.\nRule: options must stay on the same page as their group."
+    },
+    "b2-t-4": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "#4 Checkbox group",
+      "maxW": 6000,
+      "x": 0,
+      "y": 6400
+    },
+    "b2-s-4-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 7580,
+      "text": "Use case: Inspection, Appraisal, Loan answer one question.\nWhat: select the boxes → 'Group' in the selection bar, or the CTA in the panel.\nRule: only checkboxes can be grouped. A box can be in one group."
+    },
+    "b2-s-4-1": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 7580,
+      "text": "What: Selection rule options are No rule (optional), Select at least, Select at most, Select exactly, or Select a range. A preview shows what the signer sees.\nRule: Required follows the rule. On if the minimum is 1 or more, off for No rule or 'at most'."
+    },
+    "b2-s-4-2": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 3040,
+      "y": 7580,
+      "text": "Edge: TC tries to make one box in a group required.\nWhat: Required is locked with 'Set by the group rule'. 'Remove from group' frees the box.\nRule: grouped boxes can't have their own required setting."
+    },
+    "b2-s-4-3": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 4560,
+      "y": 7580,
+      "text": "Edge: 'Select exactly 4' on a group of 3.\nWhat: number field red with inline error. Can't approve tags.\nRule: removing a box from a group re-checks the rule."
+    },
+    "b2-t-5": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "#5 + #6 Select and align",
+      "maxW": 6000,
+      "x": 0,
+      "y": 8000
+    },
+    "b2-s-5-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 9180,
+      "text": "Use case: tidy up misaligned days fields.\nWhat: drag on empty page space → dashed box with a live count.\nRule: tags partly inside get picked. Shift-click adds or removes one. Selection stays on one page."
+    },
+    "b2-s-5-1": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 9180,
+      "text": "What: a floating bar above the selection: align left / centre / right / top / middle / bottom, space evenly, match size, duplicate, delete. The panel shows bulk edit: signer, required (Mixed), formatting.\nRule: align uses the selection's outer edge, not the first tag."
+    },
+    "b2-s-5-2": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 3040,
+      "y": 9180,
+      "text": "What: tags snap into columns with red guide lines for a moment, plus a toast with Undo.\nRule: Cmd-Z also undoes. Nothing is saved until Approve tags."
+    },
+    "b2-s-5-3": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 4560,
+      "y": 9180,
+      "text": "Edge: dates, text and signature selected together.\nWhat: type chips at top. Formatting shows '3 of 5' with a note that signature and checkbox are skipped.\nRule: bulk edit only shows settings that apply to at least one selected tag."
+    },
+    "b2-t-6": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "#9 Data label",
+      "maxW": 2960,
+      "x": 0,
+      "y": 9600
+    },
+    "b2-s-6-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 10780,
+      "text": "Use case: Closing date appears on pages 1, 4 and 9 with no cover sheet value.\nWhat: pick an existing Date label → all 3 link. Link badges on the page and dashed lines to the linked tags.\nRule: fill one and the rest update. Cover sheet mapping wins if set."
+    },
+    "b2-s-6-1": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 10780,
+      "text": "Edges: (a) linking a Date tag to a Text label is blocked with an inline error. (b) Linked dates share one date format, so changing it here changes all.\nWhat: 'Unlink this field' gives it back its own value."
+    },
+    "b2-t-7": {
+      "kind": "title1",
+      "page": "page-b2fb",
+      "text": "#7 + #8 Conditional rules (last)",
+      "maxW": 12080,
+      "x": 0,
+      "y": 11200
+    },
+    "b2-s-7-0": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 0,
+      "y": 12380,
+      "text": "What: the Conditional logic section on a trigger tag (radio group, checkbox, dropdown, text) with an empty state and 'Create rule'.\nRule: signature and initials tags can be shown or hidden, but they can't trigger a rule."
+    },
+    "b2-s-7-1": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 1520,
+      "y": 12380,
+      "text": "What: IF Financing type IS Loan THEN Show / Hide the listed tags. The IS menu lists real option names (not 'Radio1'), shows which options already have rules, and includes 'Any option'.\nTags in the rule are hatched on the page."
+    },
+    "b2-s-7-2": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 3040,
+      "y": 12380,
+      "text": "What: banner and a live count. Click tags to add or remove them. Picked tags get a green tick.\nRule: the trigger and anything that already controls it are greyed out, so a rule can't loop. Done or Esc returns to the editor."
+    },
+    "b2-s-7-3": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 4560,
+      "y": 12380,
+      "text": "What: selecting a trigger draws dashed lines to every tag it controls. Rules are listed per option with edit and delete.\nRule: one rule per option. Each rule can show many tags."
+    },
+    "b2-s-7-4": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 6080,
+      "y": 12380,
+      "text": "Use case: HOA applies → show HOA dues and HOA name.\nWhat: IS options are Checked / Unchecked.\nRule: a required tag in a rule is required only when shown."
+    },
+    "b2-s-7-5": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 7600,
+      "y": 12380,
+      "text": "Edge: Lender name is shown by Financing = Loan and by HOA = Checked.\nWhat: the panel lists both rules: it shows if any match.\nEdge: a hidden mapped tag is not printed on the PDF."
+    },
+    "b2-s-7-6": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 9120,
+      "y": 12380,
+      "text": "Edge: deleting a group that controls rules.\nWhat: a confirm dialog lists the tags that will always show after delete.\nRule: Undo restores the group and its rules."
+    },
+    "b2-s-7-7": {
+      "page": "page-b2fb",
+      "w": 640,
+      "size": "m",
+      "x": 10640,
+      "y": 12380,
+      "text": "Use case: check rules before approving.\nWhat: Preview mode. Try answers in the panel and hidden tags fade on the page. Shows lists of shown and hidden tags.\nRule: nothing is saved in preview."
+    }
+  },
+  "order": [
+    "PDF-Filler-Mobile-omt9.dc.html",
+    "PDF-Filler-Mobile-Screen-b963.dc.html",
+    "Main.dc.html",
+    "PDF-Filler.dc.html",
+    "Defaults-1-Select-cilv.dc.html",
+    "Defaults-2-Search-52yw.dc.html",
+    "Defaults-3-Menu-mp21.dc.html",
+    "Defaults-4-Drafts-8ny9.dc.html",
+    "Defaults-5-Toast-bpcx.dc.html",
+    "Defaults-6-Badges-t1lm.dc.html",
+    "Main-rke2-7etz.dc.html",
+    "B1-1-Upload-Details.dc.html",
+    "B1-2-Upload-Drop.dc.html",
+    "B1-3-Assign-Menu.dc.html",
+    "B1-4-Assign-Done.dc.html",
+    "B1-5-Mel-Autofill.dc.html",
+    "B1-6-Table-Columns.dc.html",
+    "B1-7-Filters-Open.dc.html",
+    "B1-8-Filter-Chips.dc.html",
+    "B2-Editor.dc.html",
+    "B2-N1-Name-Place.dc.html",
+    "B2-N2-Name-Missing.dc.html",
+    "B2-T1-Format-Single.dc.html",
+    "B2-T2-Format-Multi.dc.html",
+    "B2-T3-Format-Overflow.dc.html",
+    "B2-R1-Radio-Create.dc.html",
+    "B2-R2-Radio-Errors.dc.html",
+    "B2-R3-Radio-Add-Option.dc.html",
+    "B2-C1-Checkbox-Select-Group.dc.html",
+    "B2-C2-Checkbox-Rule.dc.html",
+    "B2-C3-Checkbox-In-Group.dc.html",
+    "B2-C4-Checkbox-Rule-Error.dc.html",
+    "B2-S1-Marquee.dc.html",
+    "B2-S2-Selected-Align.dc.html",
+    "B2-S3-Aligned.dc.html",
+    "B2-S4-Mixed-Types.dc.html",
+    "B2-D1-Label-Link.dc.html",
+    "B2-D2-Label-Conflict.dc.html",
+    "B2-K1-Rule-Empty.dc.html",
+    "B2-K2-Rule-Editor.dc.html",
+    "B2-K3-Rule-Pick.dc.html",
+    "B2-K4-Rule-Overview.dc.html",
+    "B2-K5-Rule-Checkbox.dc.html",
+    "B2-K6-Rule-Dependent.dc.html",
+    "B2-K7-Rule-Delete-Trigger.dc.html",
+    "B2-K8-Rule-Preview.dc.html"
+  ],
+  "pages": [
+    {
+      "id": "page-1",
+      "name": "Admin portal prototype"
+    },
+    {
+      "id": "page-2k1bwl",
+      "name": "App"
+    },
+    {
+      "id": "page-ysjd6w",
+      "name": "Mark it default"
+    },
+    {
+      "id": "page-b1fb",
+      "name": "PDF editor feedback · Batch 1"
+    },
+    {
+      "id": "page-b2fb",
+      "name": "PDF editor feedback · Batch 2"
+    }
+  ],
+  "title": "SOUL — Document Templates"
+}

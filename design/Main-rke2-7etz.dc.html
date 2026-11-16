@@ -1,0 +1,932 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="ds/radius-ui/tokens/fonts.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/fig-tokens.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/colors.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/typography.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/radius.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/spacing.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/base.css">
+  <link rel="stylesheet" href="ds/radius-ui/components/components.css">
+  <link rel="stylesheet" href="ds/radius-ui/styles.css">
+  <link rel="stylesheet" href="src/regular/style.css">
+  <script src="ds/radius-ui/_ds_bundle.js"></script>
+  <template id="__bundler_thumbnail"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#5A5FF2"></rect><rect x="32" y="26" width="36" height="48" rx="4" fill="#FFFFFF"></rect><rect x="38" y="36" width="24" height="3" fill="#5A5FF2"></rect><rect x="38" y="44" width="24" height="3" fill="#5A5FF2"></rect></svg></template>
+  <style>
+    @font-face{font-family:"Phosphor";src:url("/_blob/438dda85d2d284a1882426ac5d2e0b24") format("woff2");font-weight:normal;font-style:normal;font-display:block}
+    html,body{margin:0;height:100%;overflow:hidden;background:#fff;color:#0A0A0A;font-family:"Mona Sans",-apple-system,"Segoe UI",sans-serif;font-size:14px}
+    a{color:#5A5FF2;text-decoration:none}a:hover{color:#4449d9;text-decoration:underline}
+    .ph{line-height:1}button{font-family:inherit}
+    input:focus,select:focus{outline:2px solid #5A5FF2;outline-offset:1px}
+  .fw{position:relative}.fw,.fw>*:not(i){display:flex;width:100%;min-width:0}.fw .rds-input{width:100%;min-width:0}@keyframes upsp{to{transform:rotate(360deg)}}@keyframes aishim{from{transform:translateX(-110%)}to{transform:translateX(260%)}}@keyframes aipulse{0%,100%{transform:scale(.5);opacity:.2}50%{transform:scale(1);opacity:1}}    .rds-menu{max-height:min(320px,60vh);overflow-y:auto}
+  </style>
+</helmet>
+<div data-screen-label="Document templates" style="height:100vh;display:grid;grid-template-rows:{{ outerRows }};background:#fff">
+  <nav style="display:{{ navDisplay }};align-items:center;gap:24px;padding:0 16px;border-bottom:1px solid #E5E5E5;background:#fff">
+    <div style="display:flex;align-items:center;gap:8px"><img src="assets/admin-portal-mark.svg" alt="" style="width:28px;height:28px"><span style="font-family:'Mona Sans',sans-serif;font-size:20px;font-weight:600;letter-spacing:-.025em;white-space:nowrap">Admin Portal</span></div>
+    <div style="display:flex;align-items:center;gap:4px">
+      <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="3"><button onClick="{{ n.onClick }}" aria-current="{{ n.current }}" style="height:32px;padding:0 12px;border:0;border-radius:10px;background:{{ n.bg }};color:{{ n.color }};font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph {{ n.icon }}" aria-hidden="true" style="font-size:16px"></i>{{ n.label }}</button></sc-for>
+    </div>
+  </nav>
+  <div style="min-height:0;display:grid;grid-template-rows:{{ innerRows }}">
+
+  <div data-screen-label="Flow bar" style="display:{{ flowDisplay }};grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:16px;padding:0 16px;border-bottom:1px solid #E5E5E5;background:#FAFAFA">
+    <div style="display:flex;align-items:center;gap:10px;flex:none;white-space:nowrap">
+      <button type="button" onClick="{{ goDash }}" aria-label="Close" title="Close" style="flex:none;width:32px;height:32px;border:0;background:transparent;border-radius:10px;cursor:pointer;color:#404040" style-hover="background:#E5E5E5"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button>
+      <div style="width:1px;height:24px;background:#E5E5E5"></div>
+      <span style="font-weight:600;white-space:nowrap">New template</span>
+      
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;min-width:0;white-space:nowrap">
+      <sc-for list="{{ steps }}" as="s" hint-placeholder-count="4">
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="width:24px;height:24px;border-radius:50%;box-sizing:border-box;border:1px solid {{ s.bd }};background:{{ s.bg }};color:{{ s.fg }};font-size:12px;font-weight:600;display:inline-flex;align-items:center;justify-content:center">{{ s.n }}</span>
+          <span style="font-weight:500;color:{{ s.lc }}">{{ s.label }}</span>
+          <sc-if value="{{ s.showLine }}" hint-placeholder-val="{{ true }}"><span style="width:clamp(8px,2vw,32px);height:1px;background:#D4D4D4"></span></sc-if>
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:flex-end;gap:8px;flex:none;white-space:nowrap">
+      <sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}"><button onClick="{{ goOrder }}" style="white-space:nowrap;height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0">Signing order<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:16px"></i></button></sc-if>
+      <sc-if value="{{ isOrder }}" hint-placeholder-val="{{ false }}"><button onClick="{{ saveTemplate }}" style="white-space:nowrap;height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0">{{ saveLabel }}</button></sc-if>
+    </div>
+  </div>
+  <header style="display:{{ headDisplay }};grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:0 16px;border-bottom:1px solid #E5E5E5">
+    <div style="display:flex;align-items:center;gap:10px;min-width:0">
+      <sc-if value="{{ showBack }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ goBack }}" title="Back" aria-label="Back" style="flex:none;width:32px;height:32px;border:0;border-radius:10px;background:transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:#F5F5F5"><i class="ph ph-arrow-left" aria-hidden="true" style="font-size:16px"></i></button>
+      </sc-if>
+      <span style="font-family:'Mona Sans',sans-serif;font-size:20px;font-weight:600;letter-spacing:-.025em;white-space:nowrap">{{ headTitle }}</span>
+      <sc-if value="{{ showIdBadge }}" hint-placeholder-val="{{ false }}">
+        <span style="flex:none;height:22px;display:inline-flex;align-items:center;padding:0 8px;border-radius:6px;background:#EEEFFE;color:#4449d9;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums">{{ headId }}</span>
+      </sc-if>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ startUpload }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0" style-active="transform:scale(.98)"><i class="ph ph-upload-simple" aria-hidden="true" style="font-size:16px"></i>Upload document</button>
+      </sc-if>
+      <sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ editingExisting }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ goHistory }}" style="height:32px;padding:0 12px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph ph-clock-counter-clockwise" aria-hidden="true" style="font-size:16px"></i>History</button>
+          <button onClick="{{ goFiller }}" style="height:32px;padding:0 12px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph ph-pencil-simple" aria-hidden="true" style="font-size:16px"></i>Fill</button>
+        </sc-if>
+        <button onClick="{{ goOrder }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0">Signing order<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:16px"></i></button>
+      </sc-if>
+      <sc-if value="{{ isOrder }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ saveTemplate }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0">{{ saveLabel }}</button>
+      </sc-if>
+      <sc-if value="{{ isFiller }}" hint-placeholder-val="{{ false }}">
+        <span style="font-size:14px;color:#737373;font-variant-numeric:tabular-nums">{{ filledCount }} of {{ fillableCount }} filled</span>
+        <button onClick="{{ goDash }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0">Save filled document</button>
+      </sc-if>
+    </div>
+  </header>
+
+  <sc-if value="{{ isDash }}" hint-placeholder-val="{{ true }}">
+  <main data-screen-label="Dashboard" style="min-height:0;display:grid;grid-template-rows:{{ dashRows }};padding:0 24px">
+    <div style="display:flex;align-items:center;gap:8px;padding:16px 0">
+      <label style="position:relative;display:block;flex:0 1 300px;min-width:120px"><i class="ph ph-magnifying-glass" aria-hidden="true" style="position:absolute;left:10px;top:8px;font-size:16px;color:#737373"></i><input value="{{ q }}" onChange="{{ setQ }}" placeholder="Search name or template ID" style="width:100%;box-sizing:border-box;height:32px;padding:0 10px 0 34px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif"></label>
+      <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ statusTrigger }}" items="{{ statusItems }}" hint-size="150px,32px"></x-import>
+      <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ stateTrigger }}" items="{{ stateItems }}" hint-size="130px,32px"></x-import>
+      <sc-if value="{{ showSubF }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ subTrigger }}" items="{{ subItems }}" hint-size="150px,32px"></x-import></sc-if>
+      <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ sideTrigger }}" items="{{ sideItems }}" hint-size="170px,32px"></x-import>
+      <span style="flex:1"></span>
+      <sc-if value="{{ selMode }}" hint-placeholder-val="{{ false }}">
+        <button type="button" onClick="{{ exitSel }}" class="rds-btn rds-btn--outline" style="flex:none;height:32px;border-radius:10px;font:500 14px 'Mona Sans',sans-serif;gap:8px"><i class="ph ph-x" aria-hidden="true" style="font-size:16px"></i>Done</button>
+      </sc-if>
+      <sc-if value="{{ notSelMode }}" hint-placeholder-val="{{ true }}">
+      <button type="button" onClick="{{ enterSel }}" class="rds-btn rds-btn--outline" style="flex:none;height:32px;border-radius:10px;font:500 14px 'Mona Sans',sans-serif;gap:8px"><i class="ph ph-check-square" aria-hidden="true" style="font-size:16px"></i>Select</button>
+      <button onClick="{{ startUpload }}" style="flex:none;height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0" style-active="transform:scale(.98)"><i class="ph ph-upload-simple" aria-hidden="true" style="font-size:16px"></i>Upload document</button>
+      </sc-if>
+    </div>
+    <sc-if value="{{ selMode }}" hint-placeholder-val="{{ false }}">
+    <div data-screen-label="Selection bar" style="display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;min-height:52px;margin-bottom:12px;padding:8px 10px 8px 16px;box-sizing:border-box;border:1px solid #E4E4FB;border-radius:14px;background:#F7F7FE">
+      <span style="display:inline-flex;align-items:center;gap:8px;font-weight:600;font-variant-numeric:tabular-nums"><i class="ph ph-check-square" aria-hidden="true" style="font-size:18px;color:#5A5FF2"></i>{{ selLabel }}</span>
+      <sc-if value="{{ selHiddenShow }}" hint-placeholder-val="{{ false }}"><span style="color:#525252;font-size:13px">{{ selHiddenText }}</span></sc-if>
+      <sc-if value="{{ draftNoteShow }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:26px;background:#FFF7ED;color:#C2410C;font-size:12px;font-weight:500;white-space:nowrap"><i class="ph ph-warning" aria-hidden="true" style="font-size:14px"></i>{{ draftNote }}</span></sc-if>
+      <span style="flex:1"></span>
+      <sc-if value="{{ noDSel }}" hint-placeholder-val="{{ false }}">
+        <span style="color:#525252;font-size:13px">Tick templates below, or search to find them</span>
+      </sc-if>
+      <sc-if value="{{ hasDSel }}" hint-placeholder-val="{{ true }}">
+        <button type="button" onClick="{{ clearDSel }}" class="rds-btn rds-btn--ghost" style="height:32px;border-radius:10px;font:500 14px 'Mona Sans',sans-serif">Clear</button>
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ removeTrigger }}" items="{{ removeItems }}" align="end" hint-size="150px,32px"></x-import>
+        <sc-if value="{{ menuLive }}" hint-placeholder-val="{{ true }}">
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ setTrigger }}" items="{{ setItems }}" align="end" hint-size="150px,32px"></x-import>
+        </sc-if>
+        <sc-if value="{{ menuForced }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative;display:inline-flex">
+            <button type="button" class="rds-btn" style="height:32px;border-radius:10px;font:500 14px 'Mona Sans',sans-serif;gap:8px"><i class="ph ph-star" aria-hidden="true" style="font-size:16px"></i>Set as default<i class="ph ph-caret-down" aria-hidden="true" style="font-size:14px"></i></button>
+            <div class="rds-menu" role="menu" style="position:absolute;top:calc(100% + 6px);right:0;z-index:60">
+              <div class="rds-menu__label">{{ menuLabel }}</div>
+              <sc-for list="{{ forcedItems }}" as="m" hint-placeholder-count="3">
+                <div role="menuitem" class="rds-menu__item"><i class="ph {{ m.icon }}" aria-hidden="true" style="font-size:16px;color:#737373"></i><span>{{ m.label }}</span></div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+      </sc-if>
+    </div>
+    </sc-if>
+    <div style="min-height:0;overflow:auto;border:1px solid #E5E5E5;border-radius:14px;margin-bottom:24px;align-self:start;max-height:100%">
+      <div style="display:grid;grid-template-columns:{{ gridCols }};gap:16px;align-items:center;height:40px;padding:0 16px;background:#FAFAFA;border-bottom:1px solid #E5E5E5;font-size:13px;font-weight:500;color:#737373;position:sticky;top:0;z-index:1">
+        <sc-if value="{{ selMode }}" hint-placeholder-val="{{ false }}"><input type="checkbox" class="rds-checkbox" checked="{{ allVisSel }}" onChange="{{ toggleVis }}" aria-label="Select all shown templates" title="Select all shown" style="margin:0;cursor:pointer"></sc-if>
+        <span>Template ID</span><span>Name</span><span>Tag status</span><span>Default for</span><span>Last edited</span><span style="text-align:right">Actions</span>
+      </div>
+      <sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+        <div onClick="{{ r.onOpen }}" style="display:grid;grid-template-columns:{{ r.cols }};gap:16px;align-items:center;height:52px;padding:0 16px;border-bottom:1px solid #F0F0F0;cursor:pointer;background:{{ r.rowBg }}" style-hover="background:#FAFAFA">
+          <sc-if value="{{ r.selMode }}" hint-placeholder-val="{{ false }}"><input type="checkbox" class="rds-checkbox" checked="{{ r.checked }}" onClick="{{ r.stop }}" onChange="{{ r.toggle }}" aria-label="Select {{ r.name }}" style="margin:0;cursor:pointer"></sc-if>
+          <span style="font-weight:600;font-variant-numeric:tabular-nums">{{ r.id }}</span>
+          <span style="display:flex;align-items:center;gap:10px;min-width:0"><i class="ph ph-file-pdf" aria-hidden="true" style="font-size:20px; color: #737373; flex:none"></i><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span></span>
+          <span><span style="height:22px;display:inline-flex;align-items:center;padding:0 10px;border-radius:26px;font-size:12px;font-weight:500;background:{{ r.sbg }};color:{{ r.sfg }}">{{ r.status }}</span></span>
+          <span style="display:flex;align-items:center;gap:4px;min-width:0;overflow:hidden">
+            <sc-for list="{{ r.defs }}" as="b" hint-placeholder-count="1"><span style="flex:none;height:22px;display:inline-flex;align-items:center;gap:4px;padding:0 8px;border-radius:26px;background:#EEEFFE;color:#4449d9;font-size:12px;font-weight:500;white-space:nowrap"><i class="ph ph-star" aria-hidden="true" style="font-size:12px"></i>{{ b.label }}</span></sc-for>
+            <sc-if value="{{ r.noDefs }}" hint-placeholder-val="{{ false }}"><span style="color:#A3A3A3">—</span></sc-if>
+          </span>
+          <span style="color:#737373">{{ r.edited }}</span>
+          <span style="display:flex;justify-content:flex-end;gap:4px">
+            <button onClick="{{ r.onFill }}" title="Edit template" aria-label="Edit template" style="width:28px;height:28px;border:0;border-radius:8px;background:transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:#EEEFFE"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"></path></svg></button>
+            <button onClick="{{ r.onHist }}" title="Version history" aria-label="Version history" style="width:28px;height:28px;border:0;border-radius:8px;background:transparent;cursor:pointer;display:inline-flex;align-items:center;justify-content:center" style-hover="background:#EEEFFE"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l4 2"></path></svg></button>
+          </span>
+        </div>
+      </sc-for>
+      <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:48px 16px;text-align:center;color:#737373">No documents match.</div>
+      </sc-if>
+    </div>
+    <sc-if value="{{ dToastShow }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Default toast" style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:70;width:460px;max-width:calc(100% - 32px)">
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Toast" variant="success" icon="{{ toastIcon }}" title="{{ dToastTitle }}" description="{{ dToastDesc }}" action="{{ toastAction }}"></x-import>
+      </div>
+    </sc-if>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isTag }}" hint-placeholder-val="{{ false }}">
+  <main data-screen-label="Tag and map" style="min-height:0;display:grid;grid-template-rows:56px minmax(0,1fr)">
+    <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:0 16px;border-bottom:1px solid #E5E5E5;background:#FAFAFA">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0">
+        <button type="button" onClick="{{ askLeave }}" aria-label="Close" title="Close" style="flex:none;width:32px;height:32px;border:0;background:transparent;border-radius:10px;cursor:pointer;color:#404040" style-hover="background:#E5E5E5"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button>
+        <div style="width:1px;height:24px;background:#E5E5E5"></div>
+        <span style="font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ tagName }}</span>
+        <span style="flex:none;height:22px;display:inline-flex;align-items:center;padding:0 8px;border-radius:6px;background:#EEEFFE;color:#4449d9;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums">{{ headId }}</span>
+        <span style="flex:none;height:22px;display:inline-flex;align-items:center;padding:0 10px;border-radius:26px;font-size:12px;font-weight:500;background:{{ phaseBg }};color:{{ phaseFg }}">{{ phaseLabel }}</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;white-space:nowrap"><span style="color:#737373;font-size:13px;font-variant-numeric:tabular-nums">{{ fieldCount }} fields · {{ mappedCount }} mapped</span><button type="button" onClick="{{ finalize }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;opacity:{{ finOp }}" style-hover="background:#4F54E0" style-active="transform:scale(.98)">{{ finLabel }}</button></div>
+    </div>
+    <div style="min-height:0;display:grid;grid-template-columns:{{ leftW }} minmax(0,1fr) 340px">
+      <aside style="border-right:1px solid #E5E5E5;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px;min-width:0">
+        <sc-if value="{{ true }}" hint-placeholder-val="{{ true }}"><div style="display:flex;flex-direction:column;gap:8px">
+          <button type="button" onClick="{{ soToggle }}" aria-expanded="{{ soOpen }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;height:32px;padding:0;border:0;background:transparent;cursor:pointer;outline:none;font:600 14px 'Mona Sans',sans-serif;color:#0A0A0A"><span>Signing order</span><i class="ph {{ soChev }}" aria-hidden="true" style="font-size:16px;color:#737373"></i></button>
+          <sc-if value="{{ soOpen }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:6px"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" label="Sign all at once" checked="{{ soAll }}" onChange="{{ soAllToggle }}" hint-size="auto,20px"></x-import><sc-for list="{{ soRows }}" as="r" hint-placeholder-count="4"><div draggable="{{ r.drag }}" onDragStart="{{ r.dStart }}" onDragOver="{{ r.dOver }}" onDrop="{{ r.dDrop }}" style="display:grid;grid-template-columns:16px 12px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:40px;padding:0 8px 0 4px;border:1px solid {{ r.bd }};border-radius:10px;background:{{ r.bg }}"><i class="ph ph-dots-six-vertical" aria-hidden="true" title="Drag to reorder" style="font-size:16px;color:#737373;cursor:{{ r.hCur }}"></i><span style="width:12px;height:12px;border-radius:4px;background:{{ r.dot }}"></span><span style="min-width:0;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ r.dd.trigger }}" items="{{ r.dd.items }}" hint-size="64px,32px"></x-import></div></sc-for></div></sc-if>
+        </div>
+        <div style="height:1px;background:#E5E5E5"></div></sc-if>
+        <span style="font-weight:600">Tags</span>
+        <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:6px">
+          <sc-for list="{{ palette }}" as="p" hint-placeholder-count="9"><sc-if value="{{ p.isHead }}" hint-placeholder-val="{{ false }}"><div style="grid-column:1/-1;margin-top:4px;font-size:12px;font-weight:600;color:#737373">{{ p.label }}</div></sc-if><sc-if value="{{ p.isBtn }}" hint-placeholder-val="{{ true }}"><button draggable="true" onDragStart="{{ p.onDrag }}" onClick="{{ p.onClick }}" style="cursor:grab;min-width:0;overflow:hidden;height:32px;padding:0 10px;border:1px solid {{ p.bd }};border-radius:10px;background:{{ p.bg }};display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;text-align:left;font:500 12px 'Mona Sans',sans-serif;color:#0A0A0A" style-hover="border-color:#5A5FF2"><i class="ph {{ p.icon }}" aria-hidden="true" style="font-size:18px;color:{{ p.ic }}"></i><span style="max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.label }}</span></button></sc-if></sc-for>
+        </div>
+        <div style="color:#737373;font-size:13px;line-height:18px">{{ toolHint }}</div>
+      </aside>
+      <section onScroll="{{ onBScroll }}" style="position:relative;background:#F5F5F5;overflow:auto;padding:16px 24px 24px;display:flex;flex-direction:column;align-items:safe center;gap:12px;min-width:0">
+        <sc-if value="{{ showLayerNote }}" hint-placeholder-val="{{ false }}"><div style="flex:none;width:100%;max-width:560px;box-sizing:border-box;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid #F3E3A0;border-radius:10px;background:#FFF6CC;color:#7A5B00;font-size:13px;line-height:18px"><i class="ph ph-stack" aria-hidden="true" style="font-size:16px;flex:none"></i>Layer on top of the document. Nothing is applied until you approve.</div></sc-if>
+        <sc-if value="{{ isBatch }}" hint-placeholder-val="{{ false }}">
+        <sc-for list="{{ stack }}" as="doc" hint-placeholder-count="2">
+          <div id="{{ doc.anchor }}" style="display:flex;flex:none;flex-direction:column;align-items:center;gap:12px;width:100%;margin-bottom:28px">
+            <div style="width:720px;max-width:100%;display:flex;align-items:center;flex-wrap:wrap;gap:8px;min-width:0">
+              <span style="font-size:12px;font-weight:600;color:{{ doc.nameC }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px">{{ doc.name }}</span>
+              <span style="flex:none;height:20px;display:inline-flex;align-items:center;padding:0 8px;border-radius:26px;font-size:12px;font-weight:500;background:{{ doc.bbg }};color:{{ doc.bfg }}">{{ doc.badge }}</span>
+              <span style="flex:1"></span>
+              <span style="font-size:12px;color:#737373;font-variant-numeric:tabular-nums">{{ doc.pageCount }}</span>
+            </div>
+            <sc-for list="{{ doc.pages }}" as="pg" hint-placeholder-count="1">
+              <div onClick="{{ pg.onPlace }}" onDragOver="{{ pg.onOver }}" onDrop="{{ pg.onDrop }}" style="position:relative;width:720px;min-width:720px;aspect-ratio:8.5/11;flex:none;overflow:hidden;background:#fff;box-shadow:{{ pg.shadow }};cursor:{{ pageCursor }}">
+                <sc-if value="{{ pg.first }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;left:10%;top:6%;right:10%;font-family:'Mona Sans',sans-serif;font-size:18px;line-height:24px;font-weight:700;text-align:center">{{ doc.name }}</div></sc-if>
+                <sc-for list="{{ lines }}" as="l" hint-placeholder-count="12"><div style="position:absolute;left:10%;top:{{ l.t }};width:{{ l.w }};height:6px;border-radius:3px;background:#EDEDED"></div></sc-for>
+                <sc-for list="{{ pg.views }}" as="f" hint-placeholder-count="0">
+                  <div draggable="true" onDragStart="{{ f.onDrag }}" onClick="{{ f.onSelect }}" style="position:absolute;left:{{ f.x }};top:{{ f.y }};width:{{ f.w }};height:{{ f.h }};box-sizing:border-box;border:1.5px {{ f.bs }} {{ f.bc }};background:{{ f.tint2 }};border-radius:4px;display:flex;align-items:center;justify-content:{{ f.jc }};gap:4px;padding:{{ f.pad }};min-width:{{ f.mw }};min-height:{{ f.mh }};overflow:hidden;cursor:pointer;outline:{{ f.ol }};outline-offset:2px"><i class="ph {{ f.icon }}" aria-hidden="true" style="font-size:12px;color:{{ f.c }};flex:none;display:{{ f.icDisp }}"></i><sc-if value="{{ f.isCb }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;pointer-events:none"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" hint-size="16px,16px"></x-import></span></sc-if><sc-if value="{{ f.isRd }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;overflow:visible;pointer-events:none"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.RadioGroup" name="rf" options="{{ f.rOpts }}" hint-size="16px,16px"></x-import></span></sc-if><sc-if value="{{ f.isIn }}" hint-placeholder-val="{{ false }}"><div style="flex:1;min-width:0;pointer-events:none;display:flex;flex-direction:column;gap:6px"><div class="fw"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Input" value="{{ f.dVal }}" readOnly="{{ true }}" hint-size="100%,32px"></x-import><i class="ph ph-calendar-blank" aria-hidden="true" style="position:absolute;right:12px;top:6px;font-size:20px;color:#525252;display:{{ f.dateDisp }}"></i></div><div style="display:flex;align-items:center;gap:4px;min-width:0;pointer-events:auto"><span style="min-width:0;font-size:12px;line-height:16px;color:#737373;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.ph }}{{ f.mapTxt }}</span><button type="button" onClick="{{ f.onEdit }}" title="Edit and map" aria-label="Edit and map" style="display:{{ f.editDisp }};flex:none;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:0;border-radius:6px;background:transparent;color:#525252;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph ph-pencil-simple" aria-hidden="true" style="font-size:14px"></i></button></div></div></sc-if><span style="font-size:11px;font-weight:500;color:#262626;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0">{{ f.chipText }}</span><i class="ph ph-eye-slash" aria-hidden="true" style="font-size:12px;color:#737373;flex:none;margin-left:auto;display:{{ f.hideIc }}"></i><button type="button" onClick="{{ f.onEdit }}" title="Edit" aria-label="Edit" style="display:{{ f.chipEditDisp }};flex:none;align-items:center;justify-content:center;width:20px;height:20px;margin-left:auto;padding:0;border:0;border-radius:6px;background:transparent;color:#525252;cursor:pointer" style-hover="background:#fff"><i class="ph ph-pencil-simple" aria-hidden="true" style="font-size:14px"></i></button></div>
+                </sc-for>
+                <div style="position:absolute;bottom:2.4%;left:8%;right:8%;display:flex;justify-content:space-between;font-size:10px;color:#A3A3A3"><span>{{ doc.name }}</span><span>{{ pg.label }}</span></div>
+                <sc-if value="{{ aiThink }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;overflow:hidden;pointer-events:none"><div style="position:absolute;top:0;bottom:0;left:0;width:45%;background:linear-gradient(100deg,transparent,rgba(90,95,242,.16),transparent);animation:aishim 1.8s ease-in-out infinite"></div><span style="position:absolute;left:14%;top:10%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 0s infinite"></span><span style="position:absolute;left:66%;top:24%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out .3s infinite"></span><span style="position:absolute;left:30%;top:46%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out .6s infinite"></span><span style="position:absolute;left:74%;top:68%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out .9s infinite"></span><span style="position:absolute;left:40%;top:88%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 1.2s infinite"></span></div></sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+        </sc-if>
+        <sc-if value="{{ notBatch }}" hint-placeholder-val="{{ true }}">
+        <div onClick="{{ placeField }}" onDragOver="{{ dragOver }}" onDrop="{{ dropField }}" style="position:relative;width:560px;min-width:560px;aspect-ratio:8.5/11;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.06);cursor:{{ pageCursor }};flex:none;overflow:hidden">
+          <div style="position:absolute;left:10%;top:6%;right:10%;font-family:'Mona Sans',sans-serif;font-size:15px;font-weight:600;text-align:center">{{ tagName }}</div>
+          <sc-for list="{{ lines }}" as="l" hint-placeholder-count="12"><div style="position:absolute;left:10%;top:{{ l.t }};width:{{ l.w }};height:5px;border-radius:3px;background:#EDEDED"></div></sc-for>
+          <sc-for list="{{ tagViews }}" as="f" hint-placeholder-count="4">
+            <div draggable="true" onDragStart="{{ f.onDrag }}" onClick="{{ f.onSelect }}" style="position:absolute;left:{{ f.x }};top:{{ f.y }};width:{{ f.w }};height:{{ f.h }};box-sizing:border-box;border:1.5px {{ f.bs }} {{ f.bc }};background:{{ f.tint2 }};border-radius:4px;display:flex;align-items:center;justify-content:{{ f.jc }};gap:4px;padding:{{ f.pad }};min-width:{{ f.mw }};min-height:{{ f.mh }};overflow:hidden;cursor:pointer;outline:{{ f.ol }};outline-offset:2px"><i class="ph {{ f.icon }}" aria-hidden="true" style="font-size:12px;color:{{ f.c }};flex:none;display:{{ f.icDisp }}"></i><sc-if value="{{ f.isCb }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;pointer-events:none"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" hint-size="16px,16px"></x-import></span></sc-if><sc-if value="{{ f.isRd }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;overflow:visible;pointer-events:none"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.RadioGroup" name="rf" options="{{ f.rOpts }}" hint-size="16px,16px"></x-import></span></sc-if><sc-if value="{{ f.isIn }}" hint-placeholder-val="{{ false }}"><div style="flex:1;min-width:0;pointer-events:none;display:flex;flex-direction:column;gap:6px"><div class="fw"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Input" value="{{ f.dVal }}" readOnly="{{ true }}" hint-size="100%,32px"></x-import><i class="ph ph-calendar-blank" aria-hidden="true" style="position:absolute;right:12px;top:6px;font-size:20px;color:#525252;display:{{ f.dateDisp }}"></i></div><div style="display:flex;align-items:center;gap:4px;min-width:0;pointer-events:auto"><span style="min-width:0;font-size:12px;line-height:16px;color:#737373;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.ph }}{{ f.mapTxt }}</span><button type="button" onClick="{{ f.onEdit }}" title="Edit and map" aria-label="Edit and map" style="display:{{ f.editDisp }};flex:none;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:0;border-radius:6px;background:transparent;color:#525252;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph ph-pencil-simple" aria-hidden="true" style="font-size:14px"></i></button></div></div></sc-if><span style="font-size:11px;font-weight:500;color:#262626;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0">{{ f.chipText }}</span><i class="ph ph-eye-slash" aria-hidden="true" style="font-size:12px;color:#737373;flex:none;margin-left:auto;display:{{ f.hideIc }}"></i><button type="button" onClick="{{ f.onEdit }}" title="Edit" aria-label="Edit" style="display:{{ f.chipEditDisp }};flex:none;align-items:center;justify-content:center;width:20px;height:20px;margin-left:auto;padding:0;border:0;border-radius:6px;background:transparent;color:#525252;cursor:pointer" style-hover="background:#fff"><i class="ph ph-pencil-simple" aria-hidden="true" style="font-size:14px"></i></button></div>
+          </sc-for>
+          <sc-if value="{{ aiThink }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:0;overflow:hidden;pointer-events:none"><div style="position:absolute;top:0;bottom:0;left:0;width:45%;background:linear-gradient(100deg,transparent,rgba(90,95,242,.16),transparent);animation:aishim 1.8s ease-in-out infinite"></div><span style="position:absolute;left:14%;top:10%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 0.00s infinite"></span><span style="position:absolute;left:62%;top:13%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 0.17s infinite"></span><span style="position:absolute;left:30%;top:24%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 0.34s infinite"></span><span style="position:absolute;left:78%;top:31%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 0.51s infinite"></span><span style="position:absolute;left:18%;top:43%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 0.68s infinite"></span><span style="position:absolute;left:55%;top:52%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 0.85s infinite"></span><span style="position:absolute;left:72%;top:66%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 1.02s infinite"></span><span style="position:absolute;left:26%;top:74%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 1.19s infinite"></span><span style="position:absolute;left:48%;top:86%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 1.36s infinite"></span><span style="position:absolute;left:84%;top:90%;width:7px;height:7px;border-radius:50%;background:#5A5FF2;animation:aipulse 1.4s ease-in-out 1.53s infinite"></span></div></sc-if>
+        </div>
+        </sc-if>
+        <sc-if value="{{ notBatch }}" hint-placeholder-val="{{ true }}"><div style="position:sticky;bottom:0;align-self:center;flex:none;z-index:20;margin-top:auto;display:flex;align-items:center;gap:8px;width:max-content;padding:6px;opacity:{{ barOp }};pointer-events:{{ barPe }};background:#0A0A0A;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.2),0 2px 4px -2px rgba(0,0,0,.2)"><sc-if value="{{ aiThink }}" hint-placeholder-val="{{ false }}"><div role="status" style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:40;pointer-events:auto;width:max(280px,min(400px,calc(100vw - 640px)));box-sizing:border-box;padding:14px;background:#0A0A0A;color:#fff;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><img src="assets/mel-icon.svg" alt="" style="width:20px;height:20px"><span style="font-weight:600">{{ aiTitle }}</span></div><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ aiSteps }}" as="a" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:{{ a.fg }}"><i class="ph {{ a.icon }}" aria-hidden="true" style="font-size:16px;color:{{ a.ic }};animation:{{ a.anim }}"></i><span>{{ a.label }}</span></div></sc-for></div></div></sc-if><sc-if value="{{ aiReview }}" hint-placeholder-val="{{ false }}"><div role="dialog" aria-label="Apply Mel's suggestions" style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:40;pointer-events:auto;width:max(280px,min(400px,calc(100vw - 640px)));box-sizing:border-box;padding:14px;background:#0A0A0A;color:#fff;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><img src="assets/mel-icon.svg" alt="" style="width:20px;height:20px"><span style="font-weight:600">Apply Mel's suggestions?</span></div><div style="font-size:13px;line-height:19px;color:#D4D4D4">{{ aiMsg }}</div><div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" onClick="{{ aiSkip }}" style="height:32px;padding:0 14px;border-radius:10px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap;border:1px solid #404040;background:transparent;color:#fff" style-hover="background:#262626">Don't apply</button><button type="button" onClick="{{ aiApply }}" style="height:32px;padding:0 14px;border-radius:10px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap;border:0;background:#5A5FF2;color:#fff" style-hover="background:#4F54E0">Apply</button></div></div></sc-if><span style="position:relative;display:inline-flex;flex:none"><sc-if value="{{ bpopRole }}" hint-placeholder-val="{{ false }}"><div role="menu" style="position:absolute;bottom:calc(100% + 8px);left:0;z-index:40;width:180px;box-sizing:border-box;padding:4px;background:#0A0A0A;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:2px"><span style="padding:6px 8px 4px;font-size:12px;font-weight:500;color:#A3A3A3">Place as</span><sc-for list="{{ roleLegend }}" as="r" hint-placeholder-count="4"><button type="button" role="menuitemradio" aria-checked="{{ r.on }}" onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:8px;width:100%;height:32px;padding:0 8px;border:0;border-radius:8px;background:{{ r.dbg }};color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;text-align:left" style-hover="background:#262626"><span style="width:10px;height:10px;border-radius:3px;background:{{ r.c }};flex:none"></span><span style="flex:1;min-width:0">{{ r.name }}</span><i class="ph ph-check" aria-hidden="true" style="font-size:14px;color:#fff;opacity:{{ r.ck }}"></i></button></sc-for></div></sc-if><button type="button" onClick="{{ toggleRole }}" aria-haspopup="true" title="Place as" style="height:32px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border:1px solid #404040;border-radius:10px;background:transparent;color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap" style-hover="background:#262626"><span style="width:10px;height:10px;border-radius:3px;background:{{ curRoleC }}"></span>{{ curRole }}<i class="ph ph-caret-up" aria-hidden="true" style="font-size:12px;color:#A3A3A3"></i></button></span></div></sc-if>
+        <sc-if value="{{ isBatch }}" hint-placeholder-val="{{ false }}"><div style="position:sticky;bottom:0;align-self:center;flex:none;z-index:20;margin-top:auto;display:flex;align-items:center;gap:8px;width:max-content;max-width:none;pointer-events:{{ barPe }};padding:6px;background:#0A0A0A;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.2),0 2px 4px -2px rgba(0,0,0,.2)"><sc-if value="{{ aiThink }}" hint-placeholder-val="{{ false }}"><div role="status" style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:40;pointer-events:auto;width:max(280px,min(400px,calc(100vw - 640px)));box-sizing:border-box;padding:14px;background:#0A0A0A;color:#fff;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><img src="assets/mel-icon.svg" alt="" style="width:20px;height:20px"><span style="font-weight:600">{{ aiTitle }}</span></div><div style="display:flex;flex-direction:column;gap:8px"><sc-for list="{{ aiSteps }}" as="a" hint-placeholder-count="4"><div style="display:flex;align-items:center;gap:8px;font-size:13px;color:{{ a.fg }}"><i class="ph {{ a.icon }}" aria-hidden="true" style="font-size:16px;color:{{ a.ic }};animation:{{ a.anim }}"></i><span>{{ a.label }}</span></div></sc-for></div></div></sc-if><sc-if value="{{ aiReview }}" hint-placeholder-val="{{ false }}"><div role="dialog" aria-label="Apply Mel's suggestions" style="position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);z-index:40;pointer-events:auto;width:max(280px,min(400px,calc(100vw - 640px)));box-sizing:border-box;padding:14px;background:#0A0A0A;color:#fff;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:12px"><div style="display:flex;align-items:center;gap:10px"><img src="assets/mel-icon.svg" alt="" style="width:20px;height:20px"><span style="font-weight:600">Apply Mel's suggestions?</span></div><div style="font-size:13px;line-height:19px;color:#D4D4D4">{{ aiMsg }}</div><div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" onClick="{{ aiSkip }}" style="height:32px;padding:0 14px;border-radius:10px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap;border:1px solid #404040;background:transparent;color:#fff" style-hover="background:#262626">Don't apply</button><button type="button" onClick="{{ aiApply }}" style="height:32px;padding:0 14px;border-radius:10px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap;border:0;background:#5A5FF2;color:#fff" style-hover="background:#4F54E0">Apply</button></div></div></sc-if>
+            <sc-if value="{{ bpopList }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;bottom:calc(100% + 8px);z-index:40;color:#fff;box-sizing:border-box;padding:12px;background:#0A0A0A;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:8px;left:0;width:340px;padding:8px">
+            <div style="display:flex;align-items:center;gap:8px;padding:2px 4px"><input type="checkbox" class="rds-checkbox" checked="{{ allSel }}" onChange="{{ toggleAll }}" aria-label="Select all documents" title="Select all" style="margin:0;flex:none;cursor:pointer"><span style="font-weight:600;flex:1">Documents</span><span style="font-size:12px;color:#A3A3A3">{{ selFoot }}</span></div>
+            <div style="max-height:320px;overflow-y:auto;overflow-x:hidden;display:flex;flex-direction:column;gap:2px">
+              <sc-for list="{{ bdocs }}" as="d" hint-placeholder-count="5">
+                <div style="{{ d.style }}">
+                  <input type="checkbox" class="rds-checkbox" checked="{{ d.sel }}" onChange="{{ d.toggle }}" aria-label="Select document" style="margin:2px 0 0;flex:none;cursor:pointer">
+                  <button type="button" onClick="{{ d.open }}" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;border:0;background:transparent;padding:0;text-align:left;font:inherit;color:inherit;cursor:pointer">
+                    <span style="font-size:13px;line-height:17px;font-weight:500;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ d.name }}</span>
+                    <span style="display:flex;align-items:center;gap:6px;min-width:0;overflow:hidden"><span style="{{ d.dkStyle }}"><span style="{{ d.stDot }}"></span>{{ d.st }}</span><span style="font-size:12px;color:#A3A3A3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0">{{ d.meta }}</span></span>
+                  </button>
+                </div>
+              </sc-for>
+            </div>
+          </div></sc-if>
+            <button type="button" onClick="{{ toggleList }}" aria-haspopup="true" style-hover="background:#262626" style="height:32px;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;padding:0 10px;border:1px solid #404040;border-radius:10px;background:transparent;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;color:#fff;flex:none;font-variant-numeric:tabular-nums"><i class="ph ph-files" aria-hidden="true" style="font-size:16px;color:#9EA1F8"></i>{{ curN }} of {{ bTotal }}<i class="ph ph-caret-up" aria-hidden="true" style="font-size:12px;color:#A3A3A3"></i></button>
+            <sc-if value="{{ bpopBulk }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;bottom:calc(100% + 8px);z-index:40;color:#fff;box-sizing:border-box;padding:12px;background:#0A0A0A;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:8px;left:0;width:300px">
+            <div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;font-weight:500;color:#A3A3A3;flex:1;min-width:0">{{ selFoot }}</span><button type="button" onClick="{{ clearSel }}" style="border:0;background:transparent;padding:0;font:inherit;font-size:12px;color:#A3A3A3;cursor:pointer">Clear</button></div>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px">
+            <button type="button" disabled="{{ bNoSel }}" onClick="{{ openFields }}" style="opacity:{{ selOp }};display:flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:0;padding:0 8px;border:1px solid #404040;border-radius:10px;background:transparent;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;color:#fff"><i class="ph ph-textbox" aria-hidden="true" style="font-size:16px"></i>Fields</button>
+            <button type="button" disabled="{{ bNoSel }}" onClick="{{ removeSel }}" style="opacity:{{ selOp }};display:flex;align-items:center;justify-content:center;gap:6px;height:32px;min-width:0;padding:0 8px;border:1px solid #404040;border-radius:10px;background:transparent;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;color:#F87171"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i>Remove</button>
+          </div>
+          <sc-if value="{{ pFields }}" hint-placeholder-val="{{ false }}"><div style="padding:8px;border:1px solid #404040;border-radius:10px;display:flex;flex-direction:column;gap:8px">
+            <span style="padding:2px 4px;font-weight:600;font-size:13px">Add fields to {{ selCount }}</span>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px"><sc-for list="{{ fieldTypes }}" as="f" hint-placeholder-count="8"><button type="button" aria-pressed="{{ f.on }}" onClick="{{ f.toggle }}" style="{{ f.style }}"><i class="{{ f.icon }}" aria-hidden="true" style="font-size:15px;flex:none"></i><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.label }}</span></button></sc-for></div>
+            <button type="button" disabled="{{ fApplyDis }}" onClick="{{ applyFields }}" style="height:32px;border:0;border-radius:8px;background:#5A5FF2;color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;opacity:{{ fApplyOp }}">Add {{ fCount }}</button>
+          </div></sc-if>
+        
+          </div></sc-if>
+            <button type="button" onClick="{{ toggleBulk }}" aria-haspopup="true" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border:1px solid #404040;border-radius:10px;background:transparent;color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#262626"><i class="ph ph-sliders-horizontal" aria-hidden="true" style="font-size:14px"></i>Bulk edit<i class="ph ph-caret-up" aria-hidden="true" style="font-size:12px;color:#A3A3A3"></i></button>
+            <span style="position:relative;display:inline-flex;flex:none"><sc-if value="{{ bpopRole }}" hint-placeholder-val="{{ false }}"><div role="menu" style="position:absolute;bottom:calc(100% + 8px);left:0;z-index:40;width:180px;box-sizing:border-box;padding:4px;background:#0A0A0A;border:1px solid #262626;border-radius:14px;box-shadow:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -2px rgba(0,0,0,.3);display:flex;flex-direction:column;gap:2px"><span style="padding:6px 8px 4px;font-size:12px;font-weight:500;color:#A3A3A3">Place as</span><sc-for list="{{ roleLegend }}" as="r" hint-placeholder-count="4"><button type="button" role="menuitemradio" aria-checked="{{ r.on }}" onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:8px;width:100%;height:32px;padding:0 8px;border:0;border-radius:8px;background:{{ r.dbg }};color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;text-align:left" style-hover="background:#262626"><span style="width:10px;height:10px;border-radius:3px;background:{{ r.c }};flex:none"></span><span style="flex:1;min-width:0">{{ r.name }}</span><i class="ph ph-check" aria-hidden="true" style="font-size:14px;color:#fff;opacity:{{ r.ck }}"></i></button></sc-for></div></sc-if><button type="button" onClick="{{ toggleRole }}" aria-haspopup="true" title="Place as" style="height:32px;padding:0 10px;display:inline-flex;align-items:center;gap:6px;border:1px solid #404040;border-radius:10px;background:transparent;color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap" style-hover="background:#262626"><span style="width:10px;height:10px;border-radius:3px;background:{{ curRoleC }}"></span>{{ curRole }}<i class="ph ph-caret-up" aria-hidden="true" style="font-size:12px;color:#A3A3A3"></i></button></span>
+            <button type="button" disabled="{{ bBackDis }}" onClick="{{ bBack }}" style="height:32px;padding:0 12px;display:inline-flex;align-items:center;gap:6px;border:1px solid #404040;border-radius:10px;background:transparent;color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap;flex:none;opacity:{{ bBackOp }}"><i class="ph ph-arrow-left" aria-hidden="true" style="font-size:14px"></i>Back</button>
+            <button type="button" onClick="{{ bNext }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;white-space:nowrap;flex:none" style-hover="background:#4F54E0">{{ bNextLabel }}<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:14px"></i></button>
+          </div></sc-if>
+        </section>
+      <aside style="border-left:1px solid #E5E5E5;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden;background:#fff">
+        <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid #F0F0F0;flex:none">
+          <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2px;padding:2px;background:#F5F5F5;border-radius:10px;flex:1;min-width:0;box-sizing:border-box">
+            <button onClick="{{ tabMel }}" style="height:28px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;min-width:0;background:{{ melBg }};box-shadow:{{ melSh }}"><img src="assets/mel-icon.svg" alt="" style="width:16px;height:16px;flex:none">Mel chat</button>
+            <button onClick="{{ tabField }}" style="height:26px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;background:{{ fldBg }};box-shadow:{{ fldSh }}">Field</button>
+            <button onClick="{{ tabMap }}" style="height:26px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;background:{{ mapBg }};box-shadow:{{ mapSh }}">Map</button>
+          </div>
+        </div>
+        <sc-if value="{{ rtabMel }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:16px;display:flex;flex-direction:column-reverse;gap:14px">
+          <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#737373">Mel is working…</div></sc-if>
+          <sc-if value="{{ showApprove }}" hint-placeholder-val="{{ false }}">
+            <div style="border:1px solid #E4E4FB;border-radius:12px;background:#F7F7FE;padding:12px;display:flex;flex-direction:column;gap:10px">
+              <div style="font-weight:600">Is this okay?</div>
+              <div style="font-size:13px;line-height:19px;color:#404040">{{ fieldCount }} fields, {{ mappedCount }} mapped to the cover sheet, {{ hiddenCount }} hidden from the filler. Approve to add them to the template.</div>
+              <div style="display:flex;gap:8px"><button type="button" onClick="{{ approve }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;" style-hover="background:#4F54E0" style-active="transform:scale(.98)">Approve</button><button type="button" onClick="{{ keepEditing }}" style="height:32px;padding:0 14px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#F5F5F5" style-active="transform:scale(.98)">Keep editing</button></div>
+            </div>
+          </sc-if>
+          <sc-for list="{{ chat }}" as="m" hint-placeholder-count="1">
+            <sc-if value="{{ m.isMel }}" hint-placeholder-val="{{ true }}"><div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px"><img src="assets/mel-icon.svg" alt="" style="width:24px;height:24px"><div style="font-size:13px;line-height:20px;color:#171717;text-wrap:pretty;overflow-wrap:anywhere">{{ m.text }}</div></div></sc-if>
+            <sc-if value="{{ m.isMe }}" hint-placeholder-val="{{ false }}"><div style="display:flex;justify-content:flex-end"><div style="max-width:85%;background:#F5F5F5;border-radius:14px 14px 4px 14px;padding:9px 12px;font-size:13px;line-height:19px;overflow-wrap:anywhere">{{ m.text }}</div></div></sc-if>
+          </sc-for>
+        </div>
+        <div style="flex:none;padding:12px 16px 16px;border-top:1px solid #F0F0F0;display:flex;flex-direction:column;gap:10px">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="2"><button type="button" onClick="{{ c.onClick }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:34px;max-width:100%;min-width:0;padding:6px 14px 6px 11px;border:1px solid #E4E4FB;border-radius:12px;background:linear-gradient(100deg,#F7F7FE 0%,#FCFAFD 48%,#FFFBF8 100%);font:500 13px/17px 'Mona Sans',sans-serif;text-align:left;cursor:pointer" style-hover="border-color:#C9CAF8;box-shadow:0 2px 12px rgba(90,95,242,.16)" style-active="transform:scale(.98)"><svg width="14" height="14" viewBox="0 0 24 24" style="flex:none;color:#6D6EF3"><path d="M12 2c.6 5 4 8.4 9 9-5 .6-8.4 4-9 9-.6-5-4-8.4-9-9 5-.6 8.4-4 9-9z" fill="currentColor"></path></svg><span style="background:linear-gradient(90deg,#7B7FF5,#5A5FF2,#F08068,#F0A468);-webkit-background-clip:text;background-clip:text;color:transparent">{{ c.label }}</span></button></sc-for>
+          <div style="display:flex;gap:8px"><input value="{{ chatIn }}" onChange="{{ setChatIn }}" onKeyDown="{{ chatKey }}" placeholder="Ask Mel to map or hide fields" style="flex:1;min-width:0;height:32px;padding:0 10px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif"><button type="button" onClick="{{ sendChat }}" aria-label="Send" title="Send" style="flex:none;width:32px;height:32px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;cursor:pointer" style-hover="background:#4F54E0"><i class="ph ph-arrow-up" aria-hidden="true" style="font-size:16px"></i></button></div>
+        </div>
+        </sc-if>
+        <sc-if value="{{ rtabField }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;min-height:0;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:16px">
+          <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}"><div style="color:#737373;line-height:20px">Select a field on the page to edit it and change its cover sheet mapping.</div></sc-if>
+          <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-weight:600">{{ sel.typeLabel }} field</span><button onClick="{{ deleteSel }}" title="Delete field" aria-label="Delete field" style="width:28px;height:28px;border:0;border-radius:8px;background:transparent;cursor:pointer;color:#DC2626" style-hover="background:#FEF2F2"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Label</label><input value="{{ sel.label }}" onChange="{{ setLabel }}" style="height:32px;padding:0 10px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif"></div>
+            <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Assigned to</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddRoleT.trigger }}" items="{{ ddRoleT.items }}" hint-size="308px,32px"></x-import></div>
+            <sc-if value="{{ sel.canAuto }}" hint-placeholder-val="{{ true }}">
+              <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Cover sheet value</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddSrcMapT.trigger }}" items="{{ ddSrcMapT.items }}" hint-size="308px,32px"></x-import></div>
+              <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" label="Hide from filler" checked="{{ sel.hide }}" onChange="{{ setHide }}" hint-size="auto,20px"></x-import>
+            </sc-if>
+            <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Show only if</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddCondT.trigger }}" items="{{ ddCondT.items }}" hint-size="308px,32px"></x-import></div>
+            <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" label="Required" checked="{{ sel.req }}" onChange="{{ setReq }}" hint-size="auto,20px"></x-import>
+          </sc-if>
+        </div>
+        </sc-if>
+        <sc-if value="{{ rtabMap }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1;min-height:0;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600">Cover sheet mapping</span><span style="font-size:13px;line-height:18px;color:#737373">{{ mapSummary }}</span></div>
+          <sc-for list="{{ mapRows }}" as="r" hint-placeholder-count="4">
+            <div onClick="{{ r.onSelect }}" style="border:1px solid {{ r.bd }};border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px;min-width:0;background:{{ r.bg }};cursor:pointer">
+              <div style="display:flex;align-items:center;gap:8px;min-width:0"><span style="flex:none;width:10px;height:10px;border-radius:3px;background:{{ r.c }}"></span><span style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0">{{ r.label }}</span><span style="margin-left:auto;flex:none;font-size:12px;color:#737373">{{ r.role }}</span></div>
+              <span onClick="{{ r.stop }}" style="display:inline-flex"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ r.dd.trigger }}" items="{{ r.dd.items }}" hint-size="280px,32px"></x-import></span>
+              <span style="font-size:12px;color:#737373;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:{{ r.pvShow }}">Fills with {{ r.preview }}</span>
+            </div>
+          </sc-for>
+        </div>
+        </sc-if>
+      </aside>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isEditor }}" hint-placeholder-val="{{ false }}">
+  <main data-screen-label="Editor" style="min-height:0;display:grid;grid-template-columns:256px minmax(0,1fr) 300px">
+    <aside style="border-right:1px solid #E5E5E5;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button type="button" onClick="{{ soToggle }}" aria-expanded="{{ soOpen }}" style="display:flex;align-items:center;justify-content:space-between;width:100%;height:32px;padding:0;border:0;background:transparent;cursor:pointer;outline:none;font:600 14px 'Mona Sans',sans-serif;color:#0A0A0A"><span>Signing order</span><i class="ph {{ soChev }}" aria-hidden="true" style="font-size:16px;color:#737373"></i></button>
+        <sc-if value="{{ soOpen }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:6px"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" label="Sign all at once" checked="{{ soAll }}" onChange="{{ soAllToggle }}" hint-size="auto,20px"></x-import><sc-for list="{{ soRows }}" as="r" hint-placeholder-count="4"><div draggable="{{ r.drag }}" onDragStart="{{ r.dStart }}" onDragOver="{{ r.dOver }}" onDrop="{{ r.dDrop }}" style="display:grid;grid-template-columns:16px 12px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:40px;padding:0 8px 0 4px;border:1px solid {{ r.bd }};border-radius:10px;background:{{ r.bg }}"><i class="ph ph-dots-six-vertical" aria-hidden="true" title="Drag to reorder" style="font-size:16px;color:#737373;cursor:{{ r.hCur }}"></i><span style="width:12px;height:12px;border-radius:4px;background:{{ r.dot }}"></span><span style="min-width:0;font-size:13px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</span><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ r.dd.trigger }}" items="{{ r.dd.items }}" hint-size="64px,32px"></x-import></div></sc-for></div></sc-if>
+      </div>
+      <div style="height:1px;background:#E5E5E5"></div>
+      <span style="font-weight:600">Tags</span>
+      <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:6px">
+        <sc-for list="{{ palette }}" as="p" hint-placeholder-count="9">
+          <sc-if value="{{ p.isHead }}" hint-placeholder-val="{{ false }}"><div style="grid-column:1/-1;margin-top:4px;font-size:12px;font-weight:600;color:#737373">{{ p.label }}</div></sc-if><sc-if value="{{ p.isBtn }}" hint-placeholder-val="{{ true }}"><button draggable="true" onDragStart="{{ p.onDrag }}" onClick="{{ p.onClick }}" style="cursor:grab;min-width:0;overflow:hidden;height:32px;padding:0 10px;border:1px solid {{ p.bd }};border-radius:10px;background:{{ p.bg }};display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;text-align:left;font:500 13px 'Mona Sans',sans-serif;color:#0A0A0A" style-hover="border-color:#5A5FF2"><i class="ph {{ p.icon }}" aria-hidden="true" style="font-size:18px;color:{{ p.ic }}"></i><span style="max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.label }}</span></button></sc-if>
+        </sc-for>
+      </div>
+      <div style="color:#737373;font-size:13px;line-height:18px">{{ toolHint }}</div>
+      <div style="height:1px;background:#E5E5E5"></div>
+      <span style="font-weight:600">Place as</span>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <sc-for list="{{ roleLegend }}" as="r" hint-placeholder-count="3"><button type="button" onClick="{{ r.onClick }}" style="display:flex;align-items:center;gap:8px;height:32px;padding:0 8px;border:1px solid {{ r.bd }};border-radius:8px;background:{{ r.bg }};font:14px 'Mona Sans',sans-serif;cursor:pointer;text-align:left" style-hover="background:#F5F5F5"><span style="width:12px;height:12px;border-radius:4px;background:{{ r.c }}"></span>{{ r.name }}</button></sc-for>
+      </div>
+    </aside>
+    <section style="background:#F5F5F5;overflow:auto;padding:24px;display:flex;justify-content:center;align-items:flex-start">
+      <div onClick="{{ placeField }}" onDragOver="{{ dragOver }}" onDrop="{{ dropField }}" style="position:relative;width:560px;min-width:560px;aspect-ratio:8.5/11;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.06);cursor:{{ pageCursor }};flex:none;overflow:hidden">
+        <div style="position:absolute;left:10%;top:6%;right:10%;font-family:'Mona Sans',sans-serif;font-size:15px;font-weight:600;text-align:center">Residential purchase agreement</div>
+        <sc-for list="{{ lines }}" as="l" hint-placeholder-count="12"><div style="position:absolute;left:10%;top:{{ l.t }};width:{{ l.w }};height:5px;border-radius:3px;background:#EDEDED"></div></sc-for>
+        <sc-for list="{{ fieldViews }}" as="f" hint-placeholder-count="4">
+          <div draggable="true" onDragStart="{{ f.onDrag }}" onClick="{{ f.onSelect }}" style="position:absolute;left:{{ f.x }};top:{{ f.y }};width:{{ f.w }};height:{{ f.h }};box-sizing:border-box;border:1.5px {{ f.bs }} {{ f.bc }};background:{{ f.tint2 }};border-radius:4px;display:flex;align-items:center;justify-content:{{ f.jc }};gap:4px;padding:{{ f.pad }};min-width:{{ f.mw }};min-height:{{ f.mh }};overflow:hidden;cursor:pointer;outline:{{ f.ol }};outline-offset:2px"><i class="ph {{ f.icon }}" aria-hidden="true" style="font-size:12px;color:{{ f.c }};flex:none;display:{{ f.icDisp }}"></i><sc-if value="{{ f.isCb }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;pointer-events:none"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" hint-size="16px,16px"></x-import></span></sc-if><sc-if value="{{ f.isRd }}" hint-placeholder-val="{{ false }}"><span style="display:inline-flex;align-items:center;justify-content:center;flex:none;width:20px;height:20px;overflow:visible;pointer-events:none"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.RadioGroup" name="rf" options="{{ f.rOpts }}" hint-size="16px,16px"></x-import></span></sc-if><sc-if value="{{ f.isIn }}" hint-placeholder-val="{{ false }}"><div style="flex:1;min-width:0;pointer-events:none;display:flex;flex-direction:column;gap:6px"><div class="fw"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Input" value="{{ f.dVal }}" readOnly="{{ true }}" hint-size="100%,32px"></x-import><i class="ph ph-calendar-blank" aria-hidden="true" style="position:absolute;right:12px;top:6px;font-size:20px;color:#525252;display:{{ f.dateDisp }}"></i></div><div style="display:flex;align-items:center;gap:4px;min-width:0;pointer-events:auto"><span style="min-width:0;font-size:12px;line-height:16px;color:#737373;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ f.ph }}{{ f.mapTxt }}</span><button type="button" onClick="{{ f.onEdit }}" title="Edit and map" aria-label="Edit and map" style="display:{{ f.editDisp }};flex:none;align-items:center;justify-content:center;width:20px;height:20px;padding:0;border:0;border-radius:6px;background:transparent;color:#525252;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph ph-pencil-simple" aria-hidden="true" style="font-size:14px"></i></button></div></div></sc-if><span style="font-size:11px;font-weight:500;color:#262626;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ f.label }}</span></div>
+        </sc-for>
+      </div>
+    </section>
+    <aside style="border-left:1px solid #E5E5E5;padding:16px;overflow:auto;display:flex;flex-direction:column;gap:16px">
+      <sc-if value="{{ noSel }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-weight:600">{{ fieldCount }} fields</span><span style="color:#737373;line-height:20px">Pick a tag, then click the page. Select a field to edit it.</span></div>
+      </sc-if>
+      <sc-if value="{{ hasSel }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;align-items:center;justify-content:space-between"><span style="font-weight:600">{{ sel.typeLabel }} field</span><button onClick="{{ deleteSel }}" title="Delete field" aria-label="Delete field" style="width:28px;height:28px;border:0;border-radius:8px;background:transparent;cursor:pointer;color:#DC2626" style-hover="background:#FEF2F2"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Label</label><input value="{{ sel.label }}" onChange="{{ setLabel }}" style="height:32px;padding:0 10px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif"></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Assigned to</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddRoleE.trigger }}" items="{{ ddRoleE.items }}" hint-size="268px,32px"></x-import></div>
+        <sc-if value="{{ sel.canAuto }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Auto-fill from transaction</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddSrcE.trigger }}" items="{{ ddSrcE.items }}" hint-size="268px,32px"></x-import></div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Show only if</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddCondE.trigger }}" items="{{ ddCondE.items }}" hint-size="268px,32px"></x-import></div>
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" label="Required" checked="{{ sel.req }}" onChange="{{ setReq }}" hint-size="auto,20px"></x-import>
+      </sc-if>
+    </aside>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isOrder }}" hint-placeholder-val="{{ false }}">
+  <main data-screen-label="Signing order" style="min-height:0;overflow:auto">
+    <div style="max-width:760px;margin:32px auto;padding:0 24px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 16px;background:#F7F7FE;border:1px solid #E4E4FB;border-radius:12px">
+        <span style="font-weight:600;margin-right:4px">Flow</span>
+        <sc-for list="{{ flow }}" as="g" hint-placeholder-count="3"><span style="display:inline-flex;align-items:center;gap:8px">{{ g.text }}<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:14px;color:#737373;display:{{ g.arrow }}"></i></span></sc-for>
+      </div>
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="3">
+        <div style="border:1px solid #E5E5E5;border-radius:14px;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px;background:#FAFAFA;border-bottom:1px solid #E5E5E5">
+            <span style="font-weight:600">Step {{ g.n }}</span>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;padding:2px;background:#F5F5F5;border-radius:10px;width:200px;box-sizing:border-box">
+              <button onClick="{{ g.setSeq }}" style="height:26px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;background:{{ g.seqBg }};box-shadow:{{ g.seqSh }}">One by one</button>
+              <button onClick="{{ g.setPar }}" style="height:26px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;background:{{ g.parBg }};box-shadow:{{ g.parSh }}">Together</button>
+            </div>
+          </div>
+          <sc-for list="{{ g.roles }}" as="r" hint-placeholder-count="2">
+            <div style="display:flex;align-items:center;gap:12px;height:48px;padding:0 16px;border-bottom:1px solid #F0F0F0">
+              <i class="ph ph-dots-six-vertical" aria-hidden="true" style="font-size:16px;color:#A3A3A3"></i>
+              <span style="width:12px;height:12px;border-radius:4px;background:{{ r.c }}"></span>
+              <span style="flex:1;font-weight:500">{{ r.name }}</span>
+              <span style="color:#737373;font-size:13px">{{ r.count }} fields</span>
+              <button onClick="{{ r.up }}" title="Move earlier" aria-label="Move earlier" style="width:28px;height:28px;border:0;border-radius:8px;background:transparent;cursor:pointer;opacity:{{ r.upO }}" style-hover="background:#F5F5F5"><i class="ph ph-arrow-up" aria-hidden="true" style="font-size:16px"></i></button>
+              <button onClick="{{ r.down }}" title="Move later" aria-label="Move later" style="width:28px;height:28px;border:0;border-radius:8px;background:transparent;cursor:pointer" style-hover="background:#F5F5F5"><i class="ph ph-arrow-down" aria-hidden="true" style="font-size:16px"></i></button>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+    </div>
+  </main>
+  </sc-if>
+
+  <sc-if value="{{ isFiller }}" hint-placeholder-val="{{ false }}">
+  <main data-screen-label="Filler" style="min-height:0;display:grid;grid-template-columns:400px minmax(0,1fr)">
+    <aside style="border-right:1px solid #E5E5E5;overflow:auto;padding:16px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:2px"><span style="font-weight:600">5670 Kearny Mesa Road, San Diego</span><span style="color:#737373;font-size:13px">{{ prefillCount }} fields prefilled from the transaction</span></div>
+      <sc-if value="{{ hasSugs }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ sugs }}" as="s" hint-placeholder-count="2">
+            <button onClick="{{ s.onClick }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:34px;max-width:100%;min-width:0;padding:6px 14px 6px 11px;border:1px solid #E4E4FB;border-radius:12px;background:linear-gradient(100deg,#F7F7FE 0%,#FCFAFD 48%,#FFFBF8 100%);font:500 13px/17px 'Mona Sans',sans-serif;text-align:left;cursor:pointer" style-hover="border-color:#C9CAF8;box-shadow:0 2px 12px rgba(90,95,242,.16)" style-active="transform:scale(.98)"><svg width="14" height="14" viewBox="0 0 24 24" style="flex:none;color:#6D6EF3"><path d="M12 2c.6 5 4 8.4 9 9-5 .6-8.4 4-9 9-.6-5-4-8.4-9-9 5-.6 8.4-4 9-9z" fill="currentColor"></path></svg><span style="background:linear-gradient(90deg,#7B7FF5,#5A5FF2,#F08068,#F0A468);-webkit-background-clip:text;background-clip:text;color:transparent">{{ s.label }}</span></button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-for list="{{ fillRows }}" as="f" hint-placeholder-count="5">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:8px"><label style="font-weight:500">{{ f.label }}</label><sc-if value="{{ f.pre }}" hint-placeholder-val="{{ false }}"><span style="height:20px;display:inline-flex;align-items:center;padding:0 8px;border-radius:26px;background:#EEEFFE;color:#4449d9;font-size:12px;font-weight:500">Prefilled</span></sc-if></div>
+          <sc-if value="{{ f.isText }}" hint-placeholder-val="{{ true }}"><input value="{{ f.value }}" onChange="{{ f.onChange }}" style="height:32px;padding:0 10px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif"></sc-if>
+          <sc-if value="{{ f.isDate }}" hint-placeholder-val="{{ false }}"><input type="date" value="{{ f.value }}" onChange="{{ f.onChange }}" style="height:32px;padding:0 10px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif"></sc-if>
+          <sc-if value="{{ f.isCheck }}" hint-placeholder-val="{{ false }}"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" class="rds-checkbox" checked="{{ f.checked }}" onChange="{{ f.onCheck }}" style="margin:0">Yes</label></sc-if>
+          <sc-if value="{{ f.isRadio }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.RadioGroup" name="{{ f.rName }}" value="{{ f.rVal }}" options="{{ f.rOpts }}" onChange="{{ f.rChange }}" hint-size="368px,60px"></x-import></sc-if>
+          <sc-if value="{{ f.isDrop }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ f.dd.trigger }}" items="{{ f.dd.items }}" hint-size="368px,32px"></x-import></sc-if>
+        </div>
+      </sc-for>
+    </aside>
+    <section style="background:#F5F5F5;overflow:auto;padding:24px;display:flex;justify-content:center;align-items:flex-start">
+      <div style="position:relative;width:100%;max-width:560px;aspect-ratio:8.5/11;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.06);flex:none;overflow:hidden">
+        <div style="position:absolute;left:10%;top:6%;right:10%;font-family:'Mona Sans',sans-serif;font-size:15px;font-weight:600;text-align:center">Residential purchase agreement</div>
+        <sc-for list="{{ lines }}" as="l" hint-placeholder-count="12"><div style="position:absolute;left:10%;top:{{ l.t }};width:{{ l.w }};height:5px;border-radius:3px;background:#EDEDED"></div></sc-for>
+        <sc-for list="{{ previewViews }}" as="f" hint-placeholder-count="4">
+          <div style="position:absolute;left:{{ f.x }};top:{{ f.y }};width:{{ f.w }};height:{{ f.h }};box-sizing:border-box;border-bottom:1px solid {{ f.bd }};background:{{ f.bg }};display:flex;align-items:center;padding:0 5px;overflow:hidden;font-size:11.5px;font-weight:500;color:#0A0A0A;white-space:nowrap;text-overflow:ellipsis">{{ f.text }}</div>
+        </sc-for>
+      </div>
+    </section>
+  </main>
+  </sc-if>
+
+
+<sc-if value="{{ isOther }}" hint-placeholder-val="{{ false }}"><div style="grid-row:1 / span 2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#737373"><i class="ph {{ otherIcon }}" aria-hidden="true" style="font-size:24px"></i><span style="font-weight:600;color:#0A0A0A">{{ otherTitle }}</span><span>Not part of this flow yet.</span></div></sc-if>
+  </div>
+</div>
+<x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Sheet" open="{{ hist }}" onClose="{{ closeHist }}" title="{{ histTitle }}" side="right" hint-size="0,0">
+<div style="display:flex;flex-direction:column;gap:8px">
+    <sc-for list="{{ versions }}" as="v" hint-placeholder-count="4">
+      <div style="border:1px solid {{ v.bd }};background:{{ v.bg }};border-radius:12px;overflow:hidden;flex:none">
+        <button type="button" onClick="{{ v.onClick }}" style="width:100%;text-align:left;border:0;background:transparent;padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:4px;font:14px 'Mona Sans',sans-serif;min-width:0">
+          <span style="display:flex;align-items:center;gap:8px"><span style="font-weight:600">{{ v.name }}</span><sc-if value="{{ v.current }}" hint-placeholder-val="{{ false }}"><span style="height:20px;display:inline-flex;align-items:center;padding:0 8px;border-radius:26px;background:#E8F3DE;color:#3F6B1F;font-size:12px;font-weight:500">Current</span></sc-if></span>
+          <span style="color:#262626">{{ v.title }}</span>
+          <span style="color:#737373;font-size:13px">{{ v.by }} · {{ v.when }}</span>
+        </button>
+        <sc-if value="{{ v.open }}" hint-placeholder-val="{{ false }}"><div style="border-top:1px solid #E5E5E5;background:#fff;display:flex;flex-direction:column">
+          <sc-for list="{{ v.chg }}" as="c" hint-placeholder-count="2"><div style="display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border-bottom:1px solid #F0F0F0"><i class="ph {{ c.icon }}" aria-hidden="true" style="font-size:16px;line-height:20px;color:{{ c.color }};flex:none"></i><span style="min-width:0;line-height:20px">{{ c.text }}</span></div></sc-for>
+          <sc-if value="{{ v.canRestore }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 14px"><button type="button" onClick="{{ restore }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:8px;cursor:pointer" style-hover="background:#4F54E0" style-active="transform:scale(.98)"><i class="ph ph-arrow-counter-clockwise" aria-hidden="true" style="font-size:16px"></i>Restore this version</button></div></sc-if>
+        </div></sc-if>
+      </div>
+    </sc-for>
+  </div>
+</x-import>
+<sc-if value="{{ modalUpload }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Upload modal" onClick="{{ closeUpModal }}" style="position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.5);display:flex;align-items:center;justify-content:center;padding:24px">
+  <div onClick="{{ stopUp }}" style="width:{{ upW }};max-width:100%;background:#fff;border-radius:14px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);display:flex;flex-direction:column">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 0 20px"><h2 style="margin:0;font:600 20px/28px 'Mona Sans',sans-serif;letter-spacing:-.025em">Upload document</h2><button type="button" onClick="{{ closeUpModal }}" aria-label="Close" title="Close" style="width:32px;height:32px;border:0;background:transparent;border-radius:10px;cursor:pointer;color:#404040" style-hover="background:#F5F5F5"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button></div>
+    <div style="padding:16px 20px 20px">
+      <sc-if value="{{ upNone }}" hint-placeholder-val="{{ true }}">
+      <div onDragOver="{{ dragOver }}" onDrop="{{ dropFile }}" style="min-height:220px;border:1.5px dashed #C7C9FA;border-radius:14px;background:#F7F7FE;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+        <div style="width:40px;height:40px;border-radius:10px;background:#EEEFFE;display:flex;align-items:center;justify-content:center;color:#5A5FF2"><i class="ph ph-upload-simple" aria-hidden="true" style="font-size:20px"></i></div>
+        <div style="color:#404040">Drop your PDFs here or</div>
+        <div style="position:relative">
+          <button type="button" onClick="{{ toggleUpMenu }}" style="height:32px;padding:0 14px;display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#4D52E0" style-active="transform:scale(.98)">Upload<i class="ph ph-caret-down" aria-hidden="true" style="font-size:12px"></i></button>
+          <sc-if value="{{ upMenu }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:38px;left:50%;transform:translateX(-50%);z-index:5;width:208px;padding:6px;display:flex;flex-direction:column;border:1px solid #E5E5E5;border-radius:10px;background:#fff;box-shadow:0 4px 6px -1px rgba(0,0,0,.1)"><button type="button" onClick="{{ pickBatch }}" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;font:400 14px 'Mona Sans',sans-serif;cursor:pointer;color:#171717;text-align:left" style-hover="background:#F5F5F5"><i class="ph ph-desktop" aria-hidden="true" style="font-size:18px;color:#525252"></i>Desktop (multiple files)</button><button type="button" onClick="{{ pickFile }}" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;font:400 14px 'Mona Sans',sans-serif;cursor:pointer;color:#171717;text-align:left" style-hover="background:#F5F5F5"><i class="ph ph-file" aria-hidden="true" style="font-size:18px;color:#525252"></i>Desktop (single file)</button><div style="height:1px;margin:6px 4px;background:#E5E5E5"></div><button type="button" onClick="{{ pickFile }}" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;font:400 14px 'Mona Sans',sans-serif;cursor:pointer;color:#171717;text-align:left" style-hover="background:#F5F5F5"><i class="ph ph-dropbox-logo" aria-hidden="true" style="font-size:18px;color:#525252"></i>Dropbox</button><button type="button" onClick="{{ pickFile }}" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;font:400 14px 'Mona Sans',sans-serif;cursor:pointer;color:#171717;text-align:left" style-hover="background:#F5F5F5"><i class="ph ph-google-drive-logo" aria-hidden="true" style="font-size:18px;color:#525252"></i>Google Drive</button><button type="button" onClick="{{ pickFile }}" style="display:flex;align-items:center;gap:10px;height:34px;padding:0 10px;border:0;border-radius:6px;background:transparent;font:400 14px 'Mona Sans',sans-serif;cursor:pointer;color:#171717;text-align:left" style-hover="background:#F5F5F5"><i class="ph ph-cloud" aria-hidden="true" style="font-size:18px;color:#525252"></i>OneDrive</button></div></sc-if>
+        </div>
+        <div style="font-size:12px;color:#737373">One or many PDFs · up to 50 MB each</div>
+      </div>
+      </sc-if>
+      <sc-if value="{{ upBusy }}" hint-placeholder-val="{{ false }}">
+      <div style="min-height:220px;border:1px solid #E5E5E5;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px"><i class="ph ph-circle-notch" aria-hidden="true" style="font-size:28px;color:#5A5FF2;animation:upsp .8s linear infinite"></i><div style="font-weight:500;max-width:80%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ fileName }}</div><div style="width:200px;height:3px;border-radius:2px;background:#EEEFFE"><div style="width:85%;height:3px;border-radius:2px;background:#5A5FF2"></div></div></div>
+      </sc-if>
+      <sc-if value="{{ upBatch }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="font-weight:600;flex:1">{{ bUpTitle }}</span><span style="font-size:12px;color:#737373">{{ bUpSub }}</span></div>
+        <div style="max-height:320px;overflow:auto;border:1px solid #E5E5E5;border-radius:10px">
+          <sc-for list="{{ bdocs }}" as="d" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid #F0F0F0;min-width:0">
+              <i class="ph ph-file-pdf" aria-hidden="true" style="font-size:20px;color:#DC2626;flex:none"></i>
+              <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px"><span style="font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.name }}</span><span style="font-size:12px;color:{{ d.metaC }};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ d.meta }}</span></div>
+              <sc-if value="{{ d.isUp }}" hint-placeholder-val="{{ false }}"><div style="flex:none;display:flex;align-items:center;gap:8px;width:150px"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Spinner" size="14" hint-size="14px,14px"></x-import><div style="flex:1;min-width:0"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Progress" value="{{ d.pct }}" hint-size="100%,6px"></x-import></div><span style="width:30px;text-align:right;font-size:12px;color:#737373;font-variant-numeric:tabular-nums">{{ d.pctText }}</span></div></sc-if>
+              <sc-if value="{{ d.isOk }}" hint-placeholder-val="{{ false }}"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Badge" variant="green" hint-size="84px,20px"><i class="ph ph-check-circle" aria-hidden="true" style="font-size:12px;margin-right:4px"></i>Uploaded</x-import></sc-if>
+              <sc-if value="{{ d.isErr }}" hint-placeholder-val="{{ false }}"><div style="flex:none;display:flex;align-items:center;gap:8px"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Badge" variant="red" hint-size="64px,20px"><i class="ph ph-warning-circle" aria-hidden="true" style="font-size:12px;margin-right:4px"></i>Failed</x-import><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Button" variant="outline" size="xs" onClick="{{ d.retry }}" hint-size="64px,24px"><i class="ph ph-arrow-clockwise" aria-hidden="true" style="font-size:12px"></i>Retry</x-import></div></sc-if>
+              <button type="button" aria-label="Remove file" title="Remove file" onClick="{{ d.drop }}" style="flex:none;width:28px;height:28px;border:0;border-radius:8px;background:transparent;cursor:pointer;color:#737373" style-hover="background:#F5F5F5"><i class="ph ph-x" aria-hidden="true" style="font-size:14px"></i></button>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" onClick="{{ closeUpModal }}" style="height:32px;padding:0 14px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer">Cancel</button><button type="button" disabled="{{ bUpOff }}" onClick="{{ toBatch }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;opacity:{{ bUpOp }}">Review documents</button></div>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ modalDetails }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Details modal" style="position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.5);display:flex;align-items:center;justify-content:center;padding:24px">
+  <div style="width:720px;max-width:100%;background:#fff;border-radius:14px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px 20px;border-bottom:1px solid #E5E5E5"><h2 style="margin:0;font:600 20px/28px 'Mona Sans',sans-serif;letter-spacing:-.025em">Document details</h2><button type="button" onClick="{{ askLeave }}" aria-label="Close" title="Close" style="width:32px;height:32px;border:0;background:transparent;border-radius:10px;cursor:pointer;color:#404040" style-hover="background:#F5F5F5"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button></div>
+    <div style="display:grid;grid-template-columns:240px minmax(0,1fr)">
+      <div style="background:#F7F7FE;border-right:1px solid #E4E4FB;padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div style="display:flex;flex-direction:column;gap:4px"><span style="font-size:13px;color:#737373">Template ID</span><span style="font-family:'Mona Sans',sans-serif;font-size:26px;font-weight:600;letter-spacing:-.025em;font-variant-numeric:tabular-nums">{{ newId }}</span></div>
+        <div style="height:1px;background:#E4E4FB"></div>
+        <div style="display:flex;align-items:center;gap:10px;min-width:0"><i class="ph ph-file-pdf" aria-hidden="true" style="font-size:24px;color:#DC2626;flex:none"></i><div style="min-width:0"><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500">{{ fileName }}</div><div style="font-size:13px;color:#737373">12 pages · 2.4 MB</div></div></div>
+      </div>
+      <div style="padding:20px;display:flex;flex-direction:column;gap:16px;min-width:0">
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Document name</label><input value="{{ metaName }}" onChange="{{ setName }}" style="height:32px;padding:0 10px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif"></div>
+        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px">
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">State</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddMetaState.trigger }}" items="{{ ddMetaState.items }}" hint-size="200px,32px"></x-import></div>
+          <sc-if value="{{ showMetaSub }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Area</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddMetaSub.trigger }}" items="{{ ddMetaSub.items }}" hint-size="200px,32px"></x-import></div></sc-if>
+          <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Type</label>
+            <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;padding:2px;background:#F5F5F5;border-radius:10px;height:32px;box-sizing:border-box">
+              <button onClick="{{ setPur }}" style="border:0;border-radius:8px;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;background:{{ purBg }};box-shadow:{{ purSh }}">Purchase</button>
+              <button onClick="{{ setLst }}" style="border:0;border-radius:8px;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;background:{{ lstBg }};box-shadow:{{ lstSh }}">Listing</button>
+            </div></div>
+        </div>
+        <button onClick="{{ applyDetected }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;min-height:34px;max-width:100%;padding:6px 14px 6px 11px;border:1px solid #E4E4FB;border-radius:12px;background:linear-gradient(100deg,#F7F7FE 0%,#FCFAFD 48%,#FFFBF8 100%);font:500 13px/17px 'Mona Sans',sans-serif;text-align:left;cursor:pointer" style-hover="border-color:#C9CAF8;box-shadow:0 2px 12px rgba(90,95,242,.16)" style-active="transform:scale(.98)"><svg width="14" height="14" viewBox="0 0 24 24" style="flex:none;color:#6D6EF3"><path d="M12 2c.6 5 4 8.4 9 9-5 .6-8.4 4-9 9-.6-5-4-8.4-9-9 5-.6 8.4-4 9-9z" fill="currentColor"></path></svg><span style="background:linear-gradient(90deg,#7B7FF5,#5A5FF2,#F08068,#F0A468);-webkit-background-clip:text;background-clip:text;color:transparent">Mel read the file: Texas, purchase</span></button>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #E5E5E5"><button type="button" onClick="{{ backUp }}" style="height:32px;padding:0 14px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#F5F5F5" style-active="transform:scale(.98)">Back</button><button type="button" onClick="{{ toTag }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;" style-hover="background:#4F54E0" style-active="transform:scale(.98)">Open editor<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:16px"></i></button></div>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ mapDlgOpen }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Map field popover" onClick="{{ closeMapDlg }}" style="position:fixed;inset:0;z-index:60">
+  <div role="dialog" aria-label="Map field" onClick="{{ stopProp }}" style="position:fixed;left:{{ mapX }}px;top:{{ mapY }}px;width:360px;background:#fff;border:1px solid #E5E5E5;border-radius:14px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px 20px;border-bottom:1px solid #E5E5E5"><h2 style="margin:0;font:600 18px/26px 'Mona Sans',sans-serif;letter-spacing:-.025em">Map field</h2><button type="button" onClick="{{ closeMapDlg }}" aria-label="Close" title="Close" style="width:32px;height:32px;border:0;background:transparent;border-radius:10px;cursor:pointer;color:#404040" style-hover="background:#F5F5F5"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button></div>
+    <div style="padding:20px;display:flex;flex-direction:column;gap:16px">
+      <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Label</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Input" value="{{ sel.label }}" onChange="{{ setLabel }}" hint-size="100%,32px"></x-import></div>
+      <sc-if value="{{ sel.canAuto }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Cover sheet value</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddSrcMapT.trigger }}" items="{{ ddSrcMapT.items }}" hint-size="308px,32px"></x-import></div>
+        <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" label="Hide from filler" checked="{{ sel.hide }}" onChange="{{ setHide }}" hint-size="auto,20px"></x-import>
+      </sc-if>
+      <sc-if value="{{ sel.noAuto }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex;flex-direction:column;gap:6px"><label style="font-weight:500">Signer</label><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddRoleT.trigger }}" items="{{ ddRoleT.items }}" hint-size="308px,32px"></x-import></div>
+      </sc-if>
+    </div>
+    <div style="display:flex;justify-content:flex-end;padding:12px 20px;border-top:1px solid #E5E5E5"><button type="button" onClick="{{ closeMapDlg }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#4F54E0" style-active="transform:scale(.98)">Done</button></div>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ modalBDetails }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Batch details modal" style="position:fixed;inset:0;z-index:50;background:rgba(10,10,10,.5);display:flex;align-items:center;justify-content:center;padding:24px">
+  <div style="width:960px;max-width:100%;max-height:100%;background:#fff;border-radius:14px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px 20px;border-bottom:1px solid #E5E5E5;flex:none"><h2 style="margin:0;font:600 20px/28px 'Mona Sans',sans-serif;letter-spacing:-.025em">Document details · {{ bTotal }} documents</h2><button type="button" onClick="{{ askLeave }}" aria-label="Close" title="Close" style="width:32px;height:32px;border:0;background:transparent;border-radius:10px;cursor:pointer;color:#404040" style-hover="background:#F5F5F5"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button></div>
+    <sc-if value="{{ bBanner }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:12px;padding:12px 20px;background:#F7F7FE;border-bottom:1px solid #E4E4FB;flex:none;flex-wrap:wrap">
+      <span style="font-size:13px;color:#404040;font-weight:600">{{ bSelText }}</span><button type="button" onClick="{{ bClear }}" style="height:32px;padding:0 10px;border:0;border-radius:10px;background:transparent;color:#4449d9;font:500 13px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#EDEDFC">Clear</button><span style="width:1px;height:20px;background:#E4E4FB"></span>
+      <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ ddAllState.trigger }}" items="{{ ddAllState.items }}" hint-size="170px,32px"></x-import>
+      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;padding:2px;background:#fff;border:1px solid #E5E5E5;border-radius:10px;height:32px;box-sizing:border-box;width:200px"><button type="button" onClick="{{ allPur }}" style="border:0;border-radius:8px;background:transparent;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#F5F5F5">Purchase</button><button type="button" onClick="{{ allLst }}" style="border:0;border-radius:8px;background:transparent;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#F5F5F5">Listing</button></div>
+      <span style="flex:1"></span><span style="font-size:12px;color:#737373">Template IDs are generated from state and type</span>
+    </div></sc-if>
+    <div style="display:grid;grid-template-columns:16px 132px minmax(0,1fr) 120px 148px;gap:12px;align-items:center;height:40px;padding:0 20px;background:#FAFAFA;border-bottom:1px solid #E5E5E5;font-size:12px;font-weight:600;color:#737373;flex:none"><input type="checkbox" class="rds-checkbox" checked="{{ bAllSel }}" onChange="{{ bToggleAll }}" aria-label="Select all documents" title="Select all documents" style="margin:0;cursor:pointer"><span>Template ID</span><span>Document name</span><span>State</span><span>Type</span></div>
+    <div style="overflow:auto;min-height:0;flex:1">
+      <sc-for list="{{ brows }}" as="r" hint-placeholder-count="5">
+        <div style="display:grid;grid-template-columns:16px 132px minmax(0,1fr) 120px 148px;gap:12px;align-items:center;padding:10px 20px;border-bottom:1px solid #F0F0F0;background:{{ r.rowBg }}">
+          <input type="checkbox" class="rds-checkbox" checked="{{ r.sel }}" onChange="{{ r.toggle }}" aria-label="Select document" title="Select document" style="margin:0;cursor:pointer">
+          <span style="font-weight:600;font-variant-numeric:tabular-nums;color:#4449d9">{{ r.id }}</span>
+          <input value="{{ r.name }}" onChange="{{ r.setName }}" style="height:32px;padding:0 8px;border:1px solid #E5E5E5;border-radius:8px;font:14px 'Mona Sans',sans-serif;background:#fff;min-width:0;width:100%;box-sizing:border-box;padding:0 10px">
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ r.ddSt.trigger }}" items="{{ r.ddSt.items }}" hint-size="120px,32px"></x-import>
+          <x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.DropdownMenu" trigger="{{ r.ddSide.trigger }}" items="{{ r.ddSide.items }}" hint-size="148px,32px"></x-import>
+
+        </div>
+      </sc-for>
+    </div>
+    <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #E5E5E5;flex:none"><button type="button" onClick="{{ bdBack }}" style="height:32px;padding:0 14px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#F5F5F5">Back</button><button type="button" onClick="{{ toBatchTag }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px" style-hover="background:#4F54E0" style-active="transform:scale(.98)">Open editor<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:16px"></i></button></div>
+  </div>
+</div>
+</sc-if>
+<sc-if value="{{ leaveOpen }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Leave warning" style="position:fixed;inset:0;z-index:60;background:rgba(10,10,10,.5);display:flex;align-items:center;justify-content:center;padding:24px">
+  <div style="width:420px;max-width:100%;background:#fff;border-radius:14px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -4px rgba(0,0,0,.1);padding:20px;display:flex;flex-direction:column;gap:16px">
+    <div style="display:flex;flex-direction:column;gap:6px"><h2 style="margin:0;font:600 20px/28px 'Mona Sans',sans-serif;letter-spacing:-.025em">Leave without finalizing?</h2><span style="color:#525252;line-height:20px">{{ leaveText }}</span></div>
+    <div style="display:flex;justify-content:flex-end;gap:8px"><button type="button" onClick="{{ stayHere }}" style="height:32px;padding:0 14px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer" style-hover="background:#F5F5F5" style-active="transform:scale(.98)">Keep editing</button><button type="button" onClick="{{ leaveNow }}" style="height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px;" style-hover="background:#4F54E0" style-active="transform:scale(.98)">Leave</button></div>
+  </div>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900},&quot;start&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = {
+    soOpen:true, section:'docs', hist:false, view:'dash', modal:'none', tagPhase:'draft', askApprove:false, msgs:[], chatIn:'', rtab:'mel', leave:false, typing:false, saved:{}, tagId:'', tagName:'', tab:'all', q:'', stateF:'all', sideF:'all', creating:false, step:1, editing:null,
+    batch:[], bsel:{}, bcur:0, bpop:'', bpanel:'', bfsel:[], bpat:'{name} - {n}', btagIn:'', bbulk:'', fileName:'', up:'none', upMenu:false, docMenu:false, meta:{name:'', state:'TX', sub:'MLS', side:'PUR'}, tool:null, sel:null, nextId:20, verIdx:0,
+    selMode:false, dsel:{}, defs:{'TX-PUR-0001':['PUR'],'TX-LST-0001':['LST'],'CA-LST-0001':['LST']}, dToast:null, forceMenu:'',
+    docs:[
+      {id:'TX-PUR-0001',name:'Residential purchase agreement',status:'Completed',edited:'Oct 6, 2026'},
+      {id:'TX-PUR-0002',name:'Seller disclosure notice',status:'Draft',edited:'Oct 8, 2026'},
+      {id:'TX-LST-0001',name:'Residential listing agreement',status:'Completed',edited:'Sep 29, 2026'},
+      {id:'TX-LST-0002',name:'Lead-based paint addendum',status:'Draft',edited:'Oct 9, 2026'},
+      {id:'CA-PUR-0001',name:'California residential purchase agreement',status:'Completed',edited:'Sep 12, 2026'},
+      {id:'CA-LST-0001',name:'California residential listing agreement',status:'Completed',edited:'Sep 20, 2026'},
+      {id:'FL-PUR-0001',name:'As-is residential contract for sale',status:'Draft',edited:'Oct 7, 2026'},
+      {id:'AZ-PUR-0001',name:'Arizona residential resale purchase contract',status:'Draft',edited:'Oct 3, 2026'},
+      {id:'WA-LST-0001',name:'Washington listing agreement',status:'Completed',edited:'Jun 2, 2026'},
+      {id:'NY-PUR-0001',name:'New York residential contract of sale',status:'Completed',edited:'Oct 1, 2026',sub:'MLS'},
+      {id:'NY-PUR-0002',name:'Queens co-op purchase agreement',status:'Draft',edited:'Oct 8, 2026',sub:'QNS'},
+      {id:'CO-PUR-0001',name:'Contract to buy and sell real estate',status:'Completed',edited:'May 18, 2026'}
+    ],
+    fields:[
+      {id:1,type:'text',label:'Buyer names',role:'Buyer',x:10,y:14,w:42,src:'client',cond:'always',req:true},
+      {id:2,type:'text',label:'Property address',role:'Buyer',x:10,y:24,w:60,src:'address',cond:'always',req:true},
+      {id:3,type:'text',label:'Purchase price',role:'Buyer',x:10,y:34,w:38,src:'price',cond:'always',req:true},
+      {id:4,type:'date',label:'Closing date',role:'Buyer',x:52,y:34,w:38,src:'closing',cond:'always',req:true},
+      {id:5,type:'checkbox',label:'Financing contingency',role:'Buyer',x:10,y:46,w:3,src:'none',cond:'always',req:false},
+      {id:6,type:'text',label:'Loan type',role:'Buyer',x:10,y:52,w:30,src:'none',cond:'fin',req:true},
+      {id:7,type:'signature',label:'Buyer signature',role:'Buyer',x:10,y:78,w:32,src:'none',cond:'always',req:true},
+      {id:8,type:'signature',label:'Seller signature',role:'Seller',x:56,y:78,w:32,src:'none',cond:'always',req:true},
+      {id:9,type:'initials',label:'Buyer initials',role:'Buyer',x:10,y:88,w:12,src:'none',cond:'always',req:true}
+    ],
+    groups:[{mode:'par',roles:['Buyer','Co-buyer']},{mode:'seq',roles:['Seller']},{mode:'seq',roles:['Agent']}],
+    vals:{},
+    versions:[
+      {name:'v4',title:'Added conditional loan type',by:'Jessica Tran',when:'Oct 6, 2026',changes:[{k:'a',t:'Added dropdown "Loan type"'},{k:'c',t:'Loan type shows only if Financing contingency is checked'}]},
+      {name:'v3',title:'Changed signing order',by:'Marcus Lee',when:'Oct 2, 2026',changes:[{k:'c',t:'Co-buyer now goes together with Buyer'},{k:'c',t:'Agent moved to last step'}]},
+      {name:'v2',title:'Retagged page 3 initials',by:'Jessica Tran',when:'Sep 24, 2026',changes:[{k:'r',t:'Removed 2 duplicate initials fields'},{k:'a',t:'Added Buyer initials on pages 3 and 7'}]},
+      {name:'v1',title:'Uploaded',by:'Marcus Lee',when:'Sep 22, 2026',changes:[{k:'a',t:'Uploaded PDF, 12 pages'},{k:'a',t:'Generated template ID TX-PUR-0001'}]}
+    ]
+  };
+  constructor(p){super(p);this.PRE={"client":"Maria Alvarez, Daniel Reyes","buyer1":"Maria Alvarez","buyer2":"Daniel Reyes","buyeremail":"maria.alvarez@email.com","buyerphone":"(619) 555-0142","seller":"Harold & Joan Whitfield","selleremail":"whitfield.h@email.com","address":"5670 Kearny Mesa Road, San Diego, CA 92111","street":"5670 Kearny Mesa Road","city":"San Diego","state":"CA","zip":"92111","county":"San Diego","price":"$1,285,000","earnest":"$25,000","acceptance":"2026-10-02","closing":"2026-11-14","loanamt":"$1,028,000","agent":"Jessica Tran","agentemail":"jessica.tran@radius.com","agentphone":"(858) 555-0177","brokerage":"Radius Agent Realty","license":"DRE 02145873"};
+    this.TYPES={"signature":["Signature","ph-signature"],"initials":["Initials","ph-text-aa"],"datesigned":["Date signed","ph-calendar-check"],"approve":["Approve","ph-check-circle"],"decline":["Decline","ph-x-circle"],"fullname":["Full name","ph-user"],"firstname":["First name","ph-user-circle"],"lastname":["Last name","ph-user-circle"],"email":["Email address","ph-envelope-simple"],"company":["Company","ph-buildings"],"jobtitle":["Title","ph-identification-badge"],"text":["Text","ph-text-t"],"number":["Number","ph-hash"],"date":["Date","ph-calendar-blank"],"checkbox":["Checkbox","ph-check-square"],"radio":["Radio group","ph-radio-button"],"dropdown":["Dropdown","ph-caret-circle-down"],"note":["Note","ph-note"],"attachment":["Attachment","ph-paperclip"],"formula":["Formula","ph-function"],"stamp":["Stamp","ph-stamp"],"payment":["Payment","ph-credit-card"]};this.WID={"signature":30,"initials":12,"datesigned":24,"approve":16,"decline":16,"fullname":34,"firstname":24,"lastname":24,"email":34,"company":30,"jobtitle":28,"text":34,"number":20,"date":24,"checkbox":3,"radio":3,"dropdown":28,"note":50,"attachment":28,"formula":24,"stamp":22,"payment":28};this.TGROUPS=[["Signing",["signature","initials","datesigned"]],["Input",["text","date","checkbox","radio"]]];
+    this.BASE=this.state.fields;this.SRC={"client":"Buyer names","buyer1":"Buyer 1 name","buyer2":"Buyer 2 name","buyeremail":"Buyer email","buyerphone":"Buyer phone","seller":"Seller names","selleremail":"Seller email","address":"Property address","street":"Street","city":"City","state":"State","zip":"ZIP code","county":"County","price":"Sale price","earnest":"Earnest money","acceptance":"Acceptance date","closing":"Closing date","loanamt":"Loan amount","agent":"Agent name","agentemail":"Agent email","agentphone":"Agent phone","brokerage":"Brokerage","license":"License number"};
+    this.RC={Buyer:'#5A5FF2','Co-buyer':'#2563EB',Seller:'#EA580C',Agent:'#6DA544'};}
+  pad(n){return String(n).padStart(4,'0')}
+  prefix(){return this.state.meta.state+'-'+this.state.meta.side+'-'}
+  newId(){const p=this.prefix();return p+this.pad(this.state.docs.filter(d=>d.id.startsWith(p)).length+1)}
+  val(f){if(!f)return '';const v=this.state.vals[f.id];if(v!==undefined)return v;if(f.src&&f.src!=='none')return this.PRE[f.src];return f.type==='checkbox'?false:''}
+  visible(f){return f.cond==='always'||!!this.val(this.state.fields.find(x=>x.type==='checkbox'))}
+  fillable(f){return ['text','date','checkbox','dropdown','radio'].includes(f.type)&&this.visible(f)}
+  filled(f){const v=this.val(f);return f.type==='checkbox'?true:!!v}
+  upd(id,k,v){this.setState(s=>({fields:s.fields.map(f=>f.id===id?{...f,[k]:v}:f)}))}
+  setVal(id,v){this.setState(s=>({vals:{...s.vals,[id]:v}}))}
+  moveRole(gi,role,dir){this.setState(s=>{let g=s.groups.map(x=>({...x,roles:x.roles.filter(r=>r!==role)}));const t=gi+dir;if(t<0)return null;if(t>=g.length)g.push({mode:'seq',roles:[role]});else g[t].roles.push(role);g=g.filter(x=>x.roles.length);return {groups:g}})}
+  setMode(gi,m){this.setState(s=>({groups:s.groups.map((g,i)=>i===gi?{...g,mode:m}:g)}))}
+  statusColors(s){return {Draft:['#F5F5F5','#404040'],Completed:['#E8F3DE','#3F6B1F']}[s]}
+  startUp(n){this.setState({up:'busy',upMenu:false,docMenu:false,fileName:n,meta:{...this.state.meta,name:n.replace(/\.pdf$/i,'')}});clearTimeout(this._u);this._u=setTimeout(()=>this.setState({up:'done',modal:this.state.modal==='upload'?'details':this.state.modal}),1100)}
+  rowOpen(d){const s=this.state,sv=s.saved[d.id]||(d.status==='Draft'?{fields:[],phase:'draft'}:{fields:this.BASE,phase:'approved'});this.setState({view:'tag',editing:d.id,tagId:d.id,tagName:d.name,creating:false,fields:sv.fields,tagPhase:sv.phase,askApprove:false,msgs:sv.fields.length?[{mel:true,text:sv.phase==='approved'?'This template is approved. Edit any tag and I will keep the layer in sync.':'Welcome back. Your draft layer is still here. Approve it when you are ready.'}]:this.INTRO(),sel:null,tool:null,rtab:'mel'})}
+  PRE_TAGS=['Disclosure','Contract','Addendum','Closing','Buyer','Seller'];
+  startBatch(files){const docs=files.map((f,i)=>({id:i+1,name:f.name,pages:f.pages,status:'up',err:f.err||'',dup:!!f.dup,tags:[],fields:[],phase:'draft',sel:false,state:'TX',side:'PUR'}));
+    this.setState({up:'batch',upMenu:false,batch:docs,bcur:0});
+    docs.forEach((d,i)=>setTimeout(()=>this.setState(s=>({batch:s.batch.map(x=>x.id===d.id?{...x,status:d.err?'err':'ok',pct:d.err?62:100}:x)})),1400+i*450));this.tick()}
+  tick(){if(this._pt)return;this._pt=setInterval(()=>{const s=this.state;if(!s.batch.some(x=>x.status==='up')){clearInterval(this._pt);this._pt=0;return}this.setState({batch:s.batch.map(x=>x.status==='up'?{...x,pct:Math.min(x.err&&!x.retried?62:92,(x.pct||0)+3+Math.random()*7)}:x)})},140)}
+  retryDoc(id){this.setState(s=>({batch:s.batch.map(x=>x.id===id?{...x,status:'up',err:'',pct:0,retried:true}:x)}));this.tick();setTimeout(()=>this.setState(s=>({batch:s.batch.map(x=>x.id===id?{...x,status:'ok',pct:100}:x)})),1800)}
+  demoFiles(){const n=['Purchase Agreement','Addendum A','Lead Paint Disclosure','Seller Disclosure','Seller Disclosure (1)','Wire Instructions','Closing Disclosure','Title Commitment','HOA Resale Certificate','Survey Plat'],p=[14,3,2,9,9,1,6,5,11,2];
+    return n.map((x,i)=>({name:x+'.pdf',pages:p[i],dup:i===4,err:i===9?'Connection lost at 62%. Retry to resume.':''}))}
+  bsaved(){const s=this.state;if(s.view!=='tag')return s.batch;return s.batch.map((d,k)=>k===s.bcur?{...d,fields:s.fields,phase:s.tagPhase}:d)}
+  scrollDoc(i){const el=document.getElementById('bdoc-'+i);if(!el)return;const sc=el.parentElement;sc.scrollTo({top:Math.max(0,el.offsetTop-52),behavior:'smooth'})}
+  onBScroll(e){if(this.state.view!=='tag'||this.state.batch.length<2||this._bl)return;const sc=e.currentTarget,top=sc.getBoundingClientRect().top;let c=0;for(let i=0;i<this.state.batch.length;i++){const el=document.getElementById('bdoc-'+i);if(el&&el.getBoundingClientRect().top<=top+160)c=i}if(c!==this.state.bcur){this._ns=true;const tl=this.state.tool;this.bgo(c);this.setState({tool:tl});this._ns=false}}
+  bgo(i){const s=this.state,b=this.bsaved(),t=b[i];if(!t)return;if(!this._ns){this._bl=true;this.scrollDoc(i);clearTimeout(this._blt);this._blt=setTimeout(()=>{this._bl=false},700)}this.setState({batch:b,bcur:i,fields:t.fields,tagPhase:t.phase,tagName:t.name.replace(/\.pdf$/i,''),sel:null,tool:null,askApprove:false,msgs:this.INTRO(),bpanel:'',bpop:'',btagIn:''})}
+  bids(b){const cnt={};return b.map(d=>{const p=d.state+'-'+d.side+'-';if(cnt[p]===undefined)cnt[p]=this.state.docs.filter(x=>x.id.startsWith(p)).length;return p+this.pad(++cnt[p])})}
+  finishBatch(){const s=this.state,b=this.bsaved(),ids=this.bids(b);const saved={...s.saved};
+    const rows=b.map((d,i)=>{const id=ids[i];saved[id]={fields:d.fields,phase:d.phase};return {id,name:d.name.replace(/\.pdf$/i,''),status:d.fields.length?(d.phase==='approved'?'Completed':'Draft'):'Draft',edited:'Just now',tags:d.tags}});
+    this.backToDash({docs:[...rows,...s.docs],tab:'all',saved})}
+  ddBtn(label,w){const E=React.createElement;return E('button',{type:'button',style:{width:w,height:32,padding:'0 10px',border:'1px solid #E5E5E5',borderRadius:8,background:'#fff',font:"14px 'Mona Sans',sans-serif",display:'flex',alignItems:'center',justifyContent:'space-between',gap:8,cursor:'pointer',color:'#0A0A0A',boxSizing:'border-box'}},E('span',{style:{overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}},label),E('i',{className:'ph ph-caret-down','aria-hidden':'true',style:{fontSize:14,color:'#737373',flex:'none'}}))}
+  dd(cur,opts,pick,w,ph){const E=React.createElement;const f=opts.find(o=>Array.isArray(o)&&o[0]===cur);return {trigger:this.ddBtn(f?f[1]:(ph||'Select'),w),items:opts.map(o=>Array.isArray(o)?{label:o[1],icon:E('i',{className:'ph ph-check','aria-hidden':'true',style:{fontSize:16,opacity:cur===o[0]?1:0,color:'#5A5FF2'}}),onSelect:()=>pick(o[0])}:o)}}
+  OPT(){const L=l=>({type:'label',label:l});return {
+    role:['Buyer','Co-buyer','Seller','Agent'].map(x=>[x,x]),
+    cond:[['always','Always shown'],['fin','Financing contingency is checked']],
+    st:[['TX','Texas'],['CA','California'],['FL','Florida'],['AZ','Arizona'],['WA','Washington'],['CO','Colorado'],['NY','New York']],
+    sub:[['MLS','MLS-based'],['QNS','Queens'],['BKN','Brooklyn'],['MAN','Manhattan'],['BRX','The Bronx'],['SI','Staten Island'],['LI','Long Island'],['WST','Westchester']],
+    drop:[['','Select'],['Conventional','Conventional'],['FHA','FHA'],['VA','VA'],['Cash','Cash']],
+    src:[['none','Not mapped'],L('Clients'),['client','Buyer names'],['buyer1','Buyer 1 name'],['buyer2','Buyer 2 name'],['buyeremail','Buyer email'],['buyerphone','Buyer phone'],['seller','Seller names'],['selleremail','Seller email'],L('Property'),['address','Property address'],['street','Street'],['city','City'],['state','State'],['zip','ZIP code'],['county','County'],L('Deal'),['price','Sale price'],['earnest','Earnest money'],['acceptance','Acceptance date'],['closing','Closing date'],['loanamt','Loan amount'],L('Agent'),['agent','Agent name'],['agentemail','Agent email'],['agentphone','Agent phone'],['brokerage','Brokerage'],['license','License number']]}}
+  INTRO(){return [{mel:true,text:'This document has no fields yet. I can tag it and map fields to the cover sheet. Nothing is applied until you approve.'}]}
+  say(text,mel,delay){this.setState(s=>({msgs:[...s.msgs,{mel:false,text}],typing:!!mel}));if(mel)setTimeout(()=>{const t=typeof mel==='function'?mel():mel;this.setState(s=>({typing:false,msgs:[...s.msgs,{mel:true,text:t}]}))},delay||800)}
+  tagWithMel(){const F=(id,type,label,role,x,y,w,src,cond)=>({id,type,label,role,x,y,w,src:src||'none',cond:cond||'always',req:type!=='checkbox',hide:!!src});
+    this.setState({fields:[F(1,'text','Buyer names','Buyer',10,14,42,'client'),F(2,'text','Property address','Buyer',10,24,60,'address'),F(3,'text','Purchase price','Buyer',10,34,38,'price'),F(4,'date','Closing date','Buyer',52,34,38,'closing'),F(5,'checkbox','Financing contingency','Buyer',10,46,3),F(6,'text','Loan type','Buyer',10,52,30,0,'fin'),F(7,'text','Agent name','Agent',10,62,34),F(8,'signature','Buyer signature','Buyer',10,78,32),F(9,'signature','Seller signature','Seller',56,78,32),F(10,'initials','Buyer initials','Buyer',10,88,12)],nextId:20,askApprove:true,tagPhase:'draft'})}
+  aiFields(){const F=(id,type,label,role,x,y,w,src,cond)=>({id,type,label,role,x,y,w,src:src||'none',cond:cond||'always',req:type!=='checkbox',hide:!!src});return [F(1,'text','Buyer names','Buyer',10,14,42,'client'),F(2,'text','Property address','Buyer',10,24,60,'address'),F(3,'text','Purchase price','Buyer',10,34,38,'price'),F(4,'date','Closing date','Buyer',52,34,38,'closing'),F(5,'checkbox','Financing contingency','Buyer',10,46,3),F(6,'text','Loan type','Buyer',10,52,30,0,'fin'),F(7,'text','Agent name','Agent',10,62,34),F(8,'signature','Buyer signature','Buyer',10,78,32),F(9,'signature','Seller signature','Seller',56,78,32),F(10,'initials','Buyer initials','Buyer',10,88,12)]}
+  startAI(){(this._aiT||[]).forEach(clearTimeout);const T=this._aiT=[],F=this.aiFields();this.setState({ai:'think',aiStep:0,soOpen:false,sroles:undefined,fields:[]});
+    [900,1800,2700,3600].forEach((ms,i)=>T.push(setTimeout(()=>this.setState({aiStep:i+1}),ms)));
+    T.push(setTimeout(()=>this.setState({soOpen:true,sall:false,sroles:[{name:'Buyer',c:'#5A5FF2'},{name:'Seller',c:'#F08068'},{name:"Buyer's agent",c:'#6DA544'},{name:'Listing agent',c:'#EA580C'}]}),4000));
+    F.forEach((f,i)=>T.push(setTimeout(()=>this.setState(s=>({fields:[...s.fields,f]})),4000+i*130)));
+    if(this.state.batch.length>1)T.push(setTimeout(()=>this.setState(s=>({batch:s.batch.map(d=>({...d,fields:F.map(x=>({...x})),phase:'draft'}))})),4000));
+    T.push(setTimeout(()=>this.setState({ai:'review',nextId:20,tagPhase:'draft',askApprove:false}),4000+F.length*130+300))}
+  mapPos(e){const r=e.currentTarget.getBoundingClientRect();return {x:Math.max(12,Math.min(r.left,window.innerWidth-372)),y:Math.max(12,Math.min(r.bottom+8,window.innerHeight-330))}}
+  doApprove(){this.setState({tagPhase:'approved',askApprove:false});this.say('Approve',true,500)}
+  mapField(key,word){const s=this.state;let f=s.fields.find(x=>x.id===s.sel);if(!f)f=s.fields.find(x=>x.label.toLowerCase().includes(word));if(!f)return false;this.setState({fields:s.fields.map(x=>x.id===f.id?{...x,src:key,hide:true}:x)});return f.label}
+  send(raw){const s=this.state,t=(raw||'').trim();if(!t)return;const l=t.toLowerCase();const mapped=s.fields.filter(f=>f.src!=='none');
+    if(/review/.test(l)){this.setState({askApprove:true});return this.say(t,'Here is the summary. Approve to add these fields to the template.',500)}
+    if(s.askApprove&&/\b(approve|yes|okay|ok|looks good|apply)\b/.test(l)){this.setState({tagPhase:'approved',askApprove:false});return this.say(t,'Approved. The fields are now part of the template. You can still change mapped values, fields and checkboxes, then finalize.',600)}
+    if(/\b(unhide|show)\b/.test(l)){this.setState({fields:s.fields.map(f=>({...f,hide:false}))});return this.say(t,'Mapped fields are now visible in the filler.',500)}
+    if(/\bhide\b/.test(l)){this.setState({fields:s.fields.map(f=>f.src!=='none'?{...f,hide:true}:f)});return this.say(t,'Hid '+mapped.length+' mapped fields from the filler. They fill from the cover sheet.',500)}
+    if(/\btag\b/.test(l)&&!s.fields.length){this.say(t,'Placed 10 fields and mapped 4 to cover sheet values. I left Agent name unmapped. Is it okay to apply?',1100);setTimeout(()=>this.tagWithMel(),1100);return}
+    if(/\b(map|connect|link)\b/.test(l)){const K=[['agent','agent','agent'],['client','client','buyer name'],['address','address','address'],['price','price','price'],['closing','closing','closing']];const k=K.find(x=>l.includes(x[1])||l.includes(x[2]));
+      if(!k){const f=s.fields.find(x=>x.src==='none'&&x.type==='text'&&x.role==='Agent');if(f&&s.sel===null)return this.say(t,'Which cover sheet value? I can map Client names, Property address, Sale price, Closing date or Agent name.',500);return this.say(t,'Which cover sheet value? Try "map agent name".',500)}
+      const r=this.mapField(k[0],k[1]);return this.say(t,r?'Mapped "'+r+'" to the cover sheet value '+this.SRC[k[0]]+' and hid it from the filler.':'I could not find a field for '+this.SRC[k[0]]+'. Add a text field first.',600)}
+    this.say(t,'I can tag the page, map fields to the cover sheet, or hide mapped fields. Try "map agent name".',500)}
+  backToDash(extra){this.setState({view:'dash',modal:'none',creating:false,leave:false,fields:this.BASE,sel:null,tool:null,up:'none',batch:[],bcur:0,bpanel:'',...extra})}
+  persist(status){const s=this.state,id=s.tagId||this.newId(),docs=s.docs.some(d=>d.id===id)?s.docs.map(d=>d.id===id?{...d,status,edited:'Just now'}:d):[{id,name:s.meta.name||s.tagName||'Untitled',status,edited:'Just now'},...s.docs];return {id,docs}}
+  componentDidMount(){
+    const p=this.props.start;if(!p)return;
+    const on=ids=>{const o={};ids.forEach(i=>{o[i]=true});return o};
+    const base={'TX-PUR-0001':['PUR'],'TX-LST-0001':['LST'],'CA-LST-0001':['LST']};
+    const P={
+      select:{selMode:true,dsel:on(['TX-PUR-0001','CA-PUR-0001'])},
+      search:{selMode:true,q:'agreement',dsel:on(['TX-PUR-0001','CA-PUR-0001','NY-PUR-0001','CO-PUR-0001'])},
+      menu:{selMode:true,stateF:'TX',dsel:on(['TX-PUR-0001','TX-LST-0001']),forceMenu:'set'},
+      drafts:{selMode:true,stateF:'TX',dsel:on(['TX-PUR-0001','TX-PUR-0002','TX-LST-0001','TX-LST-0002'])},
+      toast:{stateF:'TX',defs:{...base,'TX-PUR-0001':['PUR'],'TX-LST-0001':['LST','PUR']},dToast:{title:'2 templates set as default for Purchase · TX',desc:'2 drafts skipped — finish tagging them first',prev:base,sticky:true}},
+      badges:{defs:{'TX-PUR-0001':['PUR','REF'],'TX-LST-0001':['LST','PUR'],'CA-PUR-0001':['PUR'],'CA-LST-0001':['LST','REF'],'WA-LST-0001':['LST'],'NY-PUR-0001':['PUR'],'CO-PUR-0001':['PUR','REF']}}
+    };
+    if(P[p])this.setState(P[p]);
+  }
+  componentWillUnmount(){clearTimeout(this._dt)}
+  TL={PUR:'Purchase',LST:'Listing',REF:'Referral'};
+  TIC={PUR:'ph-house-line',LST:'ph-signpost',REF:'ph-handshake'};
+  toggleD(id){const d={...this.state.dsel};if(d[id])delete d[id];else d[id]=true;this.setState({dsel:d})}
+  setDefs(k,add){
+    const s=this.state,TL=this.TL,ids=Object.keys(s.dsel).filter(i=>s.dsel[i]),picked=s.docs.filter(d=>ids.includes(d.id)),prev=s.defs,defs={...prev};
+    const ok=add?picked.filter(d=>d.status==='Completed'):picked.filter(d=>(prev[d.id]||[]).includes(k));
+    const skip=add?picked.length-ok.length:0,n=ok.length,pl=(c,w)=>c+' '+w+(c===1?'':'s');
+    ok.forEach(d=>{const cur=defs[d.id]||[];const nx=add?(cur.includes(k)?cur:[...cur,k]):cur.filter(x=>x!==k);if(nx.length)defs[d.id]=nx;else delete defs[d.id]});
+    const sts=[...new Set(ok.map(d=>d.id.split('-')[0]))].join(', ');
+    const skipTxt=skip?pl(skip,'draft')+' skipped — finish tagging '+(skip===1?'it':'them')+' first':'';
+    let t;
+    if(!n)t={title:add?'No templates changed':'None of these were default for '+TL[k],desc:add?skipTxt:'',prev:null,warn:true};
+    else if(add)t={title:pl(n,'template')+' set as default for '+TL[k]+' · '+sts,desc:skipTxt||('They now show on new '+TL[k]+' transactions in '+sts+'.'),prev};
+    else t={title:'Removed '+TL[k]+' default from '+pl(n,'template'),desc:'They no longer show on new '+TL[k]+' transactions.',prev};
+    this.setState({defs,dToast:t,selMode:!!(!n),dsel:n?{}:s.dsel,forceMenu:''});
+    clearTimeout(this._dt);this._dt=setTimeout(()=>this.setState({dToast:null}),6000);
+  }
+  renderVals(){
+    const s=this.state,v=s.view,self=this,TY=this.TYPES;
+    const counts={all:s.docs.length};['Draft','Completed'].forEach(k=>counts[k]=s.docs.filter(d=>d.status===k).length);
+    const tabs=[['all','All'],['Draft','Draft'],['Completed','Completed']].map(([k,l])=>({k,label:l,count:counts[k],bg:s.tab===k?'#fff':'transparent',sh:s.tab===k?'0 1px 2px rgba(0,0,0,.1)':'none',cbg:s.tab===k?'#EEEFFE':'#E5E5E5',ccolor:s.tab===k?'#4449d9':'#525252',color:s.tab===k?'#0A0A0A':'#737373',onClick:()=>this.setState({tab:k})}));
+    const q=s.q.toLowerCase();
+    const rows=s.docs.filter(d=>(s.tab==='all'||d.status===s.tab)&&(s.stateF==='all'||d.id.startsWith(s.stateF))&&(s.stateF!=='NY'||!s.subF||s.subF==='all'||d.sub===s.subF)&&(s.sideF==='all'||d.id.split('-')[1]===s.sideF)&&(!q||d.name.toLowerCase().includes(q)||d.id.toLowerCase().includes(q))).map(d=>{const c=this.statusColors(d.status);return {...d,sbg:c[0],sfg:c[1],onOpen:()=>this.rowOpen(d),onOpenX:()=>{if(d.status==='Draft'||d.status==='Needs tagging'){const sv=s.saved[d.id]||{fields:[],phase:'draft'};this.setState({view:'tag',editing:d.id,tagId:d.id,tagName:d.name,creating:false,fields:sv.fields,tagPhase:sv.phase,askApprove:false,msgs:sv.fields.length?[{mel:true,text:'Welcome back. Your draft layer is still here. Approve it when you are ready.'}]:this.INTRO(),sel:null,tool:null,rtab:'mel'})}else this.setState({view:'editor',editing:d.id,creating:false,sel:null,tool:null})},onFill:e=>{e.stopPropagation();this.rowOpen(d)},onHist:e=>{e.stopPropagation();this.setState({hist:true,editing:d.id,verIdx:0})}}});
+    const SM=!!s.selMode,TL=this.TL,gridCols=(SM?'18px ':'')+'130px minmax(0,1fr) 108px 236px 108px 64px';
+    rows.forEach(r=>{const on=!!s.dsel[r.id];r.selMode=SM;r.cols=gridCols;r.checked=on;r.rowBg=SM&&on?'#F7F7FE':'transparent';r.defs=(s.defs[r.id]||[]).map(k=>({label:TL[k]}));r.noDefs=r.defs.length===0;r.toggle=()=>this.toggleD(r.id);r.stop=e=>e.stopPropagation();if(SM)r.onOpen=()=>this.toggleD(r.id)});
+    const selIds=Object.keys(s.dsel).filter(i=>s.dsel[i]),nSelD=selIds.length,visIds=rows.map(r=>r.id),hiddenN=selIds.filter(i=>!visIds.includes(i)).length;
+    const draftN=s.docs.filter(d=>selIds.includes(d.id)&&d.status!=='Completed').length;
+    const ctaBtn=(label,icon,primary)=>React.createElement('button',{type:'button',className:primary?'rds-btn':'rds-btn rds-btn--outline',style:{height:32,borderRadius:10,font:"500 14px 'Mona Sans',sans-serif",gap:8}},React.createElement('i',{className:'ph '+icon,'aria-hidden':'true',style:{fontSize:16}}),label,React.createElement('i',{className:'ph ph-caret-down','aria-hidden':'true',style:{fontSize:14}}));
+    const typeItems=(add)=>[{type:'label',label:add?'Default for '+(s.stateF==='all'?'each template’s state':s.stateF)+' transactions':'Remove default from'}].concat(['PUR','LST','REF'].map(k=>({label:TL[k],icon:React.createElement('i',{className:'ph '+this.TIC[k],'aria-hidden':'true',style:{fontSize:16,color:'#737373'}}),onSelect:()=>this.setDefs(k,add)})));
+    const dT=s.dToast;
+    const dashVals={
+      selMode:SM,notSelMode:!SM,dashRows:SM?'auto auto minmax(0,1fr)':'auto minmax(0,1fr)',gridCols,
+      enterSel:()=>this.setState({selMode:true,dsel:{},dToast:null}),exitSel:()=>this.setState({selMode:false,dsel:{},forceMenu:''}),
+      selLabel:nSelD?nSelD+' selected':'Select templates',noDSel:nSelD===0,hasDSel:nSelD>0,
+      selHiddenShow:hiddenN>0,selHiddenText:'· '+hiddenN+' hidden by search or filters',
+      draftNoteShow:draftN>0,draftNote:draftN+(draftN===1?' draft':' drafts')+' will be skipped',
+      clearDSel:()=>this.setState({dsel:{}}),
+      allVisSel:rows.length>0&&rows.every(r=>s.dsel[r.id]),toggleVis:e=>{const c=e.target.checked,d={...s.dsel};rows.forEach(r=>{if(c)d[r.id]=true;else delete d[r.id]});this.setState({dsel:d})},
+      setTrigger:ctaBtn('Set as default','ph-star',true),removeTrigger:ctaBtn('Remove default','ph-star-half',false),
+      setItems:typeItems(true),removeItems:typeItems(false),
+      menuLive:s.forceMenu!=='set',menuForced:s.forceMenu==='set',menuLabel:'Default for '+(s.stateF==='all'?'each template’s state':s.stateF)+' transactions',
+      forcedItems:['PUR','LST','REF'].map(k=>({label:TL[k],icon:this.TIC[k]})),
+      dToastShow:!!dT&&v==='dash',dToastTitle:dT?dT.title:'',dToastDesc:dT?dT.desc:'',
+      toastIcon:React.createElement('i',{className:'ph '+(dT&&dT.warn?'ph-info':'ph-check-circle'),'aria-hidden':'true',style:{fontSize:20,color:dT&&dT.warn?'#C2410C':'#41701F',flex:'none'}}),
+      toastAction:dT&&dT.prev?React.createElement('button',{type:'button',className:'rds-btn rds-btn--outline rds-btn--sm',onClick:()=>{clearTimeout(this._dt);this.setState({defs:dT.prev,dToast:null})}},'Undo'):null
+    };
+    const newFlow=!!(s.section==='docs'&&v==='tag');
+    const cur=v==='tag'?s.tagId:(s.creating?this.newId():s.editing);
+    const curDoc=s.docs.find(d=>d.id===s.editing);
+    const headTitle={dash:'Document templates',upload:'New template',editor:s.creating?'New template':(curDoc?curDoc.name:''),order:'Signing order',filler:curDoc?curDoc.name:'Fill document',history:'Version history'}[v];
+    const stepNo=v==='upload'?s.step:v==='editor'?4:v==='order'?3:0;
+    const steps=['Upload','Details','Signing order','Tag fields'].map((l,i)=>{const n=i+1,done=n<stepNo,act=n===stepNo;return {n:done?'\u2713':n,label:l,bg:act?'#5A5FF2':done?'#EEEFFE':'#fff',fg:act?'#fff':done?'#4449d9':'#737373',bd:act||done?'#5A5FF2':'#D4D4D4',lc:act?'#0A0A0A':'#737373',showLine:i<3}});
+    const palette=[];this.TGROUPS.forEach(g=>{palette.push({isHead:true,isBtn:false,label:g[0]});g[1].forEach(k=>palette.push({isHead:false,isBtn:true,label:TY[k][0],icon:TY[k][1],bd:s.tool===k?'#5A5FF2':'#E5E5E5',bg:s.tool===k?'#EEEFFE':'#fff',ic:s.tool===k?'#5A5FF2':'#525252',onClick:()=>this.setState({tool:s.tool===k?null:k}),onDrag:e=>{e.dataTransfer.setData('text/plain',k);e.dataTransfer.effectAllowed='copy'}}))});
+    const lines=[];for(let i=0;i<22;i++){lines.push({t:(11+i*3.9)+'%',w:[80,72,80,56,80,64][i%6]+'%'})}
+    const fieldViews=s.fields.map(f=>{const c=this.RC[f.role],sq=f.type==='checkbox'||f.type==='radio';return {jc:sq?'center':'flex-start',pad:sq?'0':((f.type==='text'||f.type==='date')?'4px':'0 5px'),mw:sq?'32px':'0',mh:sq?'32px':'0',cbDisp:f.type==='checkbox'?'inline-block':'none',rdDisp:f.type==='radio'?'inline-block':'none',icDisp:(sq||f.type==='text'||f.type==='date')?'none':'inline-block',bc:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'transparent':c,tint2:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'transparent':c+'14',editDisp:'none',dateDisp:f.type==='date'?'block':'none',dVal:f.type==='date'?'June 01, 2025':'',mapTxt:f.src&&f.src!=='none'?' \u2192 '+this.SRC[f.src]:' \u2192 Not mapped',onDrag:e=>{const r=e.currentTarget.getBoundingClientRect();this._off={dx:e.clientX-r.left,dy:e.clientY-r.top};e.dataTransfer.setData('text/fid',String(f.id));e.dataTransfer.effectAllowed='move'},isCb:f.type==='checkbox',isRd:f.type==='radio',isIn:f.type==='text'||f.type==='date',rOpts:[{value:'1',label:''}],ph:f.label,chipText:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'':f.label+(f.src!=='none'?' \u2192 '+this.SRC[f.src]:''),label:sq?'':f.label,icon:TY[f.type]?TY[f.type][1]:'ph-text-t',c,tint:c+'1F',x:f.x+'%',y:f.y+'%',w:sq?'28px':((f.type==='signature'||f.type==='initials'||f.type==='datesigned')?'max-content':f.w+'%'),h:sq?'28px':((f.type==='text'||f.type==='date')?'auto':'28px'),bs:f.cond==='always'?'solid':'dashed',ol:s.sel===f.id?'2px solid #0A0A0A':'none',onSelect:e=>{e.stopPropagation();this.setState({sel:f.id,tool:null})}}});
+    const sf=s.fields.find(f=>f.id===s.sel);
+    const sel=sf?{...sf,typeLabel:TY[sf.type][0],noAuto:!['text','number','date','dropdown','note','formula'].includes(sf.type),canAuto:['text','number','date','dropdown','note','formula'].includes(sf.type),srcValue:sf.src&&sf.src!=='none'?this.PRE[sf.src]:'',req:!!sf.req,hide:!!sf.hide}:{};
+    const fr=s.fields.filter(f=>this.fillable(f));
+    const prefillCount=s.fields.filter(f=>f.src&&f.src!=='none').length;
+    const fillRows=fr.map(f=>({label:f.label,pre:f.src!=='none'&&s.vals[f.id]===undefined,isText:f.type==='text',isDate:f.type==='date',isCheck:f.type==='checkbox',isRadio:f.type==='radio',rOpts:[{value:'Yes',label:'Yes'},{value:'No',label:'No'}],rVal:this.val(f)||'',rChange:e=>this.setVal(f.id,e.target.value),rName:'r'+f.id,isDrop:f.type==='dropdown',dd:this.dd(this.val(f)||'',this.OPT().drop,v=>this.setVal(f.id,v),'368px'),value:this.val(f)||'',checked:!!this.val(f),onChange:e=>this.setVal(f.id,e.target.value),onCheck:e=>this.setVal(f.id,e.target.checked)}));
+    const sugDefs=[{label:'Loan type: Conventional',id:6,val:'Conventional',need:()=>!!this.val(s.fields[4])},{label:'Check financing contingency',id:5,val:true,need:()=>true}];
+    const sugs=sugDefs.filter(d=>s.fields.some(f=>f.id===d.id)&&this.val(s.fields.find(f=>f.id===d.id))!==d.val&&d.need()).map(d=>({label:d.label,onClick:()=>{this.setVal(d.id,d.val)}}));
+    const previewViews=s.fields.filter(f=>['text','date','dropdown','checkbox'].includes(f.type)&&this.visible(f)).map(f=>{const val=this.val(f),sq=f.type==='checkbox';return {x:f.x+'%',y:f.y+'%',w:sq?'28px':((f.type==='signature'||f.type==='initials'||f.type==='datesigned')?'max-content':f.w+'%'),h:sq?'28px':((f.type==='text'||f.type==='date')?'auto':'28px'),text:sq?(val?'\u2713':''):val,bd:'#A3A3A3',bg:val?'#EEEFFE':'#F7F7F7'}});
+    const groups=s.groups.map((g,gi)=>({n:gi+1,seqBg:g.mode==='seq'?'#fff':'transparent',seqSh:g.mode==='seq'?'0 1px 2px rgba(0,0,0,.1)':'none',parBg:g.mode==='par'?'#fff':'transparent',parSh:g.mode==='par'?'0 1px 2px rgba(0,0,0,.1)':'none',setSeq:()=>this.setMode(gi,'seq'),setPar:()=>this.setMode(gi,'par'),roles:g.roles.map(r=>({name:r,c:this.RC[r],count:s.fields.filter(f=>f.role===r).length,upO:gi===0?.3:1,up:()=>this.moveRole(gi,r,-1),down:()=>this.moveRole(gi,r,1)}))}));
+    const flow=s.groups.map((g,i)=>({text:g.roles.join(g.mode==='par'?' + ':' then '),arrow:i<s.groups.length-1?'inline':'none'}));
+    const CI={a:'ph-plus',r:'ph-trash',c:'ph-pencil-simple'},CC={a:'#3F6B1F',r:'#DC2626',c:'#2563EB'};
+    const versions=s.versions.map((x,i)=>({...x,current:i===0,open:i===s.verIdx,canRestore:i===s.verIdx&&i!==0,chg:x.changes.map(c=>({text:c.t,icon:CI[c.k],color:CC[c.k]})),bd:i===s.verIdx?'#5A5FF2':'#E5E5E5',bg:i===s.verIdx?'#F7F7FE':'#fff',onClick:()=>this.setState({verIdx:i})}));
+    const sv=s.versions[s.verIdx];
+    const selVer={...sv,changes:sv.changes.map(c=>({text:c.t,icon:{a:'ph-plus',r:'ph-trash',c:'ph-pencil-simple'}[c.k],color:{a:'#3F6B1F',r:'#DC2626',c:'#2563EB'}[c.k]}))};
+    const goDash=()=>this.setState({view:'dash',creating:false});
+    const D=s.section==='docs';
+    const E=React.createElement;
+    const trig=(label,val)=>E('button',{type:'button',style:{height:32,padding:'0 10px 0 12px',border:'1px solid #E5E5E5',borderRadius:10,background:'#fff',font:"500 14px 'Mona Sans',sans-serif",display:'inline-flex',alignItems:'center',gap:8,cursor:'pointer',whiteSpace:'nowrap'}},E('span',{style:{color:'#737373',fontWeight:400}},label),val,E('i',{className:'ph ph-caret-down','aria-hidden':'true',style:{fontSize:14,color:'#737373'}}));
+    const mk=(arr,cur,key)=>arr.map(([k,l])=>({label:l,icon:E('i',{className:'ph ph-check','aria-hidden':'true',style:{fontSize:16,opacity:cur===k?1:0,color:'#5A5FF2'}}),onSelect:()=>this.setState({[key]:k})}));
+    const SL={all:'All',Draft:'Draft',Completed:'Completed'};
+    const statusItems=mk(tabs.map(t=>[t.k,t.label+'  '+t.count]),s.tab,'tab');
+    const STS=[['all','All states'],['TX','Texas'],['CA','California'],['FL','Florida'],['AZ','Arizona'],['WA','Washington'],['CO','Colorado'],['NY','New York']];
+    const SUBS=[['all','All of New York'],['MLS','MLS-based'],['QNS','Queens'],['BKN','Brooklyn'],['MAN','Manhattan'],['BRX','The Bronx'],['SI','Staten Island'],['LI','Long Island'],['WST','Westchester']];
+    const SDS=[['all','Purchase and listing'],['PUR','Purchase'],['LST','Listing']];
+    const statusTrigger=trig('Tag status',SL[s.tab]),stateTrigger=trig('State',STS.find(x=>x[0]===s.stateF)[1]),sideTrigger=trig('Type',SDS.find(x=>x[0]===s.sideF)[1]),subTrigger=trig('Area',SUBS.find(x=>x[0]===(s.subF||'all'))[1]);
+    const subItems=mk(SUBS,s.subF||'all','subF'),stateItems=mk(STS,s.stateF,'stateF'),sideItems=mk(SDS,s.sideF,'sideF');
+    const navItems=[['docs','Documents','ph-file-text'],['audit','Auditing','ph-magnifying-glass'],['sub','Subscription','ph-credit-card']].map(([k,l,ic])=>({label:l,icon:ic,current:s.section===k?'page':'false',bg:s.section===k?'#F5F5F5':'transparent',color:s.section===k?'#0A0A0A':'#737373',onClick:()=>this.setState({section:k})}));
+    return {
+      subTrigger,subItems,showSubF:s.stateF==='NY',statusTrigger,stateTrigger,sideTrigger,statusItems,stateItems,sideItems,navItems,isOther:!D,headDisplay:D&&v!=='dash'&&!newFlow?'grid':'none',innerRows:D&&v!=='dash'&&v!=='tag'?'56px minmax(0,1fr)':'minmax(0,1fr)',flowDisplay:'none',outerRows:newFlow?'minmax(0,1fr)':'52px minmax(0,1fr)',navDisplay:newFlow?'none':'flex',otherTitle:s.section==='audit'?'Auditing':'Subscription',otherIcon:s.section==='audit'?'ph-magnifying-glass':'ph-credit-card',
+      isDash:D&&v==='dash',isTag:D&&v==='tag',isEditor:D&&v==='editor',isOrder:D&&v==='order',isFiller:D&&v==='filler',isHistory:D&&v==='history',
+      showBack:v!=='dash',showIdBadge:v!=='dash'&&(!!cur||(s.batch.length>1&&v==='tag')),headTitle,headId:s.batch.length>1&&v==='tag'?s.batch.length+' documents':(cur||''),editingExisting:!s.creating,saveLabel:s.creating?'Save template':'Save order',
+      goBack:()=>{ if(v==='upload'){s.step===2?this.setState({step:1}):goDash()} else if(v==='editor'){s.creating?this.setState({view:'upload',step:2}):goDash()} else if(v==='order'){this.setState({view:'editor'})} else goDash() },
+      goDash,goHistory:()=>this.setState({hist:true,verIdx:0}),closeHist:()=>this.setState({hist:false}),hist:s.hist,histTitle:'Version history · '+s.editing,goFiller:()=>this.setState({view:'filler'}),goOrder:()=>this.setState({view:'order'}),
+      startUpload:()=>this.setState({batch:[],modal:'upload',fileName:'',up:'none',upMenu:false,meta:{name:'',state:'TX',side:'PUR'}}),
+      saveTemplate:()=>{ if(s.creating){const id=this.newId();this.setState({docs:[{id,name:s.meta.name||'Untitled',status:'Completed',edited:'Just now',...(s.meta.state==='NY'?{sub:s.meta.sub||'MLS'}:{})},...s.docs],view:'dash',creating:false,tab:'all'})} else goDash() },
+      ...dashVals,
+      tabs,rows,noRows:rows.length===0,q:s.q,stateF:s.stateF,sideF:s.sideF,
+      setQ:e=>this.setState({q:e.target.value}),setStateF:e=>this.setState({stateF:e.target.value}),setSideF:e=>this.setState({sideF:e.target.value}),
+      steps,pickFile:e=>{if(e&&e.stopPropagation)e.stopPropagation();this.startUp('Residential Purchase Agreement.pdf')},
+      upHas:s.up!=='none',upBusy:s.up==='busy',upDone:s.up==='done',upMenu:!!s.upMenu,docMenu:!!s.docMenu,docMenuBg:s.docMenu?'#F5F5F5':'transparent',dzH:s.up==='none'?'260px':'220px',
+      toggleUpMenu:e=>{e.stopPropagation();this.setState({upMenu:!s.upMenu,docMenu:false})},toggleDocMenu:e=>{e.stopPropagation();this.setState({docMenu:!s.docMenu,upMenu:false})},
+      closeUp:()=>{if(s.upMenu||s.docMenu)this.setState({upMenu:false,docMenu:false})},stopUp:e=>e.stopPropagation(),
+      replaceDoc:()=>this.startUp('Residential Purchase Agreement.pdf'),renameDoc:()=>this.setState({docMenu:false,step:2}),deleteDoc:()=>this.setState({up:'none',docMenu:false,fileName:''}),
+      useTpl:()=>this.setState({upMenu:false}),cloudSrc:()=>this.setState({upMenu:false}),
+      upTitle:s.up==='none'?'Upload a document for a new template':'New template: '+s.fileName,upSaving:s.up==='busy'?'Saving…':'',upHint:s.up==='none'?'Add a document to continue':'',upNextOff:s.up!=='done',upNextOp:s.up==='done'?1:.45,upNext:()=>this.setState({step:2}),
+      dragOver:e=>e.preventDefault(),dropFile:e=>{e.preventDefault();const fl=Array.from(e.dataTransfer.files||[]);if(fl.length>1)return this.startBatch(fl.map((f,i)=>({name:f.name,pages:2+(i*3)%9})));this.startUp(fl[0]?fl[0].name:'Residential Purchase Agreement.pdf')},
+      metaName:s.meta.name,metaState:s.meta.state,fileName:s.fileName,newId:this.newId(),
+      setName:e=>this.setState({meta:{...s.meta,name:e.target.value}}),setState2:e=>this.setState({meta:{...s.meta,state:e.target.value}}),
+      setPur:()=>this.setState({meta:{...s.meta,side:'PUR'}}),setLst:()=>this.setState({meta:{...s.meta,side:'LST'}}),
+      purBg:s.meta.side==='PUR'?'#fff':'transparent',purSh:s.meta.side==='PUR'?'0 1px 2px rgba(0,0,0,.1)':'none',lstBg:s.meta.side==='LST'?'#fff':'transparent',lstSh:s.meta.side==='LST'?'0 1px 2px rgba(0,0,0,.1)':'none',
+      applyDetected:()=>this.setState({meta:{...s.meta,state:'TX',side:'PUR'}}),toStep1:()=>this.setState({step:1}),toEditor:()=>{},
+      ...(()=>{const B=s.batch,isB=B.length>1,nSel=B.filter(d=>d.sel).length,ups=B.filter(d=>d.status==='up').length,errs=B.filter(d=>d.status==='err').length,good=B.filter(d=>d.status==='ok');
+        const bs=this.bsaved(),cd=bs[s.bcur]||{tags:[],name:''},first=B.find(d=>d.sel);
+        const pat=(d,i)=>s.bpat.split('{name}').join(d.name.replace(/\.pdf$/i,'')).split('{n}').join(i+1).split('{tag}').join(d.tags[0]||'');
+        const mapSel=fn=>{const b=this.bsaved();this.setState({batch:b.map(d=>d.sel?fn(d):d)})};
+        const addTag=t=>{t=t.trim();if(!t)return;mapSel(d=>d.tags.includes(t)?d:{...d,tags:[...d.tags,t]});this.setState({bbulk:''})};
+        const mk=(k,list)=>list.map((q,j)=>({id:'bf'+k+Date.now()+j,type:q[0],label:q[1],role:q[2],x:q[3],y:q[4],w:q[5],src:'none',cond:'always',req:true,hide:false}));
+        const BF=[['signature','Signature','ph-signature'],['initials','Initials','ph-text-aa'],['datesigned','Date signed','ph-calendar-check'],['text','Text','ph-text-t'],['date','Date','ph-calendar-blank'],['checkbox','Checkbox','ph-check-square'],['radio','Radio','ph-radio-button']];
+        const stt=d=>d.status==='up'?['Uploading','#EEEFFE','#4449d9','#5A5FF2','#23244F','#B4B7FB']:d.status==='err'?['Failed','#FEF2F2','#B91C1C','#DC2626','#3A1618','#FCA5A5']:d.dup?['Duplicate','#FFF7ED','#C2410C','#EA580C','#3B1F0C','#FDBA74']:d.fields.length?['Fields added','#F2F9EF','#41701F','#6DA544','#1C2B14','#A7D58A']:['No fields','#F5F5F5','#404040','#A3A3A3','#262626','#D4D4D4'];
+        const bdocs=bs.map((d,i)=>{const S=stt(d),on=isB&&s.view==='tag'&&i===s.bcur;return {name:d.name,sel:d.sel,on,st:S[0],isUp:d.status==='up',isOk:d.status==='ok',isErr:d.status==='err',pct:Math.round(d.pct||0),pctText:Math.round(d.pct||0)+'%',metaC:d.status==='err'?'#DC2626':'#737373',retry:()=>this.retryDoc(d.id),dkStyle:'flex:none;display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:9999px;background:'+S[4]+';color:'+S[5]+';font-size:11px;font-weight:600;white-space:nowrap',stStyle:'flex:none;display:inline-flex;align-items:center;gap:5px;height:20px;padding:0 7px;border-radius:9999px;background:'+S[1]+';color:'+S[2]+';font-size:11px;font-weight:600;white-space:nowrap',stDot:'width:6px;height:6px;border-radius:50%;background:'+S[3],
+          style:'display:flex;flex:none;align-items:flex-start;gap:10px;width:100%;box-sizing:border-box;padding:9px 10px;border:1px solid '+(on?'#5A5FF2':'transparent')+';border-radius:8px;background:'+(on?'#1C1D3F':'transparent')+';min-width:0;overflow:hidden',
+          meta:d.status==='err'?d.err:d.pages+(d.pages===1?' page':' pages')+(d.tags.length?' · '+d.tags.length+' tag'+(d.tags.length>1?'s':''):''),
+          tagList:on?d.tags.map(t=>({label:t,remove:()=>{const b=this.bsaved();this.setState({batch:b.map((x,k)=>k===i?{...x,tags:x.tags.filter(y=>y!==t)}:x)})}})):[],
+          open:()=>this.bgo(i),toggle:e=>{const c=e.target.checked,b=this.bsaved();this.setState({batch:b.map((x,k)=>k===i?{...x,sel:c}:x)})},
+          drop:()=>this.setState({batch:s.batch.filter(x=>x.id!==d.id)})}});
+        const tv=(d,i)=>d.fields.map(f=>{const c=this.RC[f.role],sq=f.type==='checkbox'||f.type==='radio',dr=d.phase==='draft';return {jc:sq?'center':'flex-start',pad:sq?'0':((f.type==='text'||f.type==='date')?'4px':'0 5px'),mw:sq?'32px':'0',mh:sq?'32px':'0',cbDisp:f.type==='checkbox'?'inline-block':'none',rdDisp:f.type==='radio'?'inline-block':'none',icDisp:(sq||f.type==='text'||f.type==='date')?'none':'inline-block',bc:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'transparent':c,tint2:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'transparent':c+'14',editDisp:(f.type==='text'||f.type==='date')?'inline-flex':'none',chipEditDisp:(f.type==='signature'||f.type==='initials'||f.type==='datesigned')?'inline-flex':'none',dateDisp:f.type==='date'?'block':'none',dVal:f.type==='date'?'June 01, 2025':'',mapTxt:f.src&&f.src!=='none'?' \u2192 '+this.SRC[f.src]:' \u2192 Not mapped',onDrag:e=>{const r=e.currentTarget.getBoundingClientRect();this._off={dx:e.clientX-r.left,dy:e.clientY-r.top};e.dataTransfer.setData('text/fid',String(f.id));e.dataTransfer.setData('text/fdoc',String(i));e.dataTransfer.effectAllowed='move'},isCb:f.type==='checkbox',isRd:f.type==='radio',isIn:f.type==='text'||f.type==='date',rOpts:[{value:'1',label:''}],ph:f.label,chipText:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'':f.label+(f.src!=='none'?' \u2192 '+this.SRC[f.src]:''),text:sq?'':f.label+(f.src!=='none'?' \u2192 '+this.SRC[f.src]:''),icon:f.src!=='none'?'ph-link-simple':(TY[f.type]?TY[f.type][1]:'ph-text-t'),hideIc:f.hide&&!sq?'inline':'none',c,tint:c+(dr?'12':'1F'),x:f.x+'%',y:f.y+'%',w:sq?'28px':((f.type==='signature'||f.type==='initials'||f.type==='datesigned')?'max-content':f.w+'%'),h:sq?'28px':((f.type==='text'||f.type==='date')?'auto':'28px'),bs:dr||f.cond!=='always'?'dashed':'solid',ol:s.sel===f.id&&i===s.bcur?'2px solid #0A0A0A':'none',onEdit:e=>{e.stopPropagation();const b=this.bsaved();this.setState({batch:b,bcur:i,fields:d.fields,tagPhase:d.phase,tagName:d.name.replace(/\.pdf$/i,''),sel:f.id,tool:null,rtab:'field',bpanel:'',bpop:'',mapDlg:this.mapPos(e)})},onSelect:e=>{e.stopPropagation();const b=this.bsaved();this.setState({batch:b,bcur:i,fields:d.fields,tagPhase:d.phase,tagName:d.name.replace(/\.pdf$/i,''),sel:f.id,tool:null,rtab:'field',bpanel:'',bpop:''})}}});
+        const place=(d,i)=>e=>{const b=this.bsaved();if(!s.tool){if(i!==s.bcur){this._ns=true;this.bgo(i);this._ns=false}else this.setState({sel:null});return}const r=e.currentTarget.getBoundingClientRect(),x=Math.max(0,Math.min(90,(e.clientX-r.left)/r.width*100)),y=Math.max(0,Math.min(95,(e.clientY-r.top)/r.height*100)),tl=s.tool,id=s.nextId,nf=[...d.fields,{id,type:tl,label:TY[tl][0],role:s.activeRole||'Buyer',x,y,w:this.WID[tl]||30,src:'none',cond:'always',req:true}];this.setState({batch:b,bcur:i,fields:nf,tagPhase:d.phase,tagName:d.name.replace(/\.pdf$/i,''),nextId:id+1,sel:id,tool:null,bpanel:'',bpop:''})};
+        const bdrop=(d,i)=>e=>{e.preventDefault();const b=this.bsaved(),r=e.currentTarget.getBoundingClientRect(),fid=e.dataTransfer.getData('text/fid'),fdoc=e.dataTransfer.getData('text/fdoc'),tp=e.dataTransfer.getData('text/plain'),o=this._off||{dx:0,dy:0},cl=(v,m)=>Math.max(0,Math.min(m,v));let nf,id=s.nextId,np=id;if(fid){if(String(i)!==fdoc)return;const x=cl((e.clientX-o.dx-r.left)/r.width*100,90),y=cl((e.clientY-o.dy-r.top)/r.height*100,95);nf=d.fields.map(f=>String(f.id)===fid?{...f,x,y}:f)}else{if(!TY[tp])return;const x=cl((e.clientX-r.left)/r.width*100,90),y=cl((e.clientY-r.top)/r.height*100,95);nf=[...d.fields,{id,type:tp,label:TY[tp][0],role:s.activeRole||'Buyer',x,y,w:this.WID[tp]||30,src:'none',cond:'always',req:true}];np=id+1}this.setState({batch:b,bcur:i,fields:nf,tagPhase:d.phase,tagName:d.name.replace(/\.pdf$/i,''),nextId:np,tool:null,bpanel:'',bpop:''})};
+        const stack=isB&&s.view==='tag'?bs.map((d,i)=>{const n=Math.min(d.pages||1,12),st=!d.fields.length?['Needs tags','#FFF7ED','#9A3412']:d.phase==='approved'?['Ready','#EAF4E2','#3F6B1E']:['Draft','#EEEFFE','#4449d9'],cur=i===s.bcur;return {anchor:'bdoc-'+i,name:d.name.replace(/\.pdf$/i,''),nameC:cur?'#4449d9':'#404040',badge:st[0],bbg:st[1],bfg:st[2],pageCount:d.pages+(d.pages===1?' page':' pages'),
+          tagList:d.tags.map(t=>({label:t,remove:()=>{const b=this.bsaved();this.setState({batch:b.map((x,k)=>k===i?{...x,tags:x.tags.filter(y=>y!==t)}:x)})}})),
+          tagKey:e=>{if(e.key==='Enter'){const v=e.target.value.trim();e.target.value='';if(v){const b=this.bsaved();this.setState({batch:b.map((x,k)=>k===i&&!x.tags.includes(v)?{...x,tags:[...x.tags,v]}:x)})}}},
+          pages:Array.from({length:n},(_,p)=>({first:p===0,label:'Page '+(p+1)+' of '+d.pages,views:p===0?tv(d,i):[],shadow:cur?'0 0 0 2px #5A5FF2,0 8px 24px rgba(0,0,0,.06)':'0 1px 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.06)',onPlace:place(d,i),onDrop:bdrop(d,i),onOver:e=>e.preventDefault()}))}}):[];
+        return {isBatch:isB&&s.view==='tag',notBatch:!(isB&&s.view==='tag'),stack,onBScroll:e=>this.onBScroll(e),leftW:'256px',bdocs,bTotal:B.length,upBatch:s.up==='batch',upW:s.up==='batch'?'680px':'520px',
+          bUpTitle:ups?'Uploading '+(B.length-ups)+' of '+B.length+'…':B.length+' files',bUpSub:errs?errs+' failed, will be skipped':'',bUpOff:ups>0||good.length===0,bUpOp:ups>0||good.length===0?.45:1,
+          pickBatch:e=>{if(e&&e.stopPropagation)e.stopPropagation();this.startBatch(this.demoFiles())},
+          toBatch:()=>{const g=good.map(d=>({...d,fields:[],phase:'draft'}));this.setState({batch:g,bcur:0,modal:'bdetails'})},
+          toBatchTag:()=>{const g=s.batch;this.setState({modal:'none',view:'tag',creating:true,tagId:'',tagName:g[0].name.replace(/\.pdf$/i,''),fields:[],tagPhase:'draft',askApprove:false,msgs:this.INTRO(),sel:null,tool:null,rtab:'mel',nextId:20,bpanel:''});this.startAI()},
+          modalBDetails:s.modal==='bdetails',bdBack:()=>this.setState({modal:'upload'}),
+          allState:e=>{const v=e.target.value;if(v)this.setState({batch:s.batch.map(x=>({...x,state:v}))});e.target.value=''},allPur:()=>this.setState({batch:s.batch.map(x=>s.bsel[x.id]?{...x,side:'PUR'}:x)}),allLst:()=>this.setState({batch:s.batch.map(x=>s.bsel[x.id]?{...x,side:'LST'}:x)}),
+          bBanner:s.batch.some(x=>s.bsel[x.id]),bSelText:s.batch.filter(x=>s.bsel[x.id]).length+' selected · apply to',bAllSel:s.batch.length>0&&s.batch.every(x=>s.bsel[x.id]),bClear:()=>this.setState({bsel:{}}),
+          bToggleAll:e=>{const c=e.target.checked,o={};if(c)s.batch.forEach(x=>{o[x.id]=true});this.setState({bsel:o})},
+          brows:(()=>{const ids=this.bids(s.batch),up=(i,p)=>this.setState({batch:s.batch.map((x,k)=>k===i?{...x,...p}:x)});return s.batch.map((d,i)=>({id:ids[i],sel:!!s.bsel[d.id],rowBg:s.bsel[d.id]?'#F7F7FE':'#fff',toggle:e=>{const c=e.target.checked;this.setState({bsel:{...s.bsel,[d.id]:c}})},name:d.name.replace(/\.pdf$/i,''),setName:e=>up(i,{name:e.target.value+'.pdf'}),state:d.state,ddSt:this.dd(d.state,this.OPT().st,v=>up(i,{state:v}),'120px'),setSt:e=>up(i,{state:e.target.value}),ddSide:this.dd(d.side,[['PUR','Purchase'],['LST','Listing']],v=>up(i,{side:v}),'148px'),
+            purBg:d.side==='PUR'?'#fff':'transparent',purSh:d.side==='PUR'?'0 1px 2px rgba(0,0,0,.1)':'none',lstBg:d.side==='LST'?'#fff':'transparent',lstSh:d.side==='LST'?'0 1px 2px rgba(0,0,0,.1)':'none',setP:()=>up(i,{side:'PUR'}),setL:()=>up(i,{side:'LST'}),
+            tagsText:d.tags.join(', '),setTags:e=>up(i,{tags:e.target.value.split(',').map(t=>t.trim()).filter(Boolean)})}))})(),
+          finLabel:isB&&s.view==='tag'?'Finalize '+B.length+' templates':'Finalize template',
+          allSel:nSel===B.length&&B.length>0,toggleAll:e=>{const c=e.target.checked;this.setState({batch:this.bsaved().map(d=>({...d,sel:c}))})},
+          selCount:nSel,bNoSel:nSel===0,selOp:nSel?1:.4,selFoot:nSel?nSel+' selected':'Select documents for bulk edits',clearSel:()=>this.setState({bpanel:'',batch:this.bsaved().map(d=>({...d,sel:false}))}),
+          openTag:()=>this.setState({bpanel:s.bpanel==='tag'?'':'tag'}),openRename:()=>this.setState({bpanel:s.bpanel==='rename'?'':'rename'}),openFields:()=>this.setState({bpanel:s.bpanel==='fields'?'':'fields'}),
+          pTag:nSel>0&&s.bpanel==='tag',pRename:nSel>0&&s.bpanel==='rename',pFields:nSel>0&&s.bpanel==='fields',
+          presets:this.PRE_TAGS.map(p=>({label:p,run:()=>addTag(p)})),bulkTag:s.bbulk,setBulkTag:e=>this.setState({bbulk:e.target.value}),applyTags:()=>addTag(s.bbulk),
+          pattern:s.bpat,setPattern:e=>this.setState({bpat:e.target.value}),patPreview:first?pat(first,0)+'.pdf':'',
+          applyRename:()=>{let i=0;const b=this.bsaved().map(d=>d.sel?{...d,name:pat(d,i++)+'.pdf'}:d);this.setState({batch:b,bpanel:'',tagName:b[s.bcur].name.replace(/\.pdf$/i,'')})},
+          fieldTypes:BF.map(([k,l,ic])=>{const on=s.bfsel.includes(k);return {label:l,icon:'ph '+ic,on,toggle:()=>this.setState({bfsel:on?s.bfsel.filter(x=>x!==k):[...s.bfsel,k]}),style:"display:flex;align-items:center;gap:6px;height:32px;min-width:0;padding:0 8px;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;cursor:pointer;color:#fff;border:1px solid "+(on?'#5A5FF2':'#404040')+";background:"+(on?'#1C1D3F':'transparent')}}),
+          fCount:s.bfsel.length?'('+s.bfsel.length+')':'',fApplyDis:!s.bfsel.length,fApplyOp:s.bfsel.length?1:.4,
+          applyFields:()=>{const ks=BF.map(x=>x[0]).filter(k=>s.bfsel.includes(k));if(!ks.length)return;const b=this.bsaved().map(d=>d.sel?{...d,fields:[...d.fields,...ks.map((k,j)=>({id:'bf'+k+Date.now()+j,type:k==='signer'?'fullname':k,label:BF.find(x=>x[0]===k)[1],role:'Buyer',x:12,y:30+j*8,w:this.WID[k]||30,src:'none',cond:'always',req:true,hide:false}))],phase:'draft'}:d);this.setState({batch:b,bpanel:'',bfsel:[],fields:b[s.bcur].fields})},
+          removeSel:()=>{const b=this.bsaved(),keep=b.filter(d=>!d.sel);if(!keep.length||keep.length===b.length)return;this.setState({batch:keep,bcur:0,bpanel:'',fields:keep[0].fields,tagPhase:keep[0].phase,tagName:keep[0].name.replace(/\.pdf$/i,'')})},
+          toggleList:()=>this.setState({bpop:s.bpop==='list'?'':'list'}),toggleBulk:()=>this.setState({bpop:s.bpop==='bulk'?'':nSel===0?'list':'bulk'}),bpopList:s.bpop==='list',bpopBulk:s.bpop==='bulk',
+          curN:s.bcur+1,curTagList:cd.tags.map(t=>({label:t,remove:()=>{const b=this.bsaved();this.setState({batch:b.map((x,k)=>k===s.bcur?{...x,tags:x.tags.filter(y=>y!==t)}:x)})}})),
+          bBackDis:s.bcur===0,bBackOp:s.bcur===0?.45:1,bBack:()=>this.bgo(s.bcur-1),bNextLabel:s.bcur===B.length-1?'Finalize all':'Next',bNext:()=>s.bcur===B.length-1?this.finishBatch():this.bgo(s.bcur+1),
+          bName:cd.name.replace(/\.pdf$/i,''),setBName:e=>{const v=e.target.value,b=this.bsaved();this.setState({batch:b.map((x,k)=>k===s.bcur?{...x,name:v+'.pdf'}:x),tagName:v})},
+          btagIn:s.btagIn,setBtagIn:e=>this.setState({btagIn:e.target.value}),btagKey:e=>{if(e.key==='Enter'){const t=e.target.value.trim(),b=this.bsaved();if(t)this.setState({batch:b.map((x,k)=>k===s.bcur&&!x.tags.includes(t)?{...x,tags:[...x.tags,t]}:x)});this.setState({btagIn:''});e.preventDefault()}}}})(),
+      ...(()=>{const O=this.OPT(),sv=(k,v)=>this.upd(s.sel,k,v),mp=v=>this.setState({fields:s.fields.map(f=>f.id===s.sel?{...f,src:v,hide:v!=='none'}:f)});return {
+        ddRoleT:this.dd(sel.role,O.role,v=>sv('role',v),'308px'),ddSrcMapT:this.dd(sel.src||'none',O.src,mp,'308px'),ddCondT:this.dd(sel.cond,O.cond,v=>sv('cond',v),'308px'),
+        ddRoleE:this.dd(sel.role,O.role,v=>sv('role',v),'268px'),ddSrcE:this.dd(sel.src||'none',O.src,v=>sv('src',v),'268px'),ddCondE:this.dd(sel.cond,O.cond,v=>sv('cond',v),'268px'),
+        ddMetaSub:this.dd(s.meta.sub||'MLS',O.sub,v=>this.setState({meta:{...s.meta,sub:v}}),'200px'),showMetaSub:s.meta.state==='NY',
+        ddMetaState:this.dd(s.meta.state,O.st,v=>this.setState({meta:{...s.meta,state:v}}),'200px'),
+        ddAllState:this.dd('',O.st,v=>this.setState({batch:s.batch.map(x=>s.bsel[x.id]?{...x,state:v}:x)}),'170px','Set state…')}})(),
+      modalUpload:s.modal==='upload',modalDetails:s.modal==='details',upNone:s.up==='none',closeUpModal:()=>this.setState({modal:'none',up:'none',upMenu:false,batch:[],bsel:{}}),
+      backUp:()=>this.setState({modal:'upload',up:'none',fileName:''}),
+      toTag:()=>{const id=this.newId();this.setState({modal:'none',view:'tag',creating:true,tagId:id,tagName:s.meta.name||'Untitled',fields:[],tagPhase:'draft',askApprove:false,msgs:this.INTRO(),sel:null,tool:null,rtab:'mel',nextId:20});this.startAI()},
+      modalOrder:s.modal==='order',toOrder:()=>this.setState({modal:'order'}),oBack:()=>this.setState({modal:'details'}),
+      ...(()=>{const R=s.sroles||[{name:'Buyer',c:'#5A5FF2'},{name:'Seller',c:'#F08068'},{name:"Buyer's agent",c:'#6DA544'},{name:"Listing agent",c:'#EA580C'}];let st=0;
+        const mv=(i,j)=>{const a=R.map(x=>({...x}));const [x]=a.splice(i,1);x.tog=false;a.splice(j,0,x);a[0].tog=false;this.setState({sroles:a})};
+        return {oRows:R.map((r,i)=>{if(i===0||!r.tog)st++;const opts=R.map((_,k)=>({v:String(k+1),t:String(k+1)}));if(i>0)opts.push({v:'t',t:'Together'});
+          const setP=v=>{if(v==='t')this.setState({sroles:R.map((x,k)=>k===i?{...x,tog:true}:x)});else mv(i,+v-1)};return {name:r.name,c:r.c,dd:this.dd(r.tog?'t':String(i+1),opts.map(o=>[o.v,o.t]),setP,'120px')}}),soRows:R.map((r,i)=>{const M={'Buyer':['#8A8DE8','#EEEFFB','#D9DAF5'],'Seller':['#D9958A','#FBF0ED','#F0D8D2'],"Buyer's agent":['#86A96B','#EFF5EA','#D8E5CD'],'Listing agent':['#D9A66E','#FBF3E9','#EEDDC4']}[r.name]||['#A3A3A3','#F5F5F5','#E5E5E5'],all=!!s.sall;return {name:r.name,dot:M[0],bg:M[1],bd:M[2],drag:!all,hCur:all?'default':'grab',dd:this.dd(all?'1':String(i+1),all?[['1','1']]:R.map((_,k)=>[String(k+1),String(k+1)]),v=>{if(!all)mv(i,+v-1)},'64px'),dStart:e=>{e.dataTransfer.setData('text/so',String(i));e.dataTransfer.effectAllowed='move'},dOver:e=>{e.preventDefault()},dDrop:e=>{e.preventDefault();e.stopPropagation();const from=+e.dataTransfer.getData('text/so');if(isNaN(from)||all||from===i)return;mv(from,i)}}}),soAll:!!s.sall,soAllToggle:()=>this.setState({sall:!s.sall}),soOpen:!!s.soOpen,soToggle:()=>this.setState({soOpen:!s.soOpen}),soChev:s.soOpen?'ph-caret-up':'ph-caret-down'}})(),
+      modalBOrder:s.modal==='border',toBatchOrder:()=>this.setState({modal:'border',bocur:0}),boBack:()=>this.setState({modal:'bdetails'}),
+      ...(()=>{const DEF=()=>[{name:'Buyer',c:'#5A5FF2'},{name:'Seller',c:'#F08068'},{name:"Buyer's agent",c:'#6DA544'},{name:"Listing agent",c:'#EA580C'}];
+        const B=s.batch||[],bo=s.bord||{},cur=Math.min(s.bocur||0,Math.max(B.length-1,0)),cd=B[cur],get=id=>bo[id]||DEF();
+        const put=(id,a)=>this.setState({bord:{...bo,[id]:a}});
+        const sum=R=>{const g=[];R.forEach((r,i)=>{if(i===0||!r.tog)g.push([r.name]);else g[g.length-1].push(r.name)});return g.map(x=>x.join(' + ')).join(' \u2192 ')};
+        const R=cd?get(cd.id):[];
+        return {boDocs:B.map((d,k)=>({name:d.name,sum:sum(get(d.id)),bd:k===cur?'#5A5FF2':'#E5E5E5',bg:k===cur?'#EEEFFE':'#fff',pick:()=>this.setState({bocur:k})})),boName:cd?cd.name:'',
+          boApplyAll:()=>{const m={};B.forEach(d=>{m[d.id]=R.map(x=>({...x}))});this.setState({bord:m})},
+          boRows:R.map((r,i)=>({name:r.name,c:r.c,dd:this.dd(r.tog?'t':String(i+1),R.map((_,k)=>[String(k+1),String(k+1)]).concat(i>0?[['t','Together']]:[]),v=>{let a=R.map(x=>({...x}));if(v==='t')a[i].tog=true;else{const [x]=a.splice(i,1);x.tog=false;a.splice(+v-1,0,x);a[0].tog=false}put(cd.id,a)},'120px')}))}})(),
+      ...(()=>{const ai=s.ai||'off',st=s.aiStep||0,L=['Reading the pages','Finding signature and initial blocks','Matching fields to the cover sheet','Working out who signs, and when'];const R=s.sroles||[],g=[];R.forEach((r,i)=>{if(i===0||!r.tog)g.push([r.name]);else g[g.length-1].push(r.name)});
+        return {aiThink:ai==='think',aiReview:ai==='review',barOp:1,barPe:ai==='off'?'auto':'none',aiCount:s.fields.length,aiTitle:s.batch.length>1?'Mel is reading '+s.batch.length+' documents':'Mel is reading this document',aiMsg:(s.batch.length>1?'Tags added to all '+s.batch.length+' documents.':s.fields.length+' tags are on the page.')+' Signing order: '+(()=>{const g=[];(s.sroles||[]).forEach((r,i)=>{if(i===0||!r.tog)g.push([r.name]);else g[g.length-1].push(r.name)});return s.sall?'everyone signs at once':(s.sroles||[]).map(r=>r.name).join(' \u2192 ')})()+'.',aiOrder:g.map(x=>x.join(' + ')).join(' \u2192 '),
+          aiSteps:L.map((label,i)=>{const done=i<st,act=i===st;return {label,icon:done?'ph-check-circle':act?'ph-circle-notch':'ph-circle',ic:done?'#6DA544':act?'#9EA1F8':'#525252',fg:done||act?'#fff':'#737373',anim:act?'upsp .7s linear infinite':'none'}}),
+          aiApply:()=>this.setState(x=>({ai:'off',msgs:[...x.msgs,{mel:true,text:'Added '+x.fields.length+' tags and set the signing order. Review them, then approve.'}]})),
+          aiSkip:()=>this.setState(x=>({ai:'off',sall:false,fields:[],sroles:undefined,soOpen:false,sel:null,batch:x.batch.map(d=>({...d,fields:[]}))}))}})(),
+      mapDlgOpen:!!s.mapDlg&&!!sf&&s.view==='tag',mapX:s.mapDlg&&s.mapDlg.x||0,mapY:s.mapDlg&&s.mapDlg.y||0,closeMapDlg:()=>this.setState({mapDlg:false}),stopProp:e=>e.stopPropagation(),
+      askLeave:()=>this.setState({leave:true}),stayHere:()=>this.setState({leave:false}),leaveOpen:s.leave,
+      leaveText:(s.modal==='details'||s.modal==='bdetails')?'Your document is saved to the table as Draft. You can pick it up from there.':'Your work is saved to the table as Draft. The layer stays unapplied until you approve and finalize.',
+      leaveNow:()=>{if(s.batch.length>1&&(s.view==='tag'||s.modal==='bdetails'))return this.finishBatch();if(s.modal==='details'){const p=this.persist('Draft');this.backToDash({docs:p.docs,tagId:p.id,saved:{...s.saved,[p.id]:{fields:[],phase:'draft'}}})}else{const p=this.persist('Draft');this.backToDash({docs:p.docs,saved:{...s.saved,[p.id]:{fields:s.fields,phase:s.tagPhase}}})}},
+      finalize:()=>{if(s.batch.length>1)return this.finishBatch();if(s.tagPhase!=='approved'||!s.fields.length)return;const p=this.persist('Completed');this.backToDash({docs:p.docs,tab:'all',saved:{...s.saved,[p.id]:{fields:s.fields,phase:'approved'}}})},
+      finOp:(s.batch.length>1||(s.tagPhase==='approved'&&s.fields.length))?1:.45,tagName:s.tagName,
+      phaseLabel:s.tagPhase==='approved'?'Approved':'Layer, not applied',phaseBg:s.tagPhase==='approved'?'#E8F3DE':'#FFF6CC',phaseFg:s.tagPhase==='approved'?'#3F6B1F':'#7A5B00',
+      mappedCount:s.fields.filter(f=>f.src!=='none').length,hiddenCount:s.fields.filter(f=>f.hide).length,
+      showLayerNote:s.tagPhase==='draft'&&s.fields.length>0,showApprove:s.tagPhase==='draft'&&s.askApprove&&s.fields.length>0,
+      approve:()=>this.doApprove(),keepEditing:()=>this.setState({askApprove:false}),typing:s.typing,
+      chat:s.msgs.map(m=>({text:m.text,isMel:!!m.mel,isMe:!m.mel})).reverse(),
+      chips:(()=>{const c=[],say=t=>()=>this.send(t),mp=s.fields.filter(f=>f.src!=='none');if(!s.fields.length)c.push({label:'Tag and map this document',onClick:say('Tag and map this document')});else{if(s.fields.some(f=>f.label==='Agent name'&&f.src==='none'))c.push({label:'Map Agent name to cover sheet',onClick:say('Map agent name to cover sheet')});if(s.tagPhase==='draft'&&!s.askApprove)c.push({label:'Review and approve',onClick:say('Review and approve')});if(mp.length)c.push(mp.every(f=>f.hide)?{label:'Show mapped fields in filler',onClick:say('Show mapped fields')}:{label:'Hide mapped fields in filler',onClick:say('Hide mapped fields')})}return c})(),
+      chatIn:s.chatIn,setChatIn:e=>this.setState({chatIn:e.target.value}),chatKey:e=>{if(e.key==='Enter'){const t=s.chatIn;this.setState({chatIn:''});this.send(t)}},sendChat:()=>{const t=s.chatIn;this.setState({chatIn:''});this.send(t)},
+      rtabMel:s.rtab==='mel',rtabField:s.rtab==='field',rtabMap:s.rtab==='map',tabMel:()=>this.setState({rtab:'mel'}),tabField:()=>this.setState({rtab:'field'}),tabMap:()=>this.setState({rtab:'map'}),
+      mapBg:s.rtab==='map'?'#fff':'transparent',mapSh:s.rtab==='map'?'0 1px 2px rgba(0,0,0,.1)':'none',
+      mapRows:s.fields.filter(f=>['text','number','date','dropdown','note','formula'].includes(f.type)).map(f=>({label:f.label,role:f.role,c:this.RC[f.role],src:f.src||'none',bd:s.sel===f.id?'#5A5FF2':'#E5E5E5',bg:s.sel===f.id?'#F7F7FE':'#fff',preview:f.src&&f.src!=='none'?this.PRE[f.src]:'',pvShow:f.src&&f.src!=='none'?'block':'none',onSelect:()=>this.setState({sel:f.id}),stop:e=>e.stopPropagation(),onMap:e=>{const v2=e.target.value;this.setState({fields:s.fields.map(x=>x.id===f.id?{...x,src:v2,hide:v2!=='none'}:x)})},dd:this.dd(f.src||'none',this.OPT().src,v2=>this.setState({fields:s.fields.map(x=>x.id===f.id?{...x,src:v2,hide:v2!=='none'}:x)}),'280px')})),
+      mapSummary:(()=>{const m=s.fields.filter(f=>['text','number','date','dropdown','note','formula'].includes(f.type));const k=m.filter(f=>f.src&&f.src!=='none').length;return k+' of '+m.length+' fillable fields mapped. Mapped fields fill from the cover sheet.'})(),
+      melBg:s.rtab==='mel'?'#fff':'transparent',melSh:s.rtab==='mel'?'0 1px 2px rgba(0,0,0,.1)':'none',fldBg:s.rtab==='field'?'#fff':'transparent',fldSh:s.rtab==='field'?'0 1px 2px rgba(0,0,0,.1)':'none',
+      tagViews:s.fields.map(f=>{const c=this.RC[f.role],sq=f.type==='checkbox'||f.type==='radio',dr=s.tagPhase==='draft';return {jc:sq?'center':'flex-start',pad:sq?'0':((f.type==='text'||f.type==='date')?'4px':'0 5px'),mw:sq?'32px':'0',mh:sq?'32px':'0',cbDisp:f.type==='checkbox'?'inline-block':'none',rdDisp:f.type==='radio'?'inline-block':'none',icDisp:(sq||f.type==='text'||f.type==='date')?'none':'inline-block',bc:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'transparent':c,tint2:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'transparent':c+'14',editDisp:(f.type==='text'||f.type==='date')?'inline-flex':'none',chipEditDisp:(f.type==='signature'||f.type==='initials'||f.type==='datesigned')?'inline-flex':'none',dateDisp:f.type==='date'?'block':'none',dVal:f.type==='date'?'June 01, 2025':'',mapTxt:f.src&&f.src!=='none'?' \u2192 '+this.SRC[f.src]:' \u2192 Not mapped',onDrag:e=>{const r=e.currentTarget.getBoundingClientRect();this._off={dx:e.clientX-r.left,dy:e.clientY-r.top};e.dataTransfer.setData('text/fid',String(f.id));e.dataTransfer.effectAllowed='move'},isCb:f.type==='checkbox',isRd:f.type==='radio',isIn:f.type==='text'||f.type==='date',rOpts:[{value:'1',label:''}],ph:f.label,chipText:(f.type==='checkbox'||f.type==='radio'||f.type==='text'||f.type==='date')?'':f.label+(f.src!=='none'?' \u2192 '+this.SRC[f.src]:''),text:sq?'':f.label+(f.src!=='none'?' \u2192 '+this.SRC[f.src]:''),icon:f.src!=='none'?'ph-link-simple':(TY[f.type]?TY[f.type][1]:'ph-text-t'),hideIc:f.hide&&!sq?'inline':'none',c,tint:c+(dr?'12':'1F'),x:f.x+'%',y:f.y+'%',w:sq?'28px':((f.type==='signature'||f.type==='initials'||f.type==='datesigned')?'max-content':f.w+'%'),h:sq?'28px':((f.type==='text'||f.type==='date')?'auto':'28px'),bs:dr||f.cond!=='always'?'dashed':'solid',ol:s.sel===f.id?'2px solid #0A0A0A':'none',onEdit:e=>{e.stopPropagation();this.setState({sel:f.id,tool:null,rtab:'field',mapDlg:this.mapPos(e)})},onSelect:e=>{e.stopPropagation();this.setState({sel:f.id,tool:null,rtab:'field'})}}}),
+      setSrcMap:e=>{const v2=e.target.value;this.setState({fields:s.fields.map(f=>f.id===s.sel?{...f,src:v2,hide:v2!=='none'}:f)})},setHide:e=>this.upd(s.sel,'hide',e.target.checked),
+      palette,toolHint:s.tool?'Click the page to place a '+TY[s.tool][0].toLowerCase()+' field.':'Pick a tag, then click the page.',
+      roleLegend:['Buyer','Co-buyer','Seller','Agent'].map(r=>({name:r,c:this.RC[r],bd:(s.activeRole||'Buyer')===r?'#5A5FF2':'transparent',bg:(s.activeRole||'Buyer')===r?'#EEEFFE':'transparent',on:(s.activeRole||'Buyer')===r,dbg:(s.activeRole||'Buyer')===r?'#3A3D9E':'transparent',ck:(s.activeRole||'Buyer')===r?1:0,onClick:()=>this.setState({activeRole:r,bpop:''})})),curRole:s.activeRole||'Buyer',curRoleC:this.RC[s.activeRole||'Buyer'],toggleRole:()=>this.setState({bpop:s.bpop==='role'?'':'role'}),bpopRole:s.bpop==='role',
+      lines,fieldViews,pageCursor:s.tool?'crosshair':'default',fieldCount:s.fields.length,noSel:!sf,hasSel:!!sf,sel,
+      dragOver:e=>{e.preventDefault();e.dataTransfer.dropEffect='copy'},dropField:e=>{e.preventDefault();const fid=e.dataTransfer.getData('text/fid');if(fid){const r=e.currentTarget.getBoundingClientRect(),o=this._off||{dx:0,dy:0},x=Math.max(0,Math.min(90,(e.clientX-o.dx-r.left)/r.width*100)),y=Math.max(0,Math.min(95,(e.clientY-o.dy-r.top)/r.height*100));this.setState({fields:s.fields.map(f=>String(f.id)===fid?{...f,x,y}:f)});return}const t=e.dataTransfer.getData('text/plain');if(!TY[t])return;const r=e.currentTarget.getBoundingClientRect();const x=Math.max(0,Math.min(90,(e.clientX-r.left)/r.width*100)),y=Math.max(0,Math.min(95,(e.clientY-r.top)/r.height*100));const id=s.nextId;this.setState({fields:[...s.fields,{id,type:t,label:TY[t][0],role:s.activeRole||'Buyer',x,y,w:this.WID[t]||30,src:'none',cond:'always',req:true}],nextId:id+1,sel:id,tool:null})},
+      placeField:e=>{ if(!s.tool){this.setState({sel:null});return} const r=e.currentTarget.getBoundingClientRect();const x=Math.max(0,Math.min(90,(e.clientX-r.left)/r.width*100)),y=Math.max(0,Math.min(95,(e.clientY-r.top)/r.height*100));const t=s.tool,id=s.nextId;const type=t;const w=this.WID[t]||30;this.setState({fields:[...s.fields,{id,type,label:TY[t][0],role:s.activeRole||'Buyer',x,y,w,src:'none',cond:'always',req:true}],nextId:id+1,sel:id,tool:null}) },
+      setLabel:e=>this.upd(s.sel,'label',e.target.value),setRole:e=>this.upd(s.sel,'role',e.target.value),setSrc:e=>this.upd(s.sel,'src',e.target.value),setCond:e=>this.upd(s.sel,'cond',e.target.value),setReq:e=>this.upd(s.sel,'req',e.target.checked),
+      deleteSel:()=>this.setState({fields:s.fields.filter(f=>f.id!==s.sel),sel:null}),
+      groups,flow,
+      filledCount:fr.filter(f=>this.filled(f)).length,fillableCount:fr.length,prefillCount,fillRows,sugs,hasSugs:sugs.length>0,previewViews,
+      versions,selVer,restoreOpacity:s.verIdx===0?.4:1,
+      restore:()=>{ if(s.verIdx===0)return; const o=s.versions[s.verIdx]; this.setState({versions:[{name:'v'+(s.versions.length+1),title:'Restored '+o.name,by:'Jessica Tran',when:'Just now',changes:[{k:'c',t:'Restored fields and signing order from '+o.name}]},...s.versions],verIdx:0}) }
+    };
+  }
+}
+</script>
+</body>
+</html>

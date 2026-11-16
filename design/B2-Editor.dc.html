@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Batch 2 · Tag editor</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="ds/radius-ui/tokens/fonts.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/colors.css">
+  <link rel="stylesheet" href="ds/radius-ui/styles.css">
+  <link rel="stylesheet" href="src/regular/style.css">
+  <style>
+    @font-face{font-family:"Phosphor";src:url("/_blob/438dda85d2d284a1882426ac5d2e0b24") format("woff2");font-weight:normal;font-style:normal;font-display:block}
+    body{margin:0}
+    .ph{line-height:1}
+    .b2 button{font-family:inherit}
+    .pn{padding:16px;display:flex;flex-direction:column;gap:16px}
+    .lb{font-weight:500;font-size:14px;color:#0A0A0A}
+    .fd{display:flex;flex-direction:column;gap:6px}
+    .hint{font-size:12px;line-height:16px;color:#737373}
+    .in{height:32px;box-sizing:border-box;padding:0 10px;border:1px solid #E5E5E5;border-radius:8px;background:#fff;display:flex;align-items:center;gap:8px;font-size:14px;color:#0A0A0A;width:100%;min-width:0}
+    .in .tx{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+    .in .cr{font-size:14px;color:#737373;flex:none}
+    .in.err{border-color:#DC2626}
+    .in.foc{border-color:#5A5FF2;box-shadow:0 0 0 3px rgba(90,95,242,.15)}
+    .in.ph-col{color:#737373}
+    .sec{display:flex;align-items:center;justify-content:space-between;min-height:40px;border-top:1px solid #F0F0F0;font-weight:600;font-size:14px;color:#0A0A0A;padding-top:4px}
+    .sec .ct{font-weight:400;font-size:12px;color:#737373;margin-left:6px}
+    .row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+    .tg{width:32px;height:18px;border-radius:9px;background:#5A5FF2;position:relative;flex:none;border:0;padding:0}
+    .tg::after{content:"";position:absolute;top:2px;left:16px;width:14px;height:14px;border-radius:50%;background:#fff}
+    .tg.off{background:#D4D4D4}.tg.off::after{left:2px}
+    .tg.lock{opacity:.5}
+    .tg.mix{background:#A3A3A3}.tg.mix::after{left:9px}
+    .ib{width:32px;height:32px;box-sizing:border-box;border:1px solid #E5E5E5;border-radius:8px;background:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:16px;color:#404040;padding:0;flex:none}
+    .ib.on{background:#EEEFFE;border-color:#C7C9FA;color:#4449d9}
+    .ib.mix{background:#F5F5F5;color:#737373}
+    .box{display:flex;gap:8px;padding:10px 12px;border-radius:10px;font-size:13px;line-height:18px}
+    .box i{font-size:16px;flex:none;margin-top:1px}
+    .box.err{border:1px solid #FECACA;background:#FEF2F2;color:#991B1B}
+    .box.warn{border:1px solid #F3E3A0;background:#FFF6CC;color:#7A5B00}
+    .box.info{border:1px solid #E4E4FB;background:#F7F7FE;color:#3F3F46}
+    .btn{height:32px;padding:0 14px;border:0;border-radius:10px;background:#5A5FF2;color:#fff;font:500 14px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+    .btn.out{background:#fff;color:#0A0A0A;border:1px solid #E5E5E5}
+    .btn.ghost{background:transparent;color:#0A0A0A}
+    .btn.dark{background:#0A0A0A;color:#fff}
+    .btn.red{background:#DC2626;color:#fff}
+    .btn.sm{height:28px;padding:0 10px;font-size:13px;border-radius:8px}
+    .btn.full{width:100%}
+    .lnk{border:0;background:transparent;padding:0;color:#5A5FF2;font:500 13px 'Mona Sans',sans-serif;display:inline-flex;align-items:center;gap:6px}
+    .seg{display:flex;gap:2px;padding:2px;background:#F5F5F5;border-radius:10px}
+    .seg button{flex:1;height:28px;border:0;border-radius:8px;background:transparent;font:500 13px 'Mona Sans',sans-serif;color:#525252;white-space:nowrap}
+    .seg button.on{background:#fff;color:#0A0A0A;box-shadow:0 1px 2px rgba(0,0,0,.1)}
+    .opt{display:grid;grid-template-columns:16px 18px minmax(0,1fr) 24px;align-items:center;gap:8px}
+    .opt .hd{color:#A3A3A3;font-size:16px}
+    .x{width:24px;height:24px;border:0;border-radius:6px;background:transparent;color:#DC2626;display:inline-flex;align-items:center;justify-content:center;padding:0}
+    .x.dis{color:#D4D4D4}
+    .rad{width:16px;height:16px;border-radius:50%;border:1.5px solid #A3A3A3;box-sizing:border-box;background:#fff;display:inline-flex;align-items:center;justify-content:center}
+    .rad.on{border-color:#5A5FF2}.rad.on::after{content:"";width:8px;height:8px;border-radius:50%;background:#5A5FF2}
+    .cbx{width:16px;height:16px;border-radius:4px;border:1.5px solid #A3A3A3;box-sizing:border-box;background:#fff;display:inline-flex;align-items:center;justify-content:center;color:#fff;font-size:11px}
+    .cbx.on{background:#5A5FF2;border-color:#5A5FF2}
+    .menu{border:1px solid #E5E5E5;border-radius:10px;background:#fff;box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -2px rgba(0,0,0,.1);padding:4px;display:flex;flex-direction:column}
+    .mi{display:flex;align-items:center;gap:8px;min-height:32px;padding:0 8px;border-radius:6px;font-size:14px;color:#0A0A0A}
+    .mi.on{background:#F5F5F5}
+    .mi .sub{margin-left:auto;font-size:12px;color:#737373;white-space:nowrap}
+    .ml{padding:6px 8px 4px;font-size:12px;font-weight:600;color:#737373}
+    .blk{border:1px solid #E5E5E5;border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px;background:#FAFAFA}
+    .kw{flex:none;width:44px;height:32px;border-radius:8px;background:#E5E5E5;color:#404040;font-size:11px;font-weight:700;letter-spacing:.06em;display:inline-flex;align-items:center;justify-content:center}
+    .dep{display:flex;align-items:center;gap:8px;height:36px;padding:0 4px 0 10px;border:1px solid #E5E5E5;border-radius:8px;background:#fff;font-size:13px}
+    .dep .tx{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .tchip{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:26px;background:#F5F5F5;font-size:12px;font-weight:500;color:#404040;white-space:nowrap}
+    .pal{height:32px;padding:0 10px;border:1px solid #E5E5E5;border-radius:10px;background:#fff;display:flex;align-items:center;gap:8px;font:500 13px 'Mona Sans',sans-serif;color:#0A0A0A;min-width:0}
+    .new{margin-left:auto;height:18px;padding:0 6px;border-radius:26px;background:#EEEFFE;color:#4449d9;font-size:11px;font-weight:600;display:inline-flex;align-items:center}
+    .mb{position:absolute;z-index:30;display:flex;align-items:center;gap:4px;padding:4px;background:#0A0A0A;border:1px solid #262626;border-radius:12px;box-shadow:0 4px 6px -1px rgba(0,0,0,.2),0 2px 4px -2px rgba(0,0,0,.2);color:#fff;white-space:nowrap}
+    .mb .b{height:28px;min-width:28px;padding:0 6px;border:0;border-radius:8px;background:transparent;color:#fff;display:inline-flex;align-items:center;justify-content:center;gap:6px;font:500 12px 'Mona Sans',sans-serif}
+    .mb .b i{font-size:16px}
+    .mb .b.hl{background:#5A5FF2}
+    .mb .b.red{color:#F87171}
+    .mb .dv{width:1px;height:18px;background:#333;margin:0 2px}
+    .mb .lbl{font-size:12px;font-weight:600;padding:0 6px;color:#FAFAFA}
+    .mtg{width:28px;height:16px;border-radius:8px;background:#5A5FF2;position:relative}
+    .mtg::after{content:"";position:absolute;top:2px;left:14px;width:12px;height:12px;border-radius:50%;background:#fff}
+    .mtg.lock{opacity:.55}
+    .av{width:20px;height:20px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+    .dt{font-size:9px;line-height:12px;color:#525252;position:absolute;white-space:nowrap;font-family:'Mona Sans',sans-serif}
+    .dh{font-size:10px;line-height:12px;font-weight:700;color:#262626;position:absolute;letter-spacing:.02em;font-family:'Mona Sans',sans-serif}
+  </style>
+</helmet>
+<div class="b2" data-screen-label="{{ screenLabel }}" style="width:1440px;height:900px;display:grid;grid-template-rows:56px minmax(0,1fr);background:#fff;color:#0A0A0A;font-family:'Mona Sans',-apple-system,'Segoe UI',sans-serif;font-size:14px;overflow:hidden;position:relative">
+  <header style="display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;padding:0 16px;border-bottom:1px solid #E5E5E5;background:#FAFAFA">
+    <div style="display:flex;align-items:center;gap:10px;min-width:0">
+      <button type="button" aria-label="Close" style="width:32px;height:32px;border:0;background:transparent;border-radius:10px;color:#404040;display:inline-flex;align-items:center;justify-content:center"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button>
+      <div style="width:1px;height:24px;background:#E5E5E5"></div>
+      <span style="font-weight:600;white-space:nowrap">California residential purchase agreement</span>
+      <span style="height:22px;display:inline-flex;align-items:center;padding:0 8px;border-radius:6px;background:#EEEFFE;color:#4449d9;font-size:12px;font-weight:600">CA-PUR-0001</span>
+      <span style="height:22px;display:inline-flex;align-items:center;padding:0 10px;border-radius:26px;font-size:12px;font-weight:500;background:#FFF6CC;color:#7A5B00">Draft layer</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;white-space:nowrap">
+      <span style="color:#737373;font-size:13px">{{ headCount }}</span>
+      <button type="button" class="btn out"><i class="ph ph-eye" aria-hidden="true" style="font-size:16px"></i>Preview as signer</button>
+      <button type="button" class="btn">Approve tags</button>
+    </div>
+  </header>
+  <div style="min-height:0;display:grid;grid-template-columns:232px minmax(0,1fr) 340px">
+    <aside style="border-right:1px solid #E5E5E5;padding:16px;display:flex;flex-direction:column;gap:6px;min-width:0;overflow:hidden">
+      <span style="font-weight:600;margin-bottom:4px">Tags</span>
+      <sc-for list="{{ palette }}" as="p" hint-placeholder-count="14">
+        <sc-if value="{{ p.head }}" hint-placeholder-val="{{ false }}"><div style="margin-top:6px;font-size:12px;font-weight:600;color:#737373">{{ p.label }}</div></sc-if>
+        <sc-if value="{{ p.btn }}" hint-placeholder-val="{{ true }}"><button type="button" class="pal" style="{{ p.st }}"><i class="ph {{ p.icon }}" aria-hidden="true" style="font-size:16px;color:{{ p.ic }}"></i><span>{{ p.label }}</span><sc-if value="{{ p.isNew }}" hint-placeholder-val="{{ false }}"><span class="new">New</span></sc-if></button></sc-if>
+      </sc-for>
+    </aside>
+
+    <section style="position:relative;background:#F5F5F5;display:flex;flex-direction:column;align-items:center;padding:20px 24px;gap:12px;min-width:0;overflow:hidden">
+      <sc-if value="{{ banner.show }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;top:16px;left:50%;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:10px;padding:6px 6px 6px 14px;background:#0A0A0A;color:#fff;border-radius:12px;font-size:13px;white-space:nowrap;box-shadow:0 4px 6px -1px rgba(0,0,0,.2)"><i class="ph {{ banner.icon }}" aria-hidden="true" style="font-size:16px;color:#9EA1F8"></i><span>{{ banner.text }}</span><sc-if value="{{ banner.hasBtn }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn sm">{{ banner.btn }}</button></sc-if></div>
+      </sc-if>
+      <div style="position:relative;width:560px;height:724px;flex:none;margin-top:{{ pageTop }}">
+        <div style="position:absolute;inset:0;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12),0 8px 24px rgba(0,0,0,.06);overflow:hidden">
+          <div style="position:absolute;left:0;right:0;top:28px;text-align:center;font-size:14px;font-weight:700">California Residential Purchase Agreement</div>
+          <sc-for list="{{ docHeads }}" as="h" hint-placeholder-count="7"><span class="dh" style="left:{{ h.x }};top:{{ h.y }}">{{ h.t }}</span></sc-for>
+          <sc-for list="{{ docText }}" as="t" hint-placeholder-count="10"><span class="dt" style="left:{{ t.x }};top:{{ t.y }}">{{ t.t }}</span></sc-for>
+          <sc-for list="{{ docLines }}" as="l" hint-placeholder-count="12"><div style="position:absolute;left:{{ l.x }};top:{{ l.y }};width:{{ l.w }};height:4px;border-radius:2px;background:#EFEFEF"></div></sc-for>
+          <div style="position:absolute;bottom:14px;left:40px;right:40px;display:flex;justify-content:space-between;font-size:9px;color:#A3A3A3"><span>CA-PUR-0001</span><span>Page 1 of 10</span></div>
+        </div>
+        <sc-for list="{{ lines }}" as="l" hint-placeholder-count="0"><div style="{{ l.st }}"></div></sc-for>
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="0">
+          <div style="{{ g.st }}"><span style="{{ g.tagSt }}"><i class="ph {{ g.icon }}" aria-hidden="true" style="font-size:12px"></i>{{ g.label }}</span></div>
+        </sc-for>
+        <sc-for list="{{ fields }}" as="f" hint-placeholder-count="10">
+          <div style="{{ f.st }}">
+            <sc-if value="{{ f.isBox }}" hint-placeholder-val="{{ false }}"><span style="{{ f.mark }}"></span></sc-if>
+            <sc-if value="{{ f.isTxt }}" hint-placeholder-val="{{ true }}"><i class="ph {{ f.icon }}" aria-hidden="true" style="font-size:12px;color:{{ f.c }};flex:none"></i><span style="{{ f.lst }}">{{ f.label }}</span></sc-if>
+            <sc-if value="{{ f.hasBadge }}" hint-placeholder-val="{{ false }}"><span style="{{ f.bst }}"><i class="ph {{ f.bicon }}" aria-hidden="true" style="font-size:10px"></i></span></sc-if>
+          </div>
+        </sc-for>
+        <sc-if value="{{ marquee.show }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ marquee.st }}"></div>
+          <span style="{{ marquee.cst }}">{{ marquee.count }}</span>
+        </sc-if>
+        <sc-if value="{{ ghost.show }}" hint-placeholder-val="{{ false }}">
+          <div style="{{ ghost.st }}"></div>
+          <i class="ph ph-cursor-click" aria-hidden="true" style="{{ ghost.cst }}"></i>
+        </sc-if>
+        <sc-if value="{{ mini.show }}" hint-placeholder-val="{{ false }}">
+          <div class="mb" role="toolbar" aria-label="Tag actions" style="left:{{ mini.x }};top:{{ mini.y }}">
+            <button type="button" class="b" aria-label="Signer"><span class="av" style="background:{{ mini.avc }}">{{ mini.av }}</span><i class="ph ph-caret-down" aria-hidden="true" style="font-size:12px"></i></button>
+            <span class="dv"></span>
+            <span class="b" style="gap:8px"><span class="mtg {{ mini.reqCls }}"></span>{{ mini.reqLabel }}</span>
+            <span class="dv"></span>
+            <sc-if value="{{ mini.addOpt }}" hint-placeholder-val="{{ false }}"><button type="button" class="b {{ mini.addCls }}"><i class="ph ph-plus" aria-hidden="true"></i>{{ mini.addLabel }}</button><span class="dv"></span></sc-if>
+            <button type="button" class="b" aria-label="Duplicate"><i class="ph ph-copy" aria-hidden="true"></i></button>
+            <button type="button" class="b red" aria-label="Delete"><i class="ph ph-trash" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Settings"><i class="ph ph-gear-six" aria-hidden="true"></i></button>
+          </div>
+        </sc-if>
+        <sc-if value="{{ align.show }}" hint-placeholder-val="{{ false }}">
+          <div class="mb" role="toolbar" aria-label="Selection actions" style="left:{{ align.x }};top:{{ align.y }}">
+            <span class="lbl">{{ align.count }}</span>
+            <span class="dv"></span>
+            <button type="button" class="b {{ align.alCls }}" aria-label="Align left" title="Align left"><i class="ph ph-align-left" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Align centre" title="Align centre"><i class="ph ph-align-center-horizontal" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Align right" title="Align right"><i class="ph ph-align-right" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Align top" title="Align top"><i class="ph ph-align-top" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Align middle" title="Align middle"><i class="ph ph-align-center-vertical" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Align bottom" title="Align bottom"><i class="ph ph-align-bottom" aria-hidden="true"></i></button>
+            <span class="dv"></span>
+            <button type="button" class="b {{ align.dvCls }}" aria-label="Distribute vertically" title="Distribute vertically"><i class="ph ph-arrows-vertical" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Distribute horizontally" title="Distribute horizontally"><i class="ph ph-arrows-horizontal" aria-hidden="true"></i></button>
+            <button type="button" class="b" aria-label="Match size" title="Match size"><i class="ph ph-bounding-box" aria-hidden="true"></i></button>
+            <sc-if value="{{ align.group }}" hint-placeholder-val="{{ false }}"><span class="dv"></span><button type="button" class="b hl"><i class="ph ph-check-square" aria-hidden="true"></i>Group</button></sc-if>
+            <span class="dv"></span>
+            <button type="button" class="b" aria-label="Duplicate"><i class="ph ph-copy" aria-hidden="true"></i></button>
+            <button type="button" class="b red" aria-label="Delete"><i class="ph ph-trash" aria-hidden="true"></i></button>
+          </div>
+        </sc-if>
+      </div>
+      <sc-if value="{{ toast.show }}" hint-placeholder-val="{{ false }}">
+        <div role="status" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:40;display:flex;align-items:center;gap:10px;padding:8px 8px 8px 14px;background:#fff;border:1px solid #E5E5E5;border-radius:12px;box-shadow:0 4px 6px -1px rgba(0,0,0,.1);white-space:nowrap;font-size:13px"><i class="ph ph-check-circle" aria-hidden="true" style="font-size:18px;color:#41701F"></i><span style="font-weight:500">{{ toast.text }}</span><button type="button" class="btn out sm">Undo</button></div>
+      </sc-if>
+    </section>
+
+    <aside style="border-left:1px solid #E5E5E5;display:flex;flex-direction:column;min-height:0;min-width:0;overflow:hidden;background:#fff">
+      <div style="padding:12px 16px;border-bottom:1px solid #F0F0F0;flex:none">
+        <div style="display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:2px;padding:2px;background:#F5F5F5;border-radius:10px">
+          <button type="button" style="height:28px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;background:{{ tabMelBg }};box-shadow:{{ tabMelSh }};display:flex;align-items:center;justify-content:center;gap:6px"><img src="assets/mel-icon.svg" alt="" style="width:16px;height:16px">Mel chat</button>
+          <button type="button" style="height:28px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;background:{{ tabFldBg }};box-shadow:{{ tabFldSh }}">Field</button>
+          <button type="button" style="height:28px;border:0;border-radius:8px;font:500 13px 'Mona Sans',sans-serif;background:transparent">Map</button>
+        </div>
+      </div>
+      <div style="flex:1;min-height:0;overflow:hidden">
+
+      <sc-if value="{{ pv.isNone }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <span style="font-weight:600">{{ pv.noneTitle }}</span>
+          <span style="color:#737373;line-height:20px">{{ pv.noneText }}</span>
+          <sc-if value="{{ pv.noneTips }}" hint-placeholder-val="{{ false }}">
+            <div class="box info"><i class="ph ph-selection" aria-hidden="true"></i><span>Drag on empty space to select several tags. Shift-click adds or removes one. Cmd-A selects all on this page.</span></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isName }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px"><i class="ph ph-user" aria-hidden="true" style="font-size:18px;color:#0E9384"></i>Name field<span class="new" style="margin:0;background:#E6F6F4;color:#0B7A6E">New</span></span><button type="button" class="x" aria-label="Delete field"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+          <div class="fd"><span class="lb">Assigned to</span><div class="in"><span class="av" style="background:{{ pv.nameAvC }}">{{ pv.nameAv }}</span><span class="tx">{{ pv.nameSigner }}</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+          <div class="fd"><span class="lb">Show</span><div class="seg"><button type="button" class="on">Full name</button><button type="button">First</button><button type="button">Last</button></div></div>
+          <div class="fd"><span class="lb">Fills from</span><div class="in" style="background:#FAFAFA"><i class="ph ph-identification-card" aria-hidden="true" style="font-size:16px;color:#737373"></i><span class="tx">{{ pv.nameFrom }}</span><i class="ph ph-lock-simple cr" aria-hidden="true"></i></div><span class="hint">Pulled from the signer on the transaction. Not editable here.</span></div>
+          <sc-if value="{{ pv.nameMissing }}" hint-placeholder-val="{{ false }}"><div class="box warn"><i class="ph ph-warning" aria-hidden="true"></i><span>Seller 2 is not on every transaction. When there is no Seller 2, this field stays blank and is not required.</span></div></sc-if>
+          <div class="row"><span class="lb">Required</span><span class="tg {{ pv.nameReqCls }}"></span></div>
+          <div class="sec"><span>Formatting</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="sec" style="margin-top:-16px"><span>Data label<span class="ct">{{ pv.nameLabel }}</span></span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="sec" style="margin-top:-16px"><span>Conditional logic</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isFmt }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px">{{ pv.fmtTitle }}</span><button type="button" class="x" aria-label="Delete"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+          <sc-if value="{{ pv.fmtMulti }}" hint-placeholder-val="{{ false }}"><div style="display:flex;gap:6px;flex-wrap:wrap"><span class="tchip"><i class="ph ph-text-t" aria-hidden="true"></i>3 Text</span></div><div class="box info"><i class="ph ph-info" aria-hidden="true"></i><span>Changes apply to all 3 fields. Fields that differ show Mixed.</span></div></sc-if>
+          <sc-if value="{{ pv.fmtSingle }}" hint-placeholder-val="{{ true }}"><div class="fd"><span class="lb">Label</span><div class="in"><span class="tx">{{ pv.fmtLabel }}</span></div></div></sc-if>
+          <div class="sec"><span>Formatting</span><i class="ph ph-caret-up" aria-hidden="true" style="color:#737373"></i></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 96px;gap:12px;margin-top:-6px">
+            <div class="fd"><span class="lb">Font</span><div class="in"><span class="tx">{{ pv.font }}</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+            <div class="fd"><span class="lb">Size</span><div class="in {{ pv.sizeCls }}"><span class="tx">{{ pv.size }}</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+          </div>
+          <div class="fd"><span class="lb">Colour</span>
+            <div style="display:flex;gap:8px;align-items:center">
+              <sc-for list="{{ pv.swatches }}" as="w" hint-placeholder-count="6"><button type="button" aria-label="{{ w.name }}" title="{{ w.name }}" style="width:28px;height:28px;border-radius:50%;border:2px solid {{ w.ring }};padding:2px;background:#fff;display:inline-flex"><span style="flex:1;border-radius:50%;background:{{ w.c }}"></span></button></sc-for>
+              <span class="hint" style="margin-left:4px">{{ pv.colourName }}</span>
+            </div>
+          </div>
+          <div class="fd"><span class="lb">Style</span>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="ib {{ pv.bCls }}" aria-label="Bold"><i class="ph ph-text-b" aria-hidden="true"></i></button>
+              <button type="button" class="ib {{ pv.iCls }}" aria-label="Italic"><i class="ph ph-text-italic" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Underline"><i class="ph ph-text-underline" aria-hidden="true"></i></button>
+              <span style="width:1px;background:#E5E5E5;margin:4px 4px"></span>
+              <button type="button" class="ib on" aria-label="Align left"><i class="ph ph-text-align-left" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Align centre"><i class="ph ph-text-align-center" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Align right"><i class="ph ph-text-align-right" aria-hidden="true"></i></button>
+            </div>
+          </div>
+          <sc-if value="{{ pv.fmtOverflow }}" hint-placeholder-val="{{ false }}"><div class="box warn"><i class="ph ph-warning" aria-hidden="true"></i><span>Long values may not fit at 14 pt. Text past the box gets cut off in the final PDF.</span></div></sc-if>
+          <div style="display:flex;align-items:flex-start;gap:10px"><span class="cbx {{ pv.fitCls }}"><i class="ph ph-check" aria-hidden="true"></i></span><div style="display:flex;flex-direction:column;gap:2px"><span style="font-size:14px">Shrink text to fit the box</span><span class="hint">Never smaller than 7 pt</span></div></div>
+          <div style="border:1px dashed #D4D4D4;border-radius:10px;padding:12px;background:#FAFAFA"><span class="hint">Preview</span><div style="{{ pv.prevSt }}">{{ pv.prevText }}</div></div>
+          <div class="sec"><span>Data label</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="sec" style="margin-top:-16px"><span>Conditional logic</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isRadio }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px"><i class="ph ph-radio-button" aria-hidden="true" style="font-size:18px;color:#5A5FF2"></i>Radio group</span><button type="button" class="x" aria-label="Delete group"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+          <div class="fd"><span class="lb">Group name</span><div class="in"><span class="tx">Financing type</span></div><span class="hint">Shown to signers and used in rules.</span></div>
+          <div class="fd"><span class="lb">Options</span><span class="hint" style="margin-top:-2px">Click a circle to make it the default.</span>
+            <sc-for list="{{ pv.opts }}" as="o" hint-placeholder-count="3">
+              <div class="opt"><i class="ph ph-dots-six-vertical hd" aria-hidden="true"></i><span class="rad {{ o.radCls }}"></span><div class="in {{ o.inCls }}" style="height:30px"><span class="tx">{{ o.label }}</span></div><button type="button" class="x {{ o.xCls }}" aria-label="Remove {{ o.label }}" title="{{ o.xTip }}"><i class="ph ph-x" aria-hidden="true" style="font-size:14px"></i></button></div>
+            </sc-for>
+            <sc-if value="{{ pv.dupErr }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:#DC2626;padding-left:42px">Option names must be unique in a group.</span></sc-if>
+            <button type="button" class="lnk" style="align-self:flex-start;margin-top:2px"><i class="ph ph-plus" aria-hidden="true"></i>Add option</button>
+          </div>
+          <sc-if value="{{ pv.minErr }}" hint-placeholder-val="{{ false }}"><div class="box err"><i class="ph ph-warning-circle" aria-hidden="true"></i><span>A radio group needs at least 2 options. Delete the whole group instead.</span></div></sc-if>
+          <div class="row"><div style="display:flex;flex-direction:column;gap:2px"><span class="lb">Required</span><span class="hint">Always on. Signer must pick one.</span></div><span class="tg lock" title="Radio groups are always required"></span></div>
+          <div class="fd"><span class="lb">Tooltip</span><div class="in ph-col"><span class="tx">Short help for signers</span></div></div>
+          <div class="sec"><span>Formatting</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="sec" style="margin-top:-16px"><span>Conditional logic<span class="ct">{{ pv.radRules }}</span></span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isCbg }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px"><i class="ph ph-check-square" aria-hidden="true" style="font-size:18px;color:#5A5FF2"></i>Checkbox group</span><button type="button" class="btn ghost sm" style="color:#525252">Ungroup</button></div>
+          <div class="fd"><span class="lb">Group name</span><div class="in"><span class="tx">Contingencies</span></div></div>
+          <div class="fd"><span class="lb">Boxes in group</span>
+            <sc-for list="{{ pv.cbOpts }}" as="o" hint-placeholder-count="3"><div class="opt"><i class="ph ph-dots-six-vertical hd" aria-hidden="true"></i><span class="cbx"></span><div class="in" style="height:30px"><span class="tx">{{ o }}</span></div><button type="button" class="x" aria-label="Remove from group"><i class="ph ph-x" aria-hidden="true" style="font-size:14px"></i></button></div></sc-for>
+          </div>
+          <div class="fd"><span class="lb">Selection rule</span>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 88px;gap:8px">
+              <div class="in {{ pv.ruleCls }}"><span class="tx">{{ pv.ruleName }}</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div>
+              <div class="in {{ pv.ruleNCls }}" style="justify-content:space-between"><span>{{ pv.ruleN }}</span><i class="ph ph-caret-up-down cr" aria-hidden="true"></i></div>
+            </div>
+            <sc-if value="{{ pv.ruleMenu }}" hint-placeholder-val="{{ false }}">
+              <div class="menu"><div class="mi">No rule<span class="sub">Optional</span></div><div class="mi on">Select at least<i class="ph ph-check" aria-hidden="true" style="margin-left:auto;color:#5A5FF2"></i></div><div class="mi">Select at most</div><div class="mi">Select exactly</div><div class="mi">Select a range</div></div>
+            </sc-if>
+            <sc-if value="{{ pv.ruleErr }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;color:#DC2626">Only 3 boxes in this group. Pick 3 or fewer.</span></sc-if>
+          </div>
+          <div class="box info"><i class="ph ph-eye" aria-hidden="true"></i><span>{{ pv.signerSees }}</span></div>
+          <div class="row"><div style="display:flex;flex-direction:column;gap:2px"><span class="lb">Required</span><span class="hint">{{ pv.cbReqHint }}</span></div><span class="tg lock"></span></div>
+          <div class="sec"><span>Conditional logic</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isCbOne }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px">Checkbox · Appraisal</span><button type="button" class="x" aria-label="Delete"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+          <div class="box info"><i class="ph ph-check-square" aria-hidden="true"></i><span>Part of <b>Contingencies</b>. The group rule decides if it is required.</span></div>
+          <div class="fd"><span class="lb">Label</span><div class="in"><span class="tx">Appraisal</span></div></div>
+          <div class="row"><div style="display:flex;flex-direction:column;gap:2px"><span class="lb" style="color:#A3A3A3">Required</span><span class="hint">Set by the group rule</span></div><span class="tg off lock"></span></div>
+          <button type="button" class="btn out" style="align-self:flex-start"><i class="ph ph-arrow-square-out" aria-hidden="true" style="font-size:16px"></i>Remove from group</button>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isMulti }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px">{{ pv.mTitle }}</span><button type="button" class="x" aria-label="Delete selected"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><sc-for list="{{ pv.mChips }}" as="c" hint-placeholder-count="2"><span class="tchip"><i class="ph {{ c.icon }}" aria-hidden="true"></i>{{ c.t }}</span></sc-for></div>
+          <sc-if value="{{ pv.mGroupCta }}" hint-placeholder-val="{{ false }}"><div class="box info" style="flex-direction:column;gap:10px"><span style="display:flex;gap:8px"><i class="ph ph-check-square" aria-hidden="true"></i><span>These 3 checkboxes answer one question. Group them to add a selection rule.</span></span><button type="button" class="btn sm" style="align-self:flex-start">Group as checkbox group</button></div></sc-if>
+          <div class="fd"><span class="lb">Assigned to</span><div class="in"><span class="tx">{{ pv.mSigner }}</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+          <div class="row"><span class="lb">Required</span><span class="tg {{ pv.mReqCls }}"></span></div>
+          <div class="fd"><span class="lb">Position</span>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="ib {{ pv.mAlCls }}" aria-label="Align left"><i class="ph ph-align-left" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Align centre"><i class="ph ph-align-center-horizontal" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Align right"><i class="ph ph-align-right" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Align top"><i class="ph ph-align-top" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Align middle"><i class="ph ph-align-center-vertical" aria-hidden="true"></i></button>
+              <button type="button" class="ib" aria-label="Align bottom"><i class="ph ph-align-bottom" aria-hidden="true"></i></button>
+            </div>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="btn out sm" style="flex:1"><i class="ph ph-arrows-vertical" aria-hidden="true"></i>Space evenly</button>
+              <button type="button" class="btn out sm" style="flex:1"><i class="ph ph-bounding-box" aria-hidden="true"></i>Match size</button>
+            </div>
+          </div>
+          <sc-if value="{{ pv.mFmt }}" hint-placeholder-val="{{ false }}"><div class="sec"><span>Formatting</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div></sc-if>
+          <sc-if value="{{ pv.mFmtNote }}" hint-placeholder-val="{{ false }}"><div class="box warn"><i class="ph ph-info" aria-hidden="true"></i><span>Formatting applies to text, name and date tags only. 3 of 5 selected tags will change. Signature and checkbox are skipped.</span></div><div class="sec" style="margin-top:-6px"><span>Formatting<span class="ct">3 of 5</span></span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div></sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isLabel }}" hint-placeholder-val="{{ false }}">
+        <div class="pn" style="position:relative">
+          <div class="row"><span style="font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px"><i class="ph ph-calendar-blank" aria-hidden="true" style="font-size:18px;color:#5A5FF2"></i>Date field</span><button type="button" class="x" aria-label="Delete"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+          <div class="fd"><span class="lb">Assigned to</span><div class="in"><span class="av" style="background:#5A5FF2">B1</span><span class="tx">Buyer 1</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+          <div class="fd"><span class="lb">Date format</span><div class="in"><span class="tx">MM/DD/YYYY</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+          <div class="sec"><span>Data label</span><i class="ph ph-caret-up" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="fd" style="margin-top:-6px">
+            <div class="in {{ pv.dlCls }}"><i class="ph ph-link-simple" aria-hidden="true" style="font-size:16px;color:#737373"></i><span class="tx">{{ pv.dlValue }}</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div>
+            <sc-if value="{{ pv.dlMenu }}" hint-placeholder-val="{{ false }}">
+              <div class="menu">
+                <div class="ml">Date labels in this template</div>
+                <div class="mi on"><i class="ph ph-link-simple" aria-hidden="true" style="color:#5A5FF2"></i>Closing date<span class="sub">3 fields</span></div>
+                <div class="mi"><i class="ph ph-link-simple" aria-hidden="true" style="color:#737373"></i>Acceptance date<span class="sub">1 field</span></div>
+                <div class="mi"><i class="ph ph-link-simple" aria-hidden="true" style="color:#737373"></i>Inspection deadline<span class="sub">2 fields</span></div>
+                <div style="height:1px;background:#E5E5E5;margin:4px 0"></div>
+                <div class="mi" style="color:#5A5FF2"><i class="ph ph-plus" aria-hidden="true"></i>Create new label</div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ pv.dlLinked }}" hint-placeholder-val="{{ false }}"><div class="box info"><i class="ph ph-link-simple" aria-hidden="true"></i><span>Linked to 3 fields on pages 1, 4 and 9. Fill one and the rest update. There is no cover sheet value for this label.</span></div></sc-if>
+            <sc-if value="{{ pv.dlErr }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;line-height:16px;color:#DC2626">Buyer names is a Text label. A Date field can only link to a Date label.</span></sc-if>
+          </div>
+          <sc-if value="{{ pv.dlFormat }}" hint-placeholder-val="{{ false }}"><div class="box warn"><i class="ph ph-warning" aria-hidden="true"></i><span>Linked fields share one date format. Changing it here changes all 3.</span></div></sc-if>
+          <div class="fd"><span class="lb">Cover sheet value</span><div class="in"><span class="tx" style="color:#737373">None</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+          <sc-if value="{{ pv.dlUnlink }}" hint-placeholder-val="{{ false }}"><button type="button" class="btn out sm" style="align-self:flex-start;color:#DC2626"><i class="ph ph-link-break" aria-hidden="true"></i>Unlink this field</button></sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isRuleSec }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px;display:inline-flex;align-items:center;gap:8px"><i class="ph ph-radio-button" aria-hidden="true" style="font-size:18px;color:#5A5FF2"></i>Radio group · Financing type</span></div>
+          <div class="sec"><span>Options<span class="ct">Cash, Loan, Seller carry</span></span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="sec" style="margin-top:-16px"><span>Formatting</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="sec" style="margin-top:-16px"><span>Conditional logic<span class="ct">{{ pv.rsCount }}</span></span><i class="ph ph-caret-up" aria-hidden="true" style="color:#737373"></i></div>
+          <sc-if value="{{ pv.rsEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;border:1px dashed #D4D4D4;border-radius:12px;text-align:center;margin-top:-6px">
+              <i class="ph ph-git-fork" aria-hidden="true" style="font-size:24px;color:#A3A3A3"></i>
+              <span style="font-weight:500">No rules yet</span>
+              <span class="hint" style="max-width:240px">Show or hide other tags based on the option a signer picks.</span>
+              <button type="button" class="btn sm"><i class="ph ph-plus" aria-hidden="true"></i>Create rule</button>
+            </div>
+          </sc-if>
+          <sc-if value="{{ pv.rsList }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:-6px">
+              <sc-for list="{{ pv.rules }}" as="r" hint-placeholder-count="2">
+                <div style="border:1px solid #E5E5E5;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px">
+                  <div class="row"><span style="font-size:13px"><span style="color:#737373">If</span> <b>{{ r.when }}</b> <span style="color:#737373">then {{ r.act }}</span></span><span style="display:flex;gap:2px"><button type="button" class="x" style="color:#525252" aria-label="Edit rule"><i class="ph ph-pencil-simple" aria-hidden="true" style="font-size:14px"></i></button><button type="button" class="x" aria-label="Delete rule"><i class="ph ph-trash" aria-hidden="true" style="font-size:14px"></i></button></span></div>
+                  <span style="font-size:13px;color:#404040">{{ r.fields }}</span>
+                </div>
+              </sc-for>
+              <button type="button" class="lnk" style="align-self:flex-start"><i class="ph ph-plus" aria-hidden="true"></i>Add rule</button>
+            </div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isRuleEd }}" hint-placeholder-val="{{ false }}">
+        <div style="height:100%;display:flex;flex-direction:column">
+          <div class="pn" style="flex:1;min-height:0">
+            <div style="display:flex;align-items:center;gap:8px"><button type="button" class="x" style="color:#404040" aria-label="Back"><i class="ph ph-arrow-left" aria-hidden="true" style="font-size:18px"></i></button><span style="font-weight:600;font-size:15px">{{ pv.edTitle }}</span></div>
+            <div class="blk">
+              <div style="display:flex;gap:8px;align-items:center"><span class="kw">IF</span><div class="in" style="background:#F5F5F5"><i class="ph {{ pv.edTrigIcon }}" aria-hidden="true" style="font-size:16px;color:#5A5FF2"></i><span class="tx">{{ pv.edTrig }}</span></div></div>
+              <div style="display:flex;gap:8px;align-items:center"><span class="kw">IS</span><div class="in {{ pv.edIsCls }}"><span class="tx">{{ pv.edIs }}</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+              <sc-if value="{{ pv.edIsMenu }}" hint-placeholder-val="{{ false }}"><div class="menu" style="margin-left:52px"><sc-for list="{{ pv.edIsOpts }}" as="o" hint-placeholder-count="3"><div class="mi {{ o.cls }}">{{ o.t }}<span class="sub">{{ o.sub }}</span></div></sc-for></div></sc-if>
+            </div>
+            <div style="width:1px;height:12px;background:#D4D4D4;margin:-16px 0 -16px 34px"></div>
+            <div class="blk">
+              <div style="display:flex;gap:8px;align-items:center"><span class="kw">THEN</span><div class="seg" style="flex:1"><button type="button" class="on"><i class="ph ph-eye" aria-hidden="true"></i> Show</button><button type="button"><i class="ph ph-eye-slash" aria-hidden="true"></i> Hide</button></div></div>
+              <sc-for list="{{ pv.edDeps }}" as="d" hint-placeholder-count="2"><div class="dep"><i class="ph {{ d.icon }}" aria-hidden="true" style="font-size:14px;color:#525252"></i><span class="tx">{{ d.t }}</span><span class="hint">{{ d.sub }}</span><button type="button" class="x" aria-label="Remove {{ d.t }}"><i class="ph ph-x" aria-hidden="true" style="font-size:14px"></i></button></div></sc-for>
+              <div class="in ph-col"><span class="tx">Add a tag</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div>
+              <button type="button" class="btn {{ pv.edPickCls }} full"><i class="ph ph-cursor-click" aria-hidden="true" style="font-size:16px"></i>{{ pv.edPickLabel }}</button>
+            </div>
+            <sc-if value="{{ pv.edLoopNote }}" hint-placeholder-val="{{ false }}"><div class="box info"><i class="ph ph-info" aria-hidden="true"></i><span>Financing type itself and tags that already control it are greyed out, so a rule can never loop.</span></div></sc-if>
+            <sc-if value="{{ pv.edReqNote }}" hint-placeholder-val="{{ false }}"><div class="box info"><i class="ph ph-info" aria-hidden="true"></i><span>Required tags in a rule are required only when shown.</span></div></sc-if>
+          </div>
+          <div style="flex:none;display:flex;justify-content:space-between;padding:12px 16px;border-top:1px solid #E5E5E5"><button type="button" class="btn out">Cancel</button><button type="button" class="btn">Save rule</button></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isDep }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <div class="row"><span style="font-weight:600;font-size:15px">Text field · Lender name</span><button type="button" class="x" aria-label="Delete"><i class="ph ph-trash" aria-hidden="true" style="font-size:16px"></i></button></div>
+          <div class="box info" style="flex-direction:column;gap:8px"><span style="display:flex;gap:8px"><i class="ph ph-eye" aria-hidden="true"></i><span>Shown by 2 rules. It shows when <b>any</b> of them match.</span></span>
+            <div style="display:flex;flex-direction:column;gap:4px;padding-left:24px;font-size:13px"><span>Financing type is <b>Loan</b></span><span>HOA applies is <b>Checked</b></span></div>
+            <button type="button" class="lnk" style="padding-left:24px">Edit rules</button>
+          </div>
+          <div class="fd"><span class="lb">Assigned to</span><div class="in"><span class="av" style="background:#5A5FF2">B1</span><span class="tx">Buyer 1</span><i class="ph ph-caret-down cr" aria-hidden="true"></i></div></div>
+          <div class="row"><div style="display:flex;flex-direction:column;gap:2px"><span class="lb">Required</span><span class="hint">Only when shown</span></div><span class="tg"></span></div>
+          <div class="box warn"><i class="ph ph-warning" aria-hidden="true"></i><span>Lender name fills from the cover sheet. If it stays hidden, the value is not printed on the PDF.</span></div>
+          <div class="sec"><span>Formatting</span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+          <div class="sec" style="margin-top:-16px"><span>Conditional logic<span class="ct">Controlled by 2 rules</span></span><i class="ph ph-caret-down" aria-hidden="true" style="color:#737373"></i></div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ pv.isPreview }}" hint-placeholder-val="{{ false }}">
+        <div class="pn">
+          <span style="font-weight:600;font-size:15px">Preview as Buyer 1</span>
+          <span class="hint" style="margin-top:-10px">Try answers to check your rules. Nothing is saved.</span>
+          <div class="fd"><span class="lb">Financing type</span><div class="seg"><button type="button">Cash</button><button type="button" class="on">Loan</button><button type="button">Seller carry</button></div></div>
+          <div class="row"><span class="lb">HOA applies</span><span class="cbx"></span></div>
+          <div style="border:1px solid #E5E5E5;border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px">
+            <div class="row"><span style="font-size:13px;font-weight:600">Showing</span><span class="hint">2 tags</span></div>
+            <span style="font-size:13px;display:flex;gap:8px;align-items:center"><i class="ph ph-eye" aria-hidden="true" style="color:#41701F"></i>Loan amount</span>
+            <span style="font-size:13px;display:flex;gap:8px;align-items:center"><i class="ph ph-eye" aria-hidden="true" style="color:#41701F"></i>Lender name</span>
+            <div class="row" style="margin-top:4px"><span style="font-size:13px;font-weight:600">Hidden</span><span class="hint">3 tags</span></div>
+            <span style="font-size:13px;display:flex;gap:8px;align-items:center;color:#737373"><i class="ph ph-eye-slash" aria-hidden="true"></i>Proof of funds</span>
+            <span style="font-size:13px;display:flex;gap:8px;align-items:center;color:#737373"><i class="ph ph-eye-slash" aria-hidden="true"></i>HOA dues, HOA name</span>
+          </div>
+          <button type="button" class="btn out"><i class="ph ph-x" aria-hidden="true" style="font-size:16px"></i>Exit preview</button>
+        </div>
+      </sc-if>
+
+      </div>
+    </aside>
+  </div>
+
+  <sc-if value="{{ dialog }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute;inset:0;z-index:80;background:rgba(10,10,10,.5);display:flex;align-items:center;justify-content:center">
+      <div role="dialog" aria-label="Delete Financing type" style="width:440px;background:#fff;border-radius:14px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);padding:20px;display:flex;flex-direction:column;gap:14px">
+        <h2 style="margin:0;font:600 18px/26px 'Mona Sans',sans-serif">Delete Financing type?</h2>
+        <span style="color:#525252;line-height:20px">This group controls 2 rules. If you delete it, the rules go too and these tags will always show:</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px"><span class="tchip">Loan amount</span><span class="tchip">Lender name</span><span class="tchip">Proof of funds</span></div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:4px"><button type="button" class="btn out">Cancel</button><button type="button" class="btn red">Delete group and rules</button></div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"scene":{"editor":"text","default":"all"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const sc = this.props.scene || 'all';
+    const B = '#5A5FF2', S = '#EA580C', NM = '#0E9384', SEL = '#5A5FF2';
+    const F = (id, type, x, y, w, h, label, c, o) => Object.assign({ id, type, x, y, w, h, label, c: c || B }, o || {});
+    const base = () => [
+      F('b1', 'name', 60, 86, 200, 22, 'Buyer 1 name', NM),
+      F('b2', 'name', 280, 86, 200, 22, 'Buyer 2 name', NM),
+      F('addr', 'text', 60, 140, 420, 22, 'Property address'),
+      F('r1', 'rb', 60, 202, 18, 18, 'Cash'), F('r2', 'rb', 150, 202, 18, 18, 'Loan'), F('r3', 'rb', 240, 202, 18, 18, 'Seller carry'),
+      F('loan', 'text', 60, 236, 180, 22, 'Loan amount'), F('lender', 'text', 260, 236, 220, 22, 'Lender name'),
+      F('pof', 'text', 60, 268, 200, 22, 'Proof of funds'),
+      F('c1', 'cb', 60, 332, 18, 18, 'Inspection'), F('c2', 'cb', 60, 358, 18, 18, 'Appraisal'), F('c3', 'cb', 60, 384, 18, 18, 'Loan'),
+      F('hoa', 'cb', 60, 446, 18, 18, 'HOA applies'), F('dues', 'text', 260, 442, 110, 22, 'HOA dues'), F('hname', 'text', 380, 442, 100, 22, 'HOA name'),
+      F('close', 'date', 60, 508, 140, 22, 'Closing date'), F('acc', 'date', 220, 508, 140, 22, 'Acceptance date'),
+      F('sig', 'sig', 60, 596, 180, 30, 'Buyer 1 signature'), F('ds', 'date', 260, 600, 120, 22, 'Date signed'), F('ini', 'text', 400, 600, 60, 22, 'Initials')
+    ];
+    const docHeads = [['1. PARTIES', 64], ['2. PROPERTY', 118], ['3. FINANCE TERMS', 180], ['4. CONTINGENCIES', 312], ['5. HOMEOWNERS ASSOCIATION', 424], ['6. CLOSING', 488], ['7. SIGNATURES', 572]].map(([t, y]) => ({ t, x: '60px', y: y + 'px' }));
+    const docText = [['Cash', 82, 206], ['Loan', 172, 206], ['Seller carry', 262, 206], ['Inspection', 84, 336], ['Appraisal', 84, 362], ['Loan', 84, 388], ['HOA applies', 84, 450], ['Dues', 236, 448], ['Close of escrow', 60, 534], ['Acceptance', 220, 534]].map(([t, x, y]) => ({ t, x: x + 'px', y: y + 'px' }));
+    const docLines = [[60, 112, 440], [60, 168, 300], [60, 296, 440], [60, 304, 380], [200, 340, 280], [200, 366, 260], [200, 392, 220], [60, 410, 400], [60, 474, 420], [60, 482, 300], [60, 546, 440], [60, 554, 380], [60, 640, 440], [60, 648, 320]].map(([x, y, w]) => ({ x: x + 'px', y: y + 'px', w: w + 'px' }));
+
+    let fields = base(), groups = [], lines = [], marquee = null, mini = null, align = null, banner = null, toast = null, ghost = null, dialog = false, pageTop = '0px';
+    let pv = { isNone: true, noneTitle: '20 tags', noneText: 'Pick a tag on the left, then click the page. Select a tag to edit it.' };
+    let headCount = '20 tags · 6 mapped', tab = 'field', palHL = '';
+    const set = (id, o) => { fields = fields.map(f => f.id === id ? Object.assign({}, f, o) : f); };
+    const rg = (o) => groups.push(Object.assign({ icon: 'ph-radio-button', c: B }, o));
+    const line = (x1, y1, x2, y2, c) => lines.push({ x1, y1, x2, y2, c: c || '#5A5FF2' });
+    const radioGrp = (sel) => rg({ x: 52, y: 194, w: 224, h: 34, label: 'Financing type', sel });
+    const cbGrp = (sel, h) => rg({ x: 52, y: 324, w: 140, h: h || 86, label: 'Contingencies', icon: 'ph-check-square', sel });
+    const ruleBadges = () => { ['loan', 'lender', 'pof'].forEach(id => set(id, { badge: 'eye' })); };
+    const PAL_RULES = [['Financing type is Loan', 'show', 'Loan amount, Lender name'], ['Financing type is Cash', 'show', 'Proof of funds']];
+
+    switch (sc) {
+      case 'all':
+        radioGrp(false); cbGrp(false); palHL = 'name';
+        set('b1', { badge: 'link' }); ruleBadges(); set('r2', { badge: 'fork' });
+        pv = { isNone: true, noneTitle: 'Batch 2 at a glance', noneText: 'New: Name tag, Radio group and Checkbox group in the palette. Every tag gets Formatting, Data label and Conditional logic in this panel. Select several tags to align them.' };
+        break;
+      case 'n1':
+        palHL = 'name'; set('b1', { sel: true });
+        mini = { x: 60, y: 46, av: 'B1', avc: B };
+        pv = { isName: true, nameAv: 'B1', nameAvC: B, nameSigner: 'Buyer 1', nameFrom: "Buyer 1's legal name", nameReqCls: '', nameLabel: 'Buyer 1 name', nameMissing: false };
+        break;
+      case 'n2':
+        palHL = 'name';
+        fields.push(F('s1', 'name', 60, 30, 200, 22, 'Seller 1 name', NM), F('s2', 'name', 280, 30, 200, 22, 'Seller 2 name', NM, { sel: true }));
+        set('addr', { sel: false });
+        mini = { x: 240, y: -12, av: 'S2', avc: S };
+        pv = { isName: true, nameAv: 'S2', nameAvC: S, nameSigner: 'Seller 2', nameFrom: "Seller 2's legal name", nameReqCls: 'off lock', nameLabel: 'Seller 2 name', nameMissing: true };
+        break;
+      case 't1':
+        set('addr', { sel: true, fmt: { w: 700, c: '#1D4ED8', s: 13 } });
+        mini = { x: 60, y: 100, av: 'B1', avc: B };
+        pv = { isFmt: true, fmtSingle: true, fmtMulti: false, fmtTitle: 'Text field', fmtLabel: 'Property address', font: 'Helvetica', size: '13 pt', sizeCls: '', colour: 1, colourName: 'Blue', bCls: 'on', iCls: '', fitCls: '', fmtOverflow: false, prevText: '1234 Ocean View Dr, San Diego, CA 92109', prevSt: "margin-top:6px;font:700 13px Helvetica,Arial,sans-serif;color:#1D4ED8" };
+        break;
+      case 't2':
+        ['loan', 'lender', 'pof'].forEach(id => set(id, { sel: true }));
+        align = { x: 40, y: 302, count: '3 selected' };
+        pv = { isFmt: true, fmtSingle: false, fmtMulti: true, fmtTitle: '3 fields selected', font: 'Helvetica', size: 'Mixed', sizeCls: 'ph-col', colour: 0, colourName: 'Black', bCls: 'mix', iCls: '', fitCls: '', fmtOverflow: false, prevText: 'Sample text', prevSt: "margin-top:6px;font:400 11px Helvetica,Arial,sans-serif;color:#0A0A0A" };
+        break;
+      case 't3':
+        set('lender', { sel: true, err: true, label: 'First Republic Mortgage Services of Cali', fmt: { w: 400, c: '#0A0A0A', s: 14 } });
+        mini = { x: 260, y: 196, av: 'B1', avc: B };
+        pv = { isFmt: true, fmtSingle: true, fmtMulti: false, fmtTitle: 'Text field', fmtLabel: 'Lender name', font: 'Helvetica', size: '14 pt', sizeCls: 'err', colour: 0, colourName: 'Black', bCls: '', iCls: '', fitCls: 'on', fmtOverflow: true, prevText: 'First Republic Mortgage Services…', prevSt: "margin-top:6px;font:400 14px Helvetica,Arial,sans-serif;color:#0A0A0A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" };
+        break;
+      case 'r1':
+        radioGrp(true); palHL = 'radio';
+        mini = { x: 52, y: 154, av: 'B1', avc: B, addOpt: true, req: 'lock' };
+        pv = { isRadio: true, opts: [{ label: 'Cash' }, { label: 'Loan' }, { label: 'Seller carry' }], radRules: 'None', dupErr: false, minErr: false };
+        break;
+      case 'r2':
+        fields = fields.filter(f => f.id !== 'r3'); set('r2', { label: 'Cash', err: true }); set('r1', { err: true });
+        groups.push({ x: 52, y: 194, w: 134, h: 34, label: 'Financing type', sel: true, icon: 'ph-radio-button', c: '#DC2626' });
+        mini = { x: 52, y: 154, av: 'B1', avc: B, addOpt: true, req: 'lock' };
+        pv = { isRadio: true, opts: [{ label: 'Cash', inCls: 'err', xCls: 'dis', xTip: 'A group needs at least 2 options' }, { label: 'Cash', inCls: 'err', xCls: 'dis', xTip: 'A group needs at least 2 options' }], radRules: 'None', dupErr: true, minErr: true };
+        break;
+      case 'r3':
+        rg({ x: 52, y: 194, w: 314, h: 34, label: 'Financing type', sel: true });
+        ghost = { x: 330, y: 202 };
+        banner = { icon: 'ph-cursor-click', text: 'Click the page to place option 4 in Financing type. Press Esc to stop.', btn: 'Done' };
+        mini = { x: 52, y: 154, av: 'B1', avc: B, addOpt: true, addHl: true, req: 'lock' };
+        pv = { isRadio: true, opts: [{ label: 'Cash' }, { label: 'Loan' }, { label: 'Seller carry' }, { label: 'Option 4' }], radRules: 'None', dupErr: false, minErr: false };
+        break;
+      case 'c1':
+        ['c1', 'c2', 'c3'].forEach(id => set(id, { sel: true })); set('c2', { x: 63 }); set('c3', { x: 58 });
+        align = { x: 20, y: 286, count: '3 selected', group: true };
+        pv = { isMulti: true, mTitle: '3 tags selected', mChips: [{ icon: 'ph-check-square', t: '3 Checkbox' }], mGroupCta: true, mSigner: 'Buyer 1', mReqCls: 'off', mFmt: false, mFmtNote: false };
+        break;
+      case 'c2':
+        cbGrp(true);
+        mini = { x: 52, y: 284, av: 'B1', avc: B, req: 'lock' };
+        pv = { isCbg: true, cbOpts: ['Inspection', 'Appraisal', 'Loan'], ruleName: 'Select at least', ruleN: '1', ruleCls: 'foc', ruleNCls: '', ruleMenu: true, ruleErr: false, signerSees: 'Signer sees: Select at least 1 option.', cbReqHint: 'On because the rule needs at least 1' };
+        break;
+      case 'c3':
+        cbGrp(true); set('c2', { sel: true });
+        pv = { isCbOne: true };
+        break;
+      case 'c3b':
+        cbGrp(true);
+        pv = { isCbg: true, cbOpts: ['Inspection', 'Appraisal', 'Loan'], ruleName: 'Select exactly', ruleN: '4', ruleCls: '', ruleNCls: 'err', ruleMenu: false, ruleErr: true, signerSees: 'Signer sees: Select exactly 4 options.', cbReqHint: 'On because the rule needs 4' };
+        break;
+      case 's1':
+        set('c2', { x: 63 }); set('c3', { x: 57 });
+        fields.push(F('d1', 'text', 210, 332, 90, 20, 'Days', B), F('d2', 'text', 218, 359, 90, 20, 'Days', B), F('d3', 'text', 204, 385, 96, 20, 'Days', B));
+        marquee = { x: 44, y: 322, w: 284, h: 94, count: '6 tags' };
+        pv = { isNone: true, noneTitle: 'Select several tags', noneText: 'Release to select every tag inside the box.', noneTips: true };
+        break;
+      case 's2':
+        set('c2', { x: 63 }); set('c3', { x: 57 });
+        fields.push(F('d1', 'text', 210, 332, 90, 20, 'Days', B), F('d2', 'text', 218, 359, 90, 20, 'Days', B), F('d3', 'text', 204, 385, 96, 20, 'Days', B));
+        ['c1', 'c2', 'c3', 'd1', 'd2', 'd3'].forEach(id => set(id, { sel: true }));
+        align = { x: 0, y: 286, count: '6 selected', alHl: true };
+        pv = { isMulti: true, mTitle: '6 tags selected', mChips: [{ icon: 'ph-check-square', t: '3 Checkbox' }, { icon: 'ph-text-t', t: '3 Text' }], mGroupCta: false, mSigner: 'Buyer 1', mReqCls: 'mix', mFmt: true, mFmtNote: false, mAlCls: 'on' };
+        break;
+      case 's3':
+        fields.push(F('d1', 'text', 210, 332, 90, 20, 'Days', B), F('d2', 'text', 210, 358, 90, 20, 'Days', B), F('d3', 'text', 210, 384, 90, 20, 'Days', B));
+        ['c1', 'c2', 'c3', 'd1', 'd2', 'd3'].forEach(id => set(id, { sel: true }));
+        line(60, 322, 60, 410, '#DC2626'); line(210, 322, 210, 410, '#DC2626');
+        align = { x: 0, y: 286, count: '6 selected' };
+        toast = { text: '6 tags aligned left · Matched size' };
+        pv = { isMulti: true, mTitle: '6 tags selected', mChips: [{ icon: 'ph-check-square', t: '3 Checkbox' }, { icon: 'ph-text-t', t: '3 Text' }], mGroupCta: false, mSigner: 'Buyer 1', mReqCls: 'mix', mFmt: true, mFmtNote: false, mAlCls: '' };
+        break;
+      case 's4':
+        ['close', 'acc', 'sig', 'ds', 'ini'].forEach(id => set(id, { sel: true }));
+        align = { x: 0, y: 470, count: '5 selected' };
+        pv = { isMulti: true, mTitle: '5 tags selected', mChips: [{ icon: 'ph-calendar-blank', t: '3 Date' }, { icon: 'ph-text-t', t: '1 Text' }, { icon: 'ph-signature', t: '1 Signature' }], mGroupCta: false, mSigner: 'Buyer 1', mReqCls: '', mFmt: false, mFmtNote: true, mAlCls: '' };
+        break;
+      case 'd1':
+        set('close', { sel: true, badge: 'link' });
+        fields.push(F('cl2', 'date', 300, 640, 120, 22, 'Closing date', B, { badge: 'link', ring: true }), F('cl3', 'date', 300, 290, 140, 22, 'Closing date', B, { badge: 'link', ring: true }));
+        line(130, 530, 360, 640); line(130, 508, 370, 312);
+        mini = { x: 60, y: 468, av: 'B1', avc: B };
+        pv = { isLabel: true, dlValue: 'Closing date', dlCls: 'foc', dlMenu: true, dlLinked: true, dlErr: false, dlFormat: false, dlUnlink: false };
+        break;
+      case 'd2':
+        set('acc', { sel: true, err: true });
+        pv = { isLabel: true, dlValue: 'Buyer names', dlCls: 'err', dlMenu: false, dlLinked: false, dlErr: true, dlFormat: true, dlUnlink: true };
+        break;
+      case 'k1':
+        radioGrp(true);
+        pv = { isRuleSec: true, rsCount: 'None', rsEmpty: true, rsList: false };
+        break;
+      case 'k2':
+        radioGrp(false); set('loan', { hatch: true }); set('lender', { hatch: true });
+        pv = { isRuleEd: true, edTitle: 'New rule', edTrig: 'Financing type', edTrigIcon: 'ph-radio-button', edIs: 'Loan', edIsCls: 'foc', edIsMenu: true, edIsOpts: [{ t: 'Cash', sub: '1 rule', cls: '' }, { t: 'Loan', sub: '', cls: 'on' }, { t: 'Seller carry', sub: '', cls: '' }, { t: 'Any option', sub: '', cls: '' }], edDeps: [{ icon: 'ph-text-t', t: 'Loan amount', sub: 'Text · p1' }, { icon: 'ph-text-t', t: 'Lender name', sub: 'Text · p1' }], edPickCls: 'dark', edPickLabel: 'Pick tags on the document', edLoopNote: false, edReqNote: false };
+        break;
+      case 'k3':
+        radioGrp(false); set('r2', { badge: 'fork' });
+        set('loan', { hatch: true, badge: 'check' }); set('lender', { hatch: true, badge: 'check' });
+        ['b1', 'b2', 'addr', 'pof', 'c1', 'c2', 'c3', 'hoa', 'dues', 'hname', 'close', 'acc', 'sig', 'ds', 'ini'].forEach(id => set(id, { pick: true }));
+        set('r1', { dim: true }); set('r3', { dim: true });
+        set('dues', { hover: true });
+        banner = { icon: 'ph-cursor-click', text: 'Click tags to show when Financing type is Loan · 2 picked', btn: 'Done' };
+        pageTop = '28px';
+        pv = { isRuleEd: true, edTitle: 'New rule', edTrig: 'Financing type', edTrigIcon: 'ph-radio-button', edIs: 'Loan', edIsCls: '', edIsMenu: false, edIsOpts: [], edDeps: [{ icon: 'ph-text-t', t: 'Loan amount', sub: 'Text · p1' }, { icon: 'ph-text-t', t: 'Lender name', sub: 'Text · p1' }], edPickCls: '', edPickLabel: 'Picking on document…', edLoopNote: true, edReqNote: false };
+        break;
+      case 'k4':
+        radioGrp(true); set('r2', { badge: 'fork' }); set('r1', { badge: 'fork' }); ruleBadges();
+        line(159, 220, 150, 236); line(159, 220, 370, 236); line(69, 220, 160, 268, '#0E9384');
+        pv = { isRuleSec: true, rsCount: '2 rules', rsEmpty: false, rsList: true, rules: [{ when: 'Loan', act: 'show', fields: 'Loan amount, Lender name' }, { when: 'Cash', act: 'show', fields: 'Proof of funds' }] };
+        break;
+      case 'k5':
+        set('hoa', { sel: true, badge: 'fork' }); set('dues', { hatch: true }); set('hname', { hatch: true });
+        line(78, 455, 315, 453); line(78, 455, 430, 453);
+        pv = { isRuleEd: true, edTitle: 'New rule', edTrig: 'HOA applies', edTrigIcon: 'ph-check-square', edIs: 'Checked', edIsCls: 'foc', edIsMenu: true, edIsOpts: [{ t: 'Checked', sub: '', cls: 'on' }, { t: 'Unchecked', sub: '', cls: '' }], edDeps: [{ icon: 'ph-text-t', t: 'HOA dues', sub: 'Text · p1' }, { icon: 'ph-text-t', t: 'HOA name', sub: 'Text · p1' }], edPickCls: 'dark', edPickLabel: 'Pick tags on the document', edLoopNote: false, edReqNote: true };
+        break;
+      case 'k6':
+        radioGrp(false); set('r2', { badge: 'fork' }); set('hoa', { badge: 'fork' }); set('lender', { sel: true, badge: 'eye' });
+        line(159, 220, 370, 236); line(69, 455, 370, 258);
+        pv = { isDep: true };
+        break;
+      case 'k7':
+        radioGrp(true); ruleBadges();
+        dialog = true;
+        pv = { isRuleSec: true, rsCount: '2 rules', rsEmpty: false, rsList: true, rules: [{ when: 'Loan', act: 'show', fields: 'Loan amount, Lender name' }, { when: 'Cash', act: 'show', fields: 'Proof of funds' }] };
+        break;
+      case 'k8':
+        radioGrp(false); set('r2', { checked: true });
+        ['pof', 'dues', 'hname'].forEach(id => set(id, { gone: true }));
+        tab = 'field';
+        banner = { icon: 'ph-eye', text: 'Preview as Buyer 1 · Hidden tags are faded', btn: 'Exit' };
+        pageTop = '28px';
+        pv = { isPreview: true };
+        headCount = 'Preview';
+        break;
+    }
+
+    const palDefs = [['Signature', [['sig', 'Signature', 'ph-signature'], ['ini', 'Initials', 'ph-text-aa'], ['ds', 'Date signed', 'ph-calendar-check']]], ['Contact', [['name', 'Name', 'ph-user'], ['email', 'Email', 'ph-envelope-simple'], ['company', 'Company', 'ph-buildings']]], ['Inputs', [['text', 'Text', 'ph-text-t'], ['num', 'Number', 'ph-hash'], ['date', 'Date', 'ph-calendar-blank'], ['cb', 'Checkbox', 'ph-check-square'], ['cbg', 'Checkbox group', 'ph-list-checks'], ['radio', 'Radio group', 'ph-radio-button'], ['dd', 'Dropdown', 'ph-caret-circle-down']]]];
+    const NEWK = { name: 1, cbg: 1, radio: 1 };
+    const palette = [];
+    palDefs.forEach(([g, items]) => { palette.push({ head: true, btn: false, label: g }); items.forEach(([k, l, ic]) => { const hl = palHL === k, isName = k === 'name'; palette.push({ head: false, btn: true, label: l, icon: ic, isNew: !!NEWK[k], ic: isName ? NM : (hl ? B : '#525252'), st: hl ? 'border-color:' + (isName ? NM : B) + ';background:' + (isName ? '#E6F6F4' : '#EEEFFE') : '' }); }); });
+
+    const vf = fields.map(f => {
+      const c = f.c, box = f.type === 'cb' || f.type === 'rb';
+      const icon = { name: 'ph-user', text: 'ph-text-t', date: 'ph-calendar-blank', sig: 'ph-signature' }[f.type] || 'ph-text-t';
+      let bg = c + '14', bd = '1.5px solid ' + c;
+      if (f.type === 'name') bg = '#E6F6F4';
+      if (f.hatch) { bd = '1.5px dashed ' + c; bg = 'repeating-linear-gradient(135deg,' + c + '29 0 5px,transparent 5px 10px)'; }
+      if (f.err) { bd = '1.5px solid #DC2626'; bg = '#FEF2F2'; }
+      let st = 'position:absolute;z-index:10;left:' + f.x + 'px;top:' + f.y + 'px;width:' + f.w + 'px;height:' + f.h + 'px;box-sizing:border-box;border:' + bd + ';background:' + bg + ';border-radius:' + (f.type === 'rb' ? '50%' : '4px') + ';display:flex;align-items:center;gap:4px;' + (box ? 'justify-content:center;padding:0;' : 'padding:0 6px;');
+      if (f.sel) st += 'outline:2px solid ' + SEL + ';outline-offset:2px;';
+      if (f.hover) st += 'outline:2px dashed ' + SEL + ';outline-offset:2px;';
+      if (f.ring) st += 'box-shadow:0 0 0 4px rgba(90,95,242,.18);';
+      if (f.dim) st += 'opacity:.35;';
+      if (f.pick) st += 'opacity:.8;';
+      if (f.gone) st += 'opacity:.18;border-style:dashed;';
+      const fm = f.fmt;
+      const lst = 'min-width:0;overflow:hidden;text-overflow:' + (f.err ? 'clip' : 'ellipsis') + ';white-space:nowrap;font-family:' + (fm ? 'Helvetica,Arial,sans-serif' : "'Mona Sans',sans-serif") + ';font-size:' + (fm ? fm.s : 11) + 'px;font-weight:' + (fm ? fm.w : 500) + ';color:' + (fm ? fm.c : '#262626');
+      const mark = f.type === 'rb' ? ('width:8px;height:8px;border-radius:50%;background:' + (f.checked ? c : 'transparent')) : ('width:10px;height:10px;border-radius:2px;background:' + (f.checked ? c : 'transparent'));
+      const BI = { link: ['ph-link-simple', '#0A0A0A'], eye: ['ph-eye', '#0E9384'], fork: ['ph-git-fork', '#5A5FF2'], check: ['ph-check', '#41701F'] }[f.badge];
+      const bst = 'position:absolute;top:-8px;right:-8px;width:16px;height:16px;border-radius:50%;border:1.5px solid #fff;background:' + (BI ? BI[1] : '#000') + ';color:#fff;display:inline-flex;align-items:center;justify-content:center;z-index:12';
+      return { st, isBox: box, isTxt: !box, mark, icon, c: f.type === 'name' ? NM : c, label: f.label, lst, hasBadge: !!BI, bicon: BI ? BI[0] : '', bst };
+    });
+    const vg = groups.map(g => ({ label: g.label, icon: g.icon, st: 'position:absolute;z-index:8;left:' + g.x + 'px;top:' + g.y + 'px;width:' + g.w + 'px;height:' + g.h + 'px;box-sizing:border-box;border:1.5px dashed ' + (g.c || B) + ';border-radius:8px;background:' + (g.sel ? 'rgba(90,95,242,.06)' : 'transparent') + (g.sel ? ';outline:2px solid ' + SEL + ';outline-offset:2px' : ''), tagSt: 'position:absolute;left:-1px;top:-20px;height:18px;padding:0 6px;border-radius:6px 6px 0 0;background:' + (g.c || B) + ';color:#fff;font:600 10px Mona Sans,sans-serif;display:inline-flex;align-items:center;gap:4px;white-space:nowrap' }));
+    const vl = lines.map(l => { const dx = l.x2 - l.x1, dy = l.y2 - l.y1, len = Math.sqrt(dx * dx + dy * dy), a = Math.atan2(dy, dx) * 180 / Math.PI; return { st: 'position:absolute;z-index:9;left:' + l.x1 + 'px;top:' + l.y1 + 'px;width:' + len + 'px;height:0;border-top:1.5px dashed ' + l.c + ';transform-origin:0 0;transform:rotate(' + a + 'deg)' }; });
+    const SW = [['Black', '#0A0A0A'], ['Blue', '#1D4ED8'], ['Dark grey', '#525252'], ['Red', '#B91C1C'], ['Green', '#15803D'], ['Indigo', '#4449D9']];
+    pv = Object.assign({ isNone: false, isName: false, isFmt: false, isRadio: false, isCbg: false, isCbOne: false, isMulti: false, isLabel: false, isRuleSec: false, isRuleEd: false, isDep: false, isPreview: false, noneTips: false, mAlCls: '', opts: [], cbOpts: [], mChips: [], rules: [], edDeps: [], edIsOpts: [] }, pv);
+    if (pv.isFmt) pv.swatches = SW.map(([name, c], i) => ({ name, c, ring: i === pv.colour ? '#5A5FF2' : 'transparent' }));
+    if (pv.opts) pv.opts = pv.opts.map((o, i) => Object.assign({ radCls: '', inCls: '', xCls: '', xTip: 'Remove option' }, o));
+    if (sc === 'r1') pv.opts[1].radCls = 'on';
+    const mk = (m) => m ? m : null;
+    const mq = mk(marquee), mn = mk(mini), al = mk(align), bn = mk(banner), tt = mk(toast), gh = mk(ghost);
+    return {
+      screenLabel: 'Batch 2 · ' + sc, headCount, pageTop,
+      palette, docHeads, docText, docLines, fields: vf, groups: vg, lines: vl,
+      marquee: mq ? { show: true, count: mq.count, st: 'position:absolute;z-index:20;left:' + mq.x + 'px;top:' + mq.y + 'px;width:' + mq.w + 'px;height:' + mq.h + 'px;border:1.5px dashed #5A5FF2;background:rgba(90,95,242,.08);border-radius:2px', cst: 'position:absolute;z-index:21;left:' + (mq.x + mq.w + 6) + 'px;top:' + (mq.y + mq.h - 10) + 'px;height:20px;padding:0 8px;border-radius:26px;background:#5A5FF2;color:#fff;font:600 11px Mona Sans,sans-serif;display:inline-flex;align-items:center' } : { show: false },
+      ghost: gh ? { show: true, st: 'position:absolute;z-index:20;left:' + gh.x + 'px;top:' + gh.y + 'px;width:18px;height:18px;border-radius:50%;border:1.5px dashed #5A5FF2;background:rgba(90,95,242,.12)', cst: 'position:absolute;z-index:21;left:' + (gh.x + 12) + 'px;top:' + (gh.y + 12) + 'px;font-size:18px;color:#0A0A0A' } : { show: false },
+      mini: mn ? { show: true, x: mn.x + 'px', y: mn.y + 'px', av: mn.av, avc: mn.avc, reqCls: mn.req === 'lock' ? 'lock' : '', reqLabel: mn.req === 'lock' ? 'Required · always' : 'Required', addOpt: !!mn.addOpt, addCls: mn.addHl ? 'hl' : '', addLabel: 'Add option' } : { show: false },
+      align: al ? { show: true, x: al.x + 'px', y: al.y + 'px', count: al.count, group: !!al.group, alCls: al.alHl ? 'hl' : '', dvCls: '' } : { show: false },
+      banner: bn ? { show: true, icon: bn.icon, text: bn.text, hasBtn: !!bn.btn, btn: bn.btn } : { show: false },
+      toast: tt ? { show: true, text: tt.text } : { show: false },
+      dialog,
+      tabMelBg: tab === 'mel' ? '#fff' : 'transparent', tabMelSh: tab === 'mel' ? '0 1px 2px rgba(0,0,0,.1)' : 'none',
+      tabFldBg: tab === 'field' ? '#fff' : 'transparent', tabFldSh: tab === 'field' ? '0 1px 2px rgba(0,0,0,.1)' : 'none',
+      pv
+    };
+  }
+}
+</script>
+</body>
+</html>

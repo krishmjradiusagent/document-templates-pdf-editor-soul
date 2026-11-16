@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="ds/radius-ui/tokens/fonts.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/colors.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/typography.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/base.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/radius.css">
+  <link rel="stylesheet" href="ds/radius-ui/tokens/spacing.css">
+  <link rel="stylesheet" href="ds/radius-ui/components/components.css">
+  <link rel="stylesheet" href="src/regular/style.css">
+  <script src="ds/radius-ui/_ds_bundle.js"></script>
+  <style>
+    @font-face{font-family:"Phosphor";src:url("/_blob/438dda85d2d284a1882426ac5d2e0b24") format("woff2");font-weight:normal;font-style:normal;font-display:block}
+    .ph{line-height:1}
+    @keyframes melsw{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+    a{color:#5A5FF2;text-decoration:none}a:hover{color:#4449d9}
+  </style>
+</helmet>
+<div data-screen-label="PDF filler mobile" style="position:absolute;inset:0;display:flex;flex-direction:column;overflow:hidden;background:var(--m-bg);color:var(--m-fg);font-family:'Mona Sans',-apple-system,sans-serif;-webkit-font-smoothing:antialiased">
+
+  <div style="position:absolute;left:0;right:0;top:0;z-index:20;pointer-events:none;display:flex;flex-direction:column;padding-bottom:8px;background:var(--m-glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid var(--m-glass-edge)">
+  <div style="flex:none;height:50px;display:flex;align-items:center;justify-content:space-between;padding:4px 30px 0 34px;box-sizing:border-box">
+    <span style="font-size:16px;font-weight:600;font-variant-numeric:tabular-nums">9:41</span>
+    <span style="display:flex;align-items:center;gap:6px;font-size:17px" aria-hidden="true"><i class="ph ph-cell-signal-full"></i><i class="ph ph-wifi-high"></i><i class="ph ph-battery-full" style="font-size:22px"></i></span>
+  </div>
+
+  <header style="pointer-events:auto;flex:none;display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:8px;height:52px;padding:0 12px">
+    <button type="button" onClick="{{ goBack }}" aria-label="Back to transaction" title="Back to transaction" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--m-glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--m-glass-edge);box-shadow:inset 0 1px 0 var(--m-glass-hi),inset 0 -1px 0 var(--m-glass-lo),0 8px 24px var(--m-glass-shadow);box-sizing:border-box;color:var(--m-fg);padding:0;cursor:pointer;transition:transform .18s ease" style-active="transform:scale(.92)"><i class="ph ph-caret-left" aria-hidden="true" style="font-size:20px"></i></button>
+    <div style="min-width:0;display:flex;flex-direction:column;align-items:center;gap:1px;text-align:center">
+      <span style="max-width:100%;font-size:16px;line-height:24px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">5670 Kearny Mesa Road</span>
+      <span style="max-width:100%;font-size:12px;line-height:16px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums">{{ progText }}</span>
+    </div>
+    <button type="button" onClick="{{ openMore }}" aria-label="More actions" title="More actions" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--m-glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--m-glass-edge);box-shadow:inset 0 1px 0 var(--m-glass-hi),inset 0 -1px 0 var(--m-glass-lo),0 8px 24px var(--m-glass-shadow);box-sizing:border-box;color:var(--m-fg);padding:0;cursor:pointer;transition:transform .18s ease" style-active="transform:scale(.92)"><i class="ph ph-dots-three" aria-hidden="true" style="font-size:22px"></i></button>
+  </header>
+
+  </div>
+
+  <div role="tablist" aria-label="View" style="pointer-events:auto;position:absolute;right:16px;top:168px;z-index:21;display:flex;flex-direction:column;gap:2px;padding:3px;border-radius:19px;background:var(--m-glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--m-glass-edge);box-shadow:inset 0 1px 0 var(--m-glass-hi),inset 0 -1px 0 var(--m-glass-lo),0 8px 24px var(--m-glass-shadow);box-sizing:border-box">
+    <button type="button" role="tab" aria-selected="{{ isPage }}" aria-label="Page view" title="Page view" onClick="{{ toPage }}" style="{{ segPage }}"><i class="ph ph-file-text" aria-hidden="true"></i></button>
+    <button type="button" role="tab" aria-selected="{{ isFields }}" aria-label="Fields view" title="Fields view" onClick="{{ toFields }}" style="{{ segFields }}"><i class="ph ph-list-bullets" aria-hidden="true"></i></button>
+  <sc-if value="{{ isPage }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="height:1px;margin:3px 6px;background:var(--m-line)"></span><button type="button" onClick="{{ zoomIn }}" disabled="{{ zinOff }}" aria-label="Zoom in" title="Zoom in" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:16px;padding:0;background:transparent;color:var(--m-fg);font-size:16px;cursor:pointer" style-disabled="color:var(--m-mute);opacity:.4;cursor:default" style-active="background:var(--m-chip)"><i class="ph ph-plus" aria-hidden="true"></i></button><button type="button" onClick="{{ zoomOut }}" disabled="{{ zoutOff }}" aria-label="Zoom out" title="Zoom out" style="width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:16px;padding:0;background:transparent;color:var(--m-fg);font-size:16px;cursor:pointer" style-disabled="color:var(--m-mute);opacity:.4;cursor:default" style-active="background:var(--m-chip)"><i class="ph ph-minus" aria-hidden="true"></i></button></sc-if></div>
+
+  <div ref="{{ scrollRef }}" onScroll="{{ onScroll }}" style="position:absolute;inset:0;overflow:auto;background:var(--m-canvas);-webkit-overflow-scrolling:touch">
+
+    <sc-if value="{{ isPage }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:116px 12px 250px;display:flex;flex-direction:column;align-items:safe center;gap:12px">
+        <sc-for list="{{ docsView }}" as="dv" hint-placeholder-count="2">
+        <div data-doc="{{ dv.id }}" style="width:100%;display:flex;flex-direction:column;align-items:safe center;gap:12px;padding-bottom:20px">
+                  <sc-for list="{{ dv.pages }}" as="pg" hint-placeholder-count="1">
+          <div data-pg="{{ pg.pi }}" data-pdoc="{{ dv.id }}" style="display:flex;flex-direction:column;align-items:center;gap:8px">
+            <div style="zoom:{{ zoom }}">
+              <div style="width:720px;min-height:932px;background:#FFFFFF;position:relative;padding:56px 60px 64px;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,.12);display:flex;flex-direction:column;gap:10px;font-size:12px;line-height:18px;color:#171717">
+                <sc-for list="{{ pg.lines }}" as="ln" hint-placeholder-count="6">
+                  <sc-if value="{{ ln.isKicker }}" hint-placeholder-val="{{ false }}"><div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#737373;font-weight:600">{{ ln.v }}</div></sc-if>
+                  <sc-if value="{{ ln.isH1 }}" hint-placeholder-val="{{ false }}"><div style="font-size:18px;line-height:24px;font-weight:700;letter-spacing:-.01em">{{ ln.v }}</div></sc-if>
+                  <sc-if value="{{ ln.isH2 }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;font-weight:700;margin-top:14px;padding-bottom:4px;border-bottom:1px solid #171717">{{ ln.v }}</div></sc-if>
+                  <sc-if value="{{ ln.isP }}" hint-placeholder-val="{{ false }}"><p style="margin:0;color:#262626;white-space:pre-wrap;text-wrap:pretty">{{ ln.v }}</p></sc-if>
+                  <sc-if value="{{ ln.isRow }}" hint-placeholder-val="{{ true }}">
+                    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px;min-height:28px">
+                      <sc-for list="{{ ln.segs }}" as="s" hint-placeholder-count="2">
+                        <sc-if value="{{ s.isText }}" hint-placeholder-val="{{ true }}"><span style="padding-bottom:4px">{{ s.v }}</span></sc-if>
+                        <sc-if value="{{ s.isField }}" hint-placeholder-val="{{ false }}">
+                          <button type="button" data-k="{{ s.dk }}" onClick="{{ s.tap }}" aria-label="{{ s.label }}" style="{{ s.style }}" style-before="content:'';position:absolute;inset:-10px -4px"><span style="{{ s.textStyle }}">{{ s.display }}</span></button>
+                        </sc-if>
+                        <sc-if value="{{ s.isCb }}" hint-placeholder-val="{{ false }}">
+                          <label style="position:relative;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 6px 0 2px;font-size:12px;color:#171717;cursor:pointer;--background:#FFFFFF;--neutral-400:#A3A3A3;--neutral-500:#737373;--primary:#5A5FF2;--primary-foreground:#FFFFFF"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" checked="{{ s.checked }}" onChange="{{ s.tap }}" aria-label="{{ s.label }}" hint-size="16px,16px"></x-import>{{ s.label }}</label>
+                        </sc-if>
+                        <sc-if value="{{ s.isCalc }}" hint-placeholder-val="{{ false }}">
+                          <span style="display:inline-flex;align-items:flex-end;gap:6px;height:28px;padding:0 6px 4px;box-sizing:border-box;border-bottom:1px solid #A3A3A3;background:#FAFAFA;border-radius:4px 4px 0 0;width:{{ s.w }}px;font-variant-numeric:tabular-nums"><i class="ph ph-function" aria-hidden="true" style="font-size:13px;color:#737373"></i>{{ s.display }}</span>
+                        </sc-if>
+                        <sc-if value="{{ s.isSig }}" hint-placeholder-val="{{ false }}">
+                          <span style="display:inline-flex;flex-direction:column;gap:4px;width:188px">
+                            <span style="height:30px;border-bottom:1px solid #171717;display:flex;align-items:flex-end;gap:6px;padding:0 4px 4px;color:#A3A3A3"><i class="ph ph-signature" aria-hidden="true" style="font-size:14px"></i>Signed in envelope</span>
+                            <span style="font-size:11px;color:#737373">{{ s.label }}</span>
+                          </span>
+                        </sc-if>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                </sc-for>
+                <sc-for list="{{ pg.placed }}" as="p" hint-placeholder-count="0">
+                  <div style="{{ p.style }}"><i class="{{ p.icon }}" aria-hidden="true" style="font-size:16px"></i>{{ p.label }}</div>
+                </sc-for>
+                <div style="position:absolute;bottom:22px;left:60px;right:60px;display:flex;justify-content:space-between;font-size:10px;color:#A3A3A3"><span>{{ pg.foot }}</span><span>{{ pg.label }}</span></div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ dv.noFields }}" hint-placeholder-val="{{ false }}">
+          <div style="width:100%;max-width:366px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:12px 12px 12px 14px;border-radius:12px;background:var(--m-group);border:1px solid var(--m-line)">
+            <i class="ph ph-warning" aria-hidden="true" style="font-size:20px;color:var(--m-warn);flex:none"></i>
+            <span style="flex:1;min-width:0;font-size:14px;line-height:19px">No fields on this uploaded PDF yet.</span>
+            <button type="button" onClick="{{ openAdd }}" style="flex:none;height:44px;padding:0 14px;border:0;border-radius:10px;background:var(--m-tint);color:var(--m-tint-fg);font:inherit;font-size:14px;font-weight:600;cursor:pointer" style-active="transform:scale(.97)">Add fields</button>
+          </div>
+        </sc-if>
+        </div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isFields }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:120px 16px 250px;display:flex;flex-direction:column;gap:22px">
+        <sc-for list="{{ docsView }}" as="dv" hint-placeholder-count="2">
+        <div data-doc="{{ dv.id }}" style="display:flex;flex-direction:column;gap:18px;padding-bottom:16px">
+          <div style="display:flex;align-items:center;gap:8px;padding:0 4px;min-width:0">
+            <span style="flex:none;height:26px;display:inline-flex;align-items:center;padding:0 9px;border-radius:13px;background:var(--m-chip);font-size:12px;font-weight:600;color:var(--m-fg2)">{{ dv.code }}</span>
+            <span style="flex:1;min-width:0;font-size:16px;line-height:24px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ dv.short }}</span>
+            <span style="flex:none;font-size:13px;font-weight:500;color:{{ dv.ic }};font-variant-numeric:tabular-nums">{{ dv.st }}</span>
+          </div>
+        <sc-for list="{{ dv.groups }}" as="g" hint-placeholder-count="3">
+          <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+            <span style="font-size:13px;line-height:18px;color:var(--m-mute);padding:0 16px">{{ g.title }}</span>
+            <div style="display:flex;flex-direction:column;gap:1px;background:var(--m-line);border-radius:12px;overflow:hidden">
+              <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+                <sc-if value="{{ it.isInput }}" hint-placeholder-val="{{ true }}">
+                  <label data-lk="{{ it.dk }}" style="display:flex;flex-direction:column;gap:2px;padding:10px 16px;background:var(--m-group);min-width:0;cursor:text">
+                    <span style="display:flex;align-items:center;gap:8px;min-width:0"><span style="flex:1;min-width:0;font-size:13px;line-height:18px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.label }}</span><sc-if value="{{ it.missing }}" hint-placeholder-val="{{ false }}"><span style="flex:none;font-size:12px;font-weight:500;color:var(--m-warn)">Required</span></sc-if><sc-if value="{{ it.shared }}" hint-placeholder-val="{{ false }}"><i class="ph ph-link-simple" aria-label="Shared across forms" title="Fills every form in the packet" style="flex:none;font-size:14px;color:var(--m-tint-fg)"></i></sc-if></span>
+                    <input value="{{ it.value }}" onChange="{{ it.onChange }}" onFocus="{{ it.onFocus }}" placeholder="{{ it.ph }}" inputMode="{{ it.mode }}" style="width:100%;min-width:0;height:28px;border:0;outline:none;background:transparent;padding:0;font:inherit;font-size:16px;color:var(--m-fg)">
+                  </label>
+                </sc-if>
+                <sc-if value="{{ it.isArea }}" hint-placeholder-val="{{ false }}">
+                  <label data-lk="{{ it.dk }}" style="display:flex;flex-direction:column;gap:6px;padding:10px 16px;background:var(--m-group);min-width:0">
+                    <span style="font-size:13px;line-height:18px;color:var(--m-mute)">{{ it.label }}</span>
+                    <textarea value="{{ it.value }}" onChange="{{ it.onChange }}" onFocus="{{ it.onFocus }}" rows="6" style="width:100%;min-width:0;border:0;outline:none;resize:none;background:transparent;padding:0;font:inherit;font-size:16px;line-height:22px;color:var(--m-fg)"></textarea>
+                    <sc-if value="{{ it.over }}" hint-placeholder-val="{{ false }}"><span style="display:flex;align-items:flex-start;gap:6px;font-size:13px;line-height:18px;color:var(--m-tint-fg)"><i class="ph ph-arrow-bend-down-right" aria-hidden="true" style="font-size:15px;flex:none;margin-top:1px"></i>Too long for the box — full text moves to TOA ¶1</span></sc-if>
+                  </label>
+                </sc-if>
+                <sc-if value="{{ it.isCb }}" hint-placeholder-val="{{ false }}">
+                  <label style="display:flex;align-items:center;gap:12px;min-height:48px;padding:0 16px;background:var(--m-group);cursor:pointer;--background:var(--m-fill)"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" checked="{{ it.checked }}" onChange="{{ it.onToggle }}" hint-size="16px,16px"></x-import><span style="flex:1;min-width:0;font-size:14px;line-height:20px">{{ it.label }}</span></label>
+                </sc-if>
+                <sc-if value="{{ it.isCalc }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:2px;padding:10px 16px;background:var(--m-group)">
+                    <span style="font-size:13px;line-height:18px;color:var(--m-mute)">{{ it.label }}</span>
+                    <span style="display:flex;align-items:center;gap:6px;font-size:16px;line-height:28px;font-variant-numeric:tabular-nums"><i class="ph ph-function" aria-hidden="true" style="font-size:15px;color:var(--m-mute)"></i>{{ it.value }}</span>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ it.isSig }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;align-items:center;gap:12px;min-height:48px;padding:0 16px;background:var(--m-group)">
+                    <i class="ph ph-signature" aria-hidden="true" style="font-size:20px;color:var(--m-mute);flex:none"></i>
+                    <span style="flex:1;min-width:0;font-size:14px;line-height:20px">{{ it.label }}</span>
+                    <span style="flex:none;font-size:13px;color:var(--m-mute)">In envelope</span>
+                  </div>
+                </sc-if>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ dv.noFields }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:24px 24px 8px;text-align:center">
+            <i class="ph ph-file-dashed" aria-hidden="true" style="font-size:32px;color:var(--m-mute)"></i>
+            <span style="font-size:16px;line-height:24px;font-weight:600">No fields yet</span>
+            <span style="font-size:14px;line-height:20px;color:var(--m-mute);max-width:260px">This PDF was uploaded without tagged fields. Add signature, date and text fields to fill it.</span>
+            <button type="button" onClick="{{ openAdd }}" style="height:44px;padding:0 18px;border:0;border-radius:10px;background:#5A5FF2;color:#FFFFFF;font:inherit;font-size:14px;font-weight:600;cursor:pointer" style-active="transform:scale(.97)">Add fields</button>
+          </div>
+        </sc-if>
+        </div>
+        </sc-for>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="position:absolute;left:0;right:0;bottom:0;z-index:20;pointer-events:none;padding:56px 12px 0;display:flex;flex-direction:column;background:linear-gradient(to top,var(--m-edge) 0%,var(--m-edge) 45%,transparent 100%)">
+    <sc-if value="{{ showTip }}" hint-placeholder-val="{{ true }}"><div aria-live="polite" style="pointer-events:auto;position:absolute;right:88px;top:-10px;max-width:calc(100% - 112px);min-width:0;display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:4px 4px 4px 14px;box-sizing:border-box;border:1px solid var(--m-sug-edge);border-radius:12px;background:var(--m-sug-bg),var(--m-dock);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:0 8px 24px var(--m-glass-shadow);font:500 13px/17px 'Mona Sans',sans-serif;text-align:left"><button type="button" onClick="{{ melTip.go }}" style="flex:1;min-width:0;padding:0;border:0;background:transparent;font:inherit;text-align:left;cursor:pointer" style-active="opacity:.7">{{ melTip.el }}</button><button type="button" onClick="{{ hideTip }}" aria-label="Dismiss" title="Dismiss" style="flex:none;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:10px;background:transparent;color:var(--m-mute);padding:0;cursor:pointer" style-hover="color:var(--m-fg);background:var(--m-chip)"><i class="ph ph-x" aria-hidden="true" style="font-size:14px"></i></button></div></sc-if>
+    <button type="button" onClick="{{ openMel }}" aria-label="Ask Mel" title="Ask Mel" style="pointer-events:auto;position:absolute;right:20px;top:-18px;width:60px;height:60px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;border:2px solid transparent;border-radius:50%;background:linear-gradient(135deg,#232548 0%,#2A2440 50%,#3B2229 100%) padding-box,linear-gradient(200deg,#F0A468 0%,#F08068 22%,#9A8EA8 50%,#7B7FF5 75%,#5A5FF2 100%) border-box;box-shadow:0 8px 24px var(--m-glass-shadow);padding:0;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease" style-hover="box-shadow:0 8px 28px rgba(90,95,242,.35)" style-active="transform:scale(.92)"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAzIiBoZWlnaHQ9IjEwMyIgdmlld0JveD0iMCAwIDEwMyAxMDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNTcuMzc0MSAzNy4xOTFDNjUuOTU1NSAyNi40MzQ4IDgxLjc5NDUgMjYuNDM0OCA5MC4zNzU4IDM3LjE5MUM5Ni45OTIyIDQ1LjQ4NDIgOTYuOTkyMiA1Ny41MTk0IDkwLjM3NTggNjUuODEyNkM4MS43OTQ1IDc2LjU2ODggNjUuOTU1NSA3Ni41Njg4IDU3LjM3NDEgNjUuODEyNkwzOS4wMzU1IDQyLjgyNjNDMzMuODczOSAzNi4zNTY1IDI0LjM4MzUgMzYuMzU2NSAxOS4yMjE5IDQyLjgyNjNDMTUuMjE1MSA0Ny44NDg2IDE1LjIxNTEgNTUuMTU1IDE5LjIyMTkgNjAuMTc3M0MyNC4zODM1IDY2LjY0NzEgMzMuODczOSA2Ni42NDcxIDM5LjAzNTUgNjAuMTc3M0w0NS40OTIxIDUyLjA4NDRMNDYuOTI5OCA1My4yMzE1TDQwLjQ3MzMgNjEuMzI0NEMzNC41NzUzIDY4LjcxNzEgMjMuNjgyMSA2OC43MTcxIDE3Ljc4NDEgNjEuMzI0NEMxMy4yNDE5IDU1LjYzMTEgMTMuMjQxOSA0Ny4zNzI1IDE3Ljc4NDEgNDEuNjc5MkMyMy42ODIxIDM0LjI4NjUgMzQuNTc1MyAzNC4yODY1IDQwLjQ3MzMgNDEuNjc5Mkw1OC44MTE5IDY0LjY2NTZDNjYuNjU2OSA3NC40OTg4IDgxLjA5MyA3NC40OTg4IDg4LjkzODEgNjQuNjY1NUM5NS4wMTkxIDU3LjA0MzMgOTUuMDE5MSA0NS45NjAzIDg4LjkzODEgMzguMzM4QzgxLjA5MyAyOC41MDQ4IDY2LjY1NjkgMjguNTA0OCA1OC44MTE5IDM4LjMzOEw1My4wNDQ2IDQ1LjU2N0w1MS42MDY4IDQ0LjQxOTlMNTcuMzc0MSAzNy4xOTFaTTEyLjYyNzggMzcuMTkxQzIxLjIwOTIgMjYuNDM0OCAzNy4wNDgyIDI2LjQzNDggNDUuNjI5NSAzNy4xOTFMNjMuOTY4MiA2MC4xNzczQzY5LjEyOTggNjYuNjQ3MSA3OC42MjAyIDY2LjY0NzEgODMuNzgxOCA2MC4xNzczQzg3Ljc4ODYgNTUuMTU1IDg3Ljc4ODYgNDcuODQ4NiA4My43ODE4IDQyLjgyNjNDNzguNjIwMiAzNi4zNTY1IDY5LjEyOTggMzYuMzU2NSA2My45NjgyIDQyLjgyNjNMNTcuNTExNiA1MC45MTkyTDU2LjA3MzggNDkuNzcyMUw2Mi41MzA0IDQxLjY3OTJDNjguNDI4NCAzNC4yODY1IDc5LjMyMTYgMzQuMjg2NSA4NS4yMTk2IDQxLjY3OTJDODkuNzYxNyA0Ny4zNzI1IDg5Ljc2MTcgNTUuNjMxMSA4NS4yMTk2IDYxLjMyNDRDNzkuMzIxNiA2OC43MTcxIDY4LjQyODQgNjguNzE3MSA2Mi41MzA0IDYxLjMyNDRMNDQuMTkxOCAzOC4zMzhDMzYuMzQ2NyAyOC41MDQ4IDIxLjkxMDYgMjguNTA0OCAxNC4wNjU2IDM4LjMzOEM3Ljk4NDU1IDQ1Ljk2MDMgNy45ODQ1NSA1Ny4wNDMzIDE0LjA2NTYgNjQuNjY1NUMyMS45MTA2IDc0LjQ5ODggMzYuMzQ2NyA3NC40OTg4IDQ0LjE5MTcgNjQuNjY1Nkw0OS45NTkgNTcuNDM2Nkw1MS4zOTY4IDU4LjU4MzdMNDUuNjI5NSA2NS44MTI2QzM3LjA0ODIgNzYuNTY4OCAyMS4yMDkyIDc2LjU2ODggMTIuNjI3OCA2NS44MTI2QzYuMDExNDMgNTcuNTE5NCA2LjAxMTQzIDQ1LjQ4NDIgMTIuNjI3OCAzNy4xOTFaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMjc3NDBfNTQxKSI+PC9wYXRoPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzI3NzQwXzU0MSIgeDE9IjI5LjU4MzciIHkxPSIxOS4yNzkzIiB4Mj0iMjYuMjgxNSIgeTI9Ijc4LjY2NSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBvZmZzZXQ9IjAuMTU1OTY2IiBzdG9wLWNvbG9yPSIjN0I3RkY1Ij48L3N0b3A+CjxzdG9wIG9mZnNldD0iMC40NDkiIHN0b3AtY29sb3I9IiM1QTVGRjIiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIwLjc1OTA4NiIgc3RvcC1jb2xvcj0iI0YwODA2OCI+PC9zdG9wPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGMEE0NjgiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBBNDY4Ij48L3N0b3A+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+" alt="" aria-hidden="true" style="width:30px;height:30px"></button>
+    <div style="pointer-events:auto;display:flex;flex-direction:column;gap:12px;padding:14px 14px 14px 18px;border-radius:30px;background:var(--m-dock);border:1px solid var(--m-glass-edge);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);box-shadow:0 12px 32px var(--m-glass-shadow)">
+      <div style="display:flex;align-items:center;gap:12px;min-width:0;padding-right:4px">
+          <button type="button" onClick="{{ showName }}" aria-label="{{ dockFull }}" title="{{ dockFull }}" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;padding:0;border:0;background:transparent;color:var(--m-fg);font:inherit;text-align:left;cursor:pointer" style-active="opacity:.7">
+            <span style="font-size:14px;line-height:20px;font-weight:600;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;overflow-wrap:anywhere">{{ dockTitle }}</span>
+            <span style="font-size:12px;line-height:16px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums">{{ dockSub }}</span>
+          </button>
+          <div role="progressbar" aria-label="Required fields filled" aria-valuenow="{{ progPct }}" aria-valuemin="0" aria-valuemax="100" style="flex:none;width:44px;height:44px;border-radius:50%;background:conic-gradient(#5A5FF2 {{ progPct }}%, var(--m-chip) 0);display:flex;align-items:center;justify-content:center"><span style="width:36px;height:36px;border-radius:50%;background:var(--m-dock);display:flex;align-items:center;justify-content:center;font-size:11px;line-height:16px;font-weight:600;letter-spacing:-.02em;white-space:nowrap;color:{{ pctColor }};font-variant-numeric:tabular-nums">{{ progPct }}%</span></div>
+        </div>
+      <div style="display:flex;align-items:center;gap:8px;min-width:0">
+        <button type="button" onClick="{{ nextReq }}" style="flex:none;height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:0 18px;border:0;border-radius:22px;background:#5A5FF2;color:#FFFFFF;font:inherit;font-size:14px;font-weight:600;cursor:pointer;white-space:nowrap;box-sizing:border-box;transition:transform .18s ease" style-hover="background:#4F54E6" style-active="transform:scale(.97)"><i class="{{ nextIcon }}" aria-hidden="true" style="font-size:18px"></i>{{ nextLabel }}</button>
+        <button type="button" onClick="{{ openDocs }}" aria-label="Documents" title="Documents" style="flex:1;min-width:0;height:44px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 14px 0 12px;border-radius:22px;border:1px solid var(--m-glass-edge);background:var(--m-chip);color:var(--m-fg);padding:0;cursor:pointer;box-sizing:border-box;transition:transform .18s ease;font:inherit;font-size:14px;font-weight:600;white-space:nowrap" style-active="transform:scale(.92)"><i class="ph ph-files" aria-hidden="true" style="font-size:18px"></i>Docs</button>
+        <button type="button" onClick="{{ openAdd }}" aria-label="Add field" title="Add field" style="flex:1;min-width:0;height:44px;display:flex;align-items:center;justify-content:center;gap:4px;padding:0 12px 0 10px;border-radius:22px;border:1px solid var(--m-glass-edge);background:var(--m-chip);color:var(--m-fg);font:inherit;font-size:14px;font-weight:600;white-space:nowrap;cursor:pointer;box-sizing:border-box;transition:transform .18s ease" style-active="transform:scale(.95)"><i class="ph ph-plus" aria-hidden="true" style="font-size:18px"></i>Field</button>
+              </div>
+    </div>
+    <div style="height:26px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box"><span style="width:134px;height:5px;border-radius:3px;background:var(--m-fg)"></span></div>
+  </div>
+
+  <sc-if value="{{ fs }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="{{ fs.label }}" style="position:absolute;left:0;right:0;bottom:0;z-index:30;background:var(--m-sheet);border-radius:14px 14px 0 0;border:1px solid var(--m-line);border-bottom:0;box-shadow:0 -12px 40px var(--m-glass-shadow);display:flex;flex-direction:column">
+      <div style="display:flex;justify-content:center;padding-top:8px"><span style="width:36px;height:5px;border-radius:3px;background:var(--m-grab)"></span></div>
+      <div style="display:grid;grid-template-columns:88px minmax(0,1fr) 88px;align-items:center;padding:0 8px">
+        <div style="display:flex">
+          <button type="button" onClick="{{ prevF }}" disabled="{{ fs.first }}" aria-label="Previous field" title="Previous field" style="{{ fs.prevStyle }}"><i class="ph ph-caret-up" aria-hidden="true" style="font-size:20px"></i></button>
+          <button type="button" onClick="{{ nextF }}" disabled="{{ fs.last }}" aria-label="Next field" title="Next field" style="{{ fs.nextStyle }}"><i class="ph ph-caret-down" aria-hidden="true" style="font-size:20px"></i></button>
+        </div>
+        <div style="min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <span style="max-width:100%;font-size:14px;line-height:20px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ fs.label }}</span>
+          <span style="font-size:12px;line-height:16px;color:var(--m-mute);font-variant-numeric:tabular-nums">{{ fs.meta }}</span>
+        </div>
+        <div style="display:flex;justify-content:flex-end">
+          <button type="button" onClick="{{ closeF }}" style="height:44px;padding:0 10px;border:0;background:transparent;color:var(--m-link);font:inherit;font-size:16px;font-weight:600;cursor:pointer" style-active="opacity:.5">Done</button>
+        </div>
+      </div>
+      <div style="padding:6px 16px 4px;display:flex;flex-direction:column;gap:10px">
+        <sc-if value="{{ fs.isInput }}" hint-placeholder-val="{{ true }}">
+          <input autoFocus="{{ true }}" value="{{ fs.value }}" onChange="{{ fs.onChange }}" onKeyDown="{{ fs.onKey }}" placeholder="{{ fs.ph }}" inputMode="{{ fs.mode }}" enterKeyHint="next" aria-label="{{ fs.label }}" style="width:100%;box-sizing:border-box;height:48px;padding:0 14px;border:1px solid var(--m-line);border-radius:10px;background:var(--m-fill);outline:none;font:inherit;font-size:16px;color:var(--m-fg)" style-focus="border-color:#5A5FF2;box-shadow:0 0 0 3px rgba(90,95,242,.25)">
+        </sc-if>
+        <sc-if value="{{ fs.isArea }}" hint-placeholder-val="{{ false }}">
+          <textarea autoFocus="{{ true }}" value="{{ fs.value }}" onChange="{{ fs.onChange }}" aria-label="{{ fs.label }}" rows="5" style="width:100%;box-sizing:border-box;padding:12px 14px;border:1px solid var(--m-line);border-radius:10px;background:var(--m-fill);outline:none;resize:none;font:inherit;font-size:16px;line-height:24px;color:var(--m-fg)" style-focus="border-color:#5A5FF2;box-shadow:0 0 0 3px rgba(90,95,242,.25)"></textarea>
+        </sc-if>
+        <sc-if value="{{ fs.isDate }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;gap:8px">
+            <sc-for list="{{ fs.chips }}" as="c" hint-placeholder-count="3">
+              <button type="button" onClick="{{ c.go }}" style="flex:1;min-width:0;height:44px;border:0;border-radius:10px;background:var(--m-fill);color:var(--m-fg);font:inherit;font-size:14px;font-weight:500;cursor:pointer;white-space:nowrap" style-active="transform:scale(.97)">{{ c.label }}</button>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ fs.over }}" hint-placeholder-val="{{ false }}">
+          <span style="display:flex;align-items:flex-start;gap:8px;font-size:13px;line-height:20px;color:var(--m-tint-fg)"><i class="ph ph-arrow-bend-down-right" aria-hidden="true" style="font-size:16px;flex:none"></i>Too long for the box. The field reads “See TOA ¶1” and the full text moves to the addendum.</span>
+        </sc-if>
+        <sc-if value="{{ fs.shared }}" hint-placeholder-val="{{ false }}">
+          <span style="display:flex;align-items:flex-start;gap:8px;font-size:13px;line-height:20px;color:var(--m-mute)"><i class="ph ph-link-simple" aria-hidden="true" style="font-size:16px;flex:none;color:var(--m-tint-fg)"></i>{{ fs.sharedText }}</span>
+        </sc-if>
+      </div>
+      <div style="height:34px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box"><span style="width:134px;height:5px;border-radius:3px;background:var(--m-fg)"></span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ anySheet }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeSheet }}" style="position:absolute;inset:0;z-index:40;background:var(--m-scrim)"></div>
+  </sc-if>
+
+  <sc-if value="{{ docsSheet }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Documents" style="position:absolute;left:0;right:0;bottom:0;z-index:50;display:flex;flex-direction:column;background:var(--m-sheet);border:1px solid var(--m-line);border-bottom:0;border-radius:14px 14px 0 0;box-shadow:0 -12px 40px var(--m-glass-shadow);overflow:hidden;max-height:84%">
+      <div style="display:flex;justify-content:center;padding-top:8px;flex:none"><span style="width:36px;height:5px;border-radius:3px;background:var(--m-grab)"></span></div>
+      <div style="flex:none;display:flex;align-items:center;gap:12px;padding:10px 18px 16px 20px;border-bottom:1px solid var(--m-line)">
+        <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+          <span style="font-family:'Hubot Sans','Mona Sans',sans-serif;font-size:20px;line-height:28px;font-weight:700;letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Documents</span>
+          <span style="font-size:14px;line-height:20px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums">{{ docSub }}</span>
+        </span>
+      </div>
+      <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 20px">
+        <sc-for list="{{ docList }}" as="d" hint-placeholder-count="6">
+          <button type="button" onClick="{{ d.pick }}" aria-current="{{ d.on }}" style="width:100%;display:grid;grid-template-columns:20px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:52px;padding:8px 0;border:0;border-bottom:1px solid var(--m-line);background:transparent;color:var(--m-fg);font:inherit;text-align:left;cursor:pointer" style-active="opacity:.6">
+            <i class="{{ d.icon }}" aria-hidden="true" style="font-size:20px;color:{{ d.ic }}"></i>
+            <span style="min-width:0;display:flex;flex-direction:column;gap:2px">
+              <span style="font-size:14px;line-height:20px;font-weight:{{ d.fw }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ d.name }}</span>
+              
+            </span>
+            <span style="font-size:13px;line-height:20px;font-weight:500;white-space:nowrap;color:{{ d.ic }};font-variant-numeric:tabular-nums">{{ d.st }}</span>
+          </button>
+        </sc-for>
+        
+        
+      </div>
+      <div style="flex:none;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:12px 20px 0">
+        <button type="button" onClick="{{ closeSheet }}" style="height:44px;border:0;border-radius:22px;background:var(--m-chip);color:var(--m-fg);font:inherit;font-size:14px;font-weight:600;cursor:pointer" style-active="transform:scale(.97)">Close</button>
+        <button type="button" onClick="{{ openAddDocs }}" style="height:44px;display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:22px;background:#5A5FF2;color:#FFFFFF;font:inherit;font-size:14px;font-weight:600;cursor:pointer" style-active="transform:scale(.97)"><i class="ph ph-plus" aria-hidden="true" style="font-size:16px"></i>Documents</button>
+      </div>
+      <div style="height:34px;flex:none;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box"><span style="width:134px;height:5px;border-radius:3px;background:var(--m-fg)"></span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ addSheet }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Add field" style="position:absolute;left:0;right:0;bottom:0;z-index:50;display:flex;flex-direction:column;background:var(--m-sheet);border:1px solid var(--m-line);border-bottom:0;border-radius:14px 14px 0 0;box-shadow:0 -12px 40px var(--m-glass-shadow);overflow:hidden">
+      <div style="display:flex;justify-content:center;padding-top:8px;flex:none"><span style="width:36px;height:5px;border-radius:3px;background:var(--m-grab)"></span></div>
+      <div style="flex:none;display:flex;align-items:center;gap:12px;padding:10px 18px 16px 20px;border-bottom:1px solid var(--m-line)">
+        <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+          <span style="font-family:'Hubot Sans','Mona Sans',sans-serif;font-size:20px;line-height:28px;font-weight:700;letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Add field</span>
+          <span style="font-size:14px;line-height:20px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums">{{ addHint }}</span>
+        </span>
+        <button type="button" onClick="{{ closeSheet }}" aria-label="Close" title="Close" style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--m-close-edge);border-radius:50%;background:transparent;color:var(--m-close-fg);padding:0;cursor:pointer;box-sizing:border-box;transition:transform .18s ease" style-active="transform:scale(.92)"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button>
+      </div>
+      <div style="padding:16px 20px 4px;display:flex;flex-direction:column;gap:18px">
+        <sc-for list="{{ toolGroups }}" as="tg" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:13px;line-height:20px;font-weight:600;color:var(--m-mute)">{{ tg.title }}</span>
+            <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px">
+              <sc-for list="{{ tg.tools }}" as="t" hint-placeholder-count="4">
+                <button type="button" onClick="{{ t.add }}" style="min-width:0;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px 4px;border:1px solid var(--m-line);border-radius:10px;background:var(--m-fill);color:var(--m-fg);font:inherit;cursor:pointer;overflow:hidden;box-sizing:border-box" style-active="transform:scale(.96)">
+                  <i class="{{ t.icon }}" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i>
+                  <span style="max-width:100%;font-size:12px;line-height:16px;font-weight:500;text-align:center;overflow-wrap:anywhere;box-sizing:border-box">{{ t.label }}</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="height:34px;flex:none;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box"><span style="width:134px;height:5px;border-radius:3px;background:var(--m-fg)"></span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ moreSheet }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="More actions" style="position:absolute;left:0;right:0;bottom:0;z-index:50;display:flex;flex-direction:column;background:var(--m-sheet);border:1px solid var(--m-line);border-bottom:0;border-radius:14px 14px 0 0;box-shadow:0 -12px 40px var(--m-glass-shadow);overflow:hidden">
+      <div style="display:flex;justify-content:center;padding-top:8px;flex:none"><span style="width:36px;height:5px;border-radius:3px;background:var(--m-grab)"></span></div>
+      <div style="flex:none;display:flex;align-items:center;gap:12px;padding:10px 18px 16px 20px;border-bottom:1px solid var(--m-line)">
+        <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+          <span style="font-family:'Hubot Sans','Mona Sans',sans-serif;font-size:20px;line-height:28px;font-weight:700;letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">More options</span>
+          <span style="font-size:14px;line-height:20px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-variant-numeric:tabular-nums"><i class="{{ saveIcon }}" aria-hidden="true" style="font-size:14px;vertical-align:-2px;margin-right:4px"></i>{{ saveText }}</span>
+        </span>
+        <button type="button" onClick="{{ closeSheet }}" aria-label="Close" title="Close" style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--m-close-edge);border-radius:50%;background:transparent;color:var(--m-close-fg);padding:0;cursor:pointer;box-sizing:border-box;transition:transform .18s ease" style-active="transform:scale(.92)"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button>
+      </div>
+      <div style="padding:0 20px">
+        <button type="button" onClick="{{ download }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:52px;border:0;border-bottom:1px solid var(--m-line);background:transparent;color:var(--m-fg);font:inherit;font-size:14px;line-height:20px;text-align:left;cursor:pointer;padding:0" style-active="opacity:.6"><i class="ph ph-download-simple" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i><span style="flex:1">Download PDF</span><i class="ph ph-caret-right" aria-hidden="true" style="font-size:16px;color:var(--m-mute)"></i></button>
+        <button type="button" onClick="{{ moreAdd }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:52px;border:0;border-bottom:1px solid var(--m-line);background:transparent;color:var(--m-fg);font:inherit;font-size:14px;line-height:20px;text-align:left;cursor:pointer;padding:0" style-active="opacity:.6"><i class="ph ph-textbox" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i><span style="flex:1">Add fields</span><i class="ph ph-caret-right" aria-hidden="true" style="font-size:16px;color:var(--m-mute)"></i></button>
+        <button type="button" onClick="{{ moreMel }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:52px;border:0;border-bottom:1px solid var(--m-line);background:transparent;color:var(--m-fg);font:inherit;font-size:14px;line-height:20px;text-align:left;cursor:pointer;padding:0" style-active="opacity:.6"><i class="ph ph-sparkle" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i><span style="flex:1">Ask Mel</span><i class="ph ph-caret-right" aria-hidden="true" style="font-size:16px;color:var(--m-mute)"></i></button>
+        <button type="button" onClick="{{ openUpload }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:52px;border:0;border-bottom:1px solid var(--m-line);background:transparent;color:var(--m-fg);font:inherit;font-size:14px;line-height:20px;text-align:left;cursor:pointer;padding:0" style-active="opacity:.6"><i class="ph ph-upload-simple" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i><span style="flex:1">Upload</span><i class="ph ph-caret-right" aria-hidden="true" style="font-size:16px;color:var(--m-mute)"></i></button>
+        <button type="button" onClick="{{ resetDocs }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:52px;border:0;background:transparent;color:var(--m-fg);font:inherit;font-size:14px;line-height:20px;text-align:left;cursor:pointer;padding:0" style-active="opacity:.6"><i class="ph ph-arrow-counter-clockwise" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i><span style="flex:1">Reset documents</span><i class="ph ph-caret-right" aria-hidden="true" style="font-size:16px;color:var(--m-mute)"></i></button>
+      </div>
+      <div style="height:34px;flex:none;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box"><span style="width:134px;height:5px;border-radius:3px;background:var(--m-fg)"></span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ uploadSheet }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Upload" style="position:absolute;left:0;right:0;bottom:0;z-index:50;display:flex;flex-direction:column;background:var(--m-sheet);border:1px solid var(--m-line);border-bottom:0;border-radius:14px 14px 0 0;box-shadow:0 -12px 40px var(--m-glass-shadow);overflow:hidden">
+      <div style="display:flex;justify-content:center;padding-top:8px;flex:none"><span style="width:36px;height:5px;border-radius:3px;background:var(--m-grab)"></span></div>
+      <div style="flex:none;display:flex;align-items:center;gap:12px;padding:10px 18px 16px 20px;border-bottom:1px solid var(--m-line)">
+        <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+          <span style="font-family:'Hubot Sans','Mona Sans',sans-serif;font-size:20px;line-height:28px;font-weight:700;letter-spacing:-.025em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Upload</span>
+          <span style="font-size:14px;line-height:20px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Adds a PDF to this packet</span>
+        </span>
+        <button type="button" onClick="{{ closeSheet }}" aria-label="Close" title="Close" style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--m-close-edge);border-radius:50%;background:transparent;color:var(--m-close-fg);padding:0;cursor:pointer;box-sizing:border-box;transition:transform .18s ease" style-active="transform:scale(.92)"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button>
+      </div>
+      <div style="padding:0 20px">
+        <button type="button" onClick="{{ fromLibrary }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:52px;border:0;border-bottom:1px solid var(--m-line);background:transparent;color:var(--m-fg);font:inherit;font-size:14px;line-height:20px;text-align:left;cursor:pointer;padding:0" style-active="opacity:.6"><i class="ph ph-books" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i><span style="flex:1">From library</span><i class="ph ph-caret-right" aria-hidden="true" style="font-size:16px;color:var(--m-mute)"></i></button>
+        <button type="button" onClick="{{ uploadDoc }}" style="width:100%;display:flex;align-items:center;gap:14px;min-height:52px;border:0;background:transparent;color:var(--m-fg);font:inherit;font-size:14px;line-height:20px;text-align:left;cursor:pointer;padding:0" style-active="opacity:.6"><i class="ph ph-file-arrow-up" aria-hidden="true" style="font-size:20px;color:var(--m-link)"></i><span style="flex:1">Upload document</span><i class="ph ph-caret-right" aria-hidden="true" style="font-size:16px;color:var(--m-mute)"></i></button>
+      </div>
+      <div style="height:34px;flex:none;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box"><span style="width:134px;height:5px;border-radius:3px;background:var(--m-fg)"></span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ melSheet }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Mel" style="position:absolute;left:0;right:0;top:{{ melTop }}px;transition:{{ melTrans }};bottom:0;z-index:50;display:flex;flex-direction:column;background:var(--m-sheet);border:1px solid var(--m-line);border-bottom:0;border-radius:14px 14px 0 0;box-shadow:0 -12px 40px var(--m-glass-shadow);overflow:hidden">
+      <div onPointerDown="{{ melDown }}" aria-label="Drag to resize" style="display:flex;justify-content:center;padding:8px 0 6px;flex:none;touch-action:none;cursor:grab"><span style="width:36px;height:5px;border-radius:3px;background:var(--m-line)"></span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 18px 14px 20px;flex:none;border-bottom:1px solid var(--m-line)">
+        <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+          <span style="display:flex;align-items:center;gap:8px"><img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAzIiBoZWlnaHQ9IjEwMyIgdmlld0JveD0iMCAwIDEwMyAxMDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNTcuMzc0MSAzNy4xOTFDNjUuOTU1NSAyNi40MzQ4IDgxLjc5NDUgMjYuNDM0OCA5MC4zNzU4IDM3LjE5MUM5Ni45OTIyIDQ1LjQ4NDIgOTYuOTkyMiA1Ny41MTk0IDkwLjM3NTggNjUuODEyNkM4MS43OTQ1IDc2LjU2ODggNjUuOTU1NSA3Ni41Njg4IDU3LjM3NDEgNjUuODEyNkwzOS4wMzU1IDQyLjgyNjNDMzMuODczOSAzNi4zNTY1IDI0LjM4MzUgMzYuMzU2NSAxOS4yMjE5IDQyLjgyNjNDMTUuMjE1MSA0Ny44NDg2IDE1LjIxNTEgNTUuMTU1IDE5LjIyMTkgNjAuMTc3M0MyNC4zODM1IDY2LjY0NzEgMzMuODczOSA2Ni42NDcxIDM5LjAzNTUgNjAuMTc3M0w0NS40OTIxIDUyLjA4NDRMNDYuOTI5OCA1My4yMzE1TDQwLjQ3MzMgNjEuMzI0NEMzNC41NzUzIDY4LjcxNzEgMjMuNjgyMSA2OC43MTcxIDE3Ljc4NDEgNjEuMzI0NEMxMy4yNDE5IDU1LjYzMTEgMTMuMjQxOSA0Ny4zNzI1IDE3Ljc4NDEgNDEuNjc5MkMyMy42ODIxIDM0LjI4NjUgMzQuNTc1MyAzNC4yODY1IDQwLjQ3MzMgNDEuNjc5Mkw1OC44MTE5IDY0LjY2NTZDNjYuNjU2OSA3NC40OTg4IDgxLjA5MyA3NC40OTg4IDg4LjkzODEgNjQuNjY1NUM5NS4wMTkxIDU3LjA0MzMgOTUuMDE5MSA0NS45NjAzIDg4LjkzODEgMzguMzM4QzgxLjA5MyAyOC41MDQ4IDY2LjY1NjkgMjguNTA0OCA1OC44MTE5IDM4LjMzOEw1My4wNDQ2IDQ1LjU2N0w1MS42MDY4IDQ0LjQxOTlMNTcuMzc0MSAzNy4xOTFaTTEyLjYyNzggMzcuMTkxQzIxLjIwOTIgMjYuNDM0OCAzNy4wNDgyIDI2LjQzNDggNDUuNjI5NSAzNy4xOTFMNjMuOTY4MiA2MC4xNzczQzY5LjEyOTggNjYuNjQ3MSA3OC42MjAyIDY2LjY0NzEgODMuNzgxOCA2MC4xNzczQzg3Ljc4ODYgNTUuMTU1IDg3Ljc4ODYgNDcuODQ4NiA4My43ODE4IDQyLjgyNjNDNzguNjIwMiAzNi4zNTY1IDY5LjEyOTggMzYuMzU2NSA2My45NjgyIDQyLjgyNjNMNTcuNTExNiA1MC45MTkyTDU2LjA3MzggNDkuNzcyMUw2Mi41MzA0IDQxLjY3OTJDNjguNDI4NCAzNC4yODY1IDc5LjMyMTYgMzQuMjg2NSA4NS4yMTk2IDQxLjY3OTJDODkuNzYxNyA0Ny4zNzI1IDg5Ljc2MTcgNTUuNjMxMSA4NS4yMTk2IDYxLjMyNDRDNzkuMzIxNiA2OC43MTcxIDY4LjQyODQgNjguNzE3MSA2Mi41MzA0IDYxLjMyNDRMNDQuMTkxOCAzOC4zMzhDMzYuMzQ2NyAyOC41MDQ4IDIxLjkxMDYgMjguNTA0OCAxNC4wNjU2IDM4LjMzOEM3Ljk4NDU1IDQ1Ljk2MDMgNy45ODQ1NSA1Ny4wNDMzIDE0LjA2NTYgNjQuNjY1NUMyMS45MTA2IDc0LjQ5ODggMzYuMzQ2NyA3NC40OTg4IDQ0LjE5MTcgNjQuNjY1Nkw0OS45NTkgNTcuNDM2Nkw1MS4zOTY4IDU4LjU4MzdMNDUuNjI5NSA2NS44MTI2QzM3LjA0ODIgNzYuNTY4OCAyMS4yMDkyIDc2LjU2ODggMTIuNjI3OCA2NS44MTI2QzYuMDExNDMgNTcuNTE5NCA2LjAxMTQzIDQ1LjQ4NDIgMTIuNjI3OCAzNy4xOTFaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMjc3NDBfNTQxKSI+PC9wYXRoPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzI3NzQwXzU0MSIgeDE9IjI5LjU4MzciIHkxPSIxOS4yNzkzIiB4Mj0iMjYuMjgxNSIgeTI9Ijc4LjY2NSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBvZmZzZXQ9IjAuMTU1OTY2IiBzdG9wLWNvbG9yPSIjN0I3RkY1Ij48L3N0b3A+CjxzdG9wIG9mZnNldD0iMC40NDkiIHN0b3AtY29sb3I9IiM1QTVGRjIiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIwLjc1OTA4NiIgc3RvcC1jb2xvcj0iI0YwODA2OCI+PC9zdG9wPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGMEE0NjgiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBBNDY4Ij48L3N0b3A+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+" alt="" aria-hidden="true" style="width:24px;height:24px;flex:none"><span style="font-family:'Hubot Sans','Mona Sans',sans-serif;font-size:20px;line-height:28px;font-weight:700;letter-spacing:-.025em">Mel</span></span>
+          <span style="font-size:12px;line-height:16px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Working on {{ cur.code }} · 5670 Kearny Mesa Road</span>
+        </span>
+        <button type="button" onClick="{{ closeSheet }}" aria-label="Close" title="Close" style="flex:none;width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--m-close-edge);border-radius:50%;background:transparent;color:var(--m-close-fg);padding:0;cursor:pointer;box-sizing:border-box;transition:transform .18s ease" style-active="transform:scale(.92)"><i class="ph ph-x" aria-hidden="true" style="font-size:18px"></i></button>
+      </div>
+      <div ref="{{ chatRef }}" style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:16px;display:flex;flex-direction:column;gap:18px">
+        <sc-for list="{{ msgs }}" as="m" hint-placeholder-count="2">
+          <sc-if value="{{ m.isMe }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;justify-content:flex-end;min-width:0">
+              <div style="max-width:82%;background:#5A5FF2;color:#FFFFFF;border-radius:14px 14px 4px 14px;padding:8px 12px;font-size:14px;line-height:20px;overflow-wrap:anywhere">{{ m.text }}</div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ m.isMel }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:24px minmax(0,1fr);gap:10px;min-width:0">
+              <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAzIiBoZWlnaHQ9IjEwMyIgdmlld0JveD0iMCAwIDEwMyAxMDMiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGZpbGwtcnVsZT0iZXZlbm9kZCIgY2xpcC1ydWxlPSJldmVub2RkIiBkPSJNNTcuMzc0MSAzNy4xOTFDNjUuOTU1NSAyNi40MzQ4IDgxLjc5NDUgMjYuNDM0OCA5MC4zNzU4IDM3LjE5MUM5Ni45OTIyIDQ1LjQ4NDIgOTYuOTkyMiA1Ny41MTk0IDkwLjM3NTggNjUuODEyNkM4MS43OTQ1IDc2LjU2ODggNjUuOTU1NSA3Ni41Njg4IDU3LjM3NDEgNjUuODEyNkwzOS4wMzU1IDQyLjgyNjNDMzMuODczOSAzNi4zNTY1IDI0LjM4MzUgMzYuMzU2NSAxOS4yMjE5IDQyLjgyNjNDMTUuMjE1MSA0Ny44NDg2IDE1LjIxNTEgNTUuMTU1IDE5LjIyMTkgNjAuMTc3M0MyNC4zODM1IDY2LjY0NzEgMzMuODczOSA2Ni42NDcxIDM5LjAzNTUgNjAuMTc3M0w0NS40OTIxIDUyLjA4NDRMNDYuOTI5OCA1My4yMzE1TDQwLjQ3MzMgNjEuMzI0NEMzNC41NzUzIDY4LjcxNzEgMjMuNjgyMSA2OC43MTcxIDE3Ljc4NDEgNjEuMzI0NEMxMy4yNDE5IDU1LjYzMTEgMTMuMjQxOSA0Ny4zNzI1IDE3Ljc4NDEgNDEuNjc5MkMyMy42ODIxIDM0LjI4NjUgMzQuNTc1MyAzNC4yODY1IDQwLjQ3MzMgNDEuNjc5Mkw1OC44MTE5IDY0LjY2NTZDNjYuNjU2OSA3NC40OTg4IDgxLjA5MyA3NC40OTg4IDg4LjkzODEgNjQuNjY1NUM5NS4wMTkxIDU3LjA0MzMgOTUuMDE5MSA0NS45NjAzIDg4LjkzODEgMzguMzM4QzgxLjA5MyAyOC41MDQ4IDY2LjY1NjkgMjguNTA0OCA1OC44MTE5IDM4LjMzOEw1My4wNDQ2IDQ1LjU2N0w1MS42MDY4IDQ0LjQxOTlMNTcuMzc0MSAzNy4xOTFaTTEyLjYyNzggMzcuMTkxQzIxLjIwOTIgMjYuNDM0OCAzNy4wNDgyIDI2LjQzNDggNDUuNjI5NSAzNy4xOTFMNjMuOTY4MiA2MC4xNzczQzY5LjEyOTggNjYuNjQ3MSA3OC42MjAyIDY2LjY0NzEgODMuNzgxOCA2MC4xNzczQzg3Ljc4ODYgNTUuMTU1IDg3Ljc4ODYgNDcuODQ4NiA4My43ODE4IDQyLjgyNjNDNzguNjIwMiAzNi4zNTY1IDY5LjEyOTggMzYuMzU2NSA2My45NjgyIDQyLjgyNjNMNTcuNTExNiA1MC45MTkyTDU2LjA3MzggNDkuNzcyMUw2Mi41MzA0IDQxLjY3OTJDNjguNDI4NCAzNC4yODY1IDc5LjMyMTYgMzQuMjg2NSA4NS4yMTk2IDQxLjY3OTJDODkuNzYxNyA0Ny4zNzI1IDg5Ljc2MTcgNTUuNjMxMSA4NS4yMTk2IDYxLjMyNDRDNzkuMzIxNiA2OC43MTcxIDY4LjQyODQgNjguNzE3MSA2Mi41MzA0IDYxLjMyNDRMNDQuMTkxOCAzOC4zMzhDMzYuMzQ2NyAyOC41MDQ4IDIxLjkxMDYgMjguNTA0OCAxNC4wNjU2IDM4LjMzOEM3Ljk4NDU1IDQ1Ljk2MDMgNy45ODQ1NSA1Ny4wNDMzIDE0LjA2NTYgNjQuNjY1NUMyMS45MTA2IDc0LjQ5ODggMzYuMzQ2NyA3NC40OTg4IDQ0LjE5MTcgNjQuNjY1Nkw0OS45NTkgNTcuNDM2Nkw1MS4zOTY4IDU4LjU4MzdMNDUuNjI5NSA2NS44MTI2QzM3LjA0ODIgNzYuNTY4OCAyMS4yMDkyIDc2LjU2ODggMTIuNjI3OCA2NS44MTI2QzYuMDExNDMgNTcuNTE5NCA2LjAxMTQzIDQ1LjQ4NDIgMTIuNjI3OCAzNy4xOTFaIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMjc3NDBfNTQxKSI+PC9wYXRoPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzI3NzQwXzU0MSIgeDE9IjI5LjU4MzciIHkxPSIxOS4yNzkzIiB4Mj0iMjYuMjgxNSIgeTI9Ijc4LjY2NSIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBvZmZzZXQ9IjAuMTU1OTY2IiBzdG9wLWNvbG9yPSIjN0I3RkY1Ij48L3N0b3A+CjxzdG9wIG9mZnNldD0iMC40NDkiIHN0b3AtY29sb3I9IiM1QTVGRjIiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIwLjc1OTA4NiIgc3RvcC1jb2xvcj0iI0YwODA2OCI+PC9zdG9wPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNGMEE0NjgiPjwvc3RvcD4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRjBBNDY4Ij48L3N0b3A+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+" alt="" aria-hidden="true" style="width:24px;height:24px">
+              <div style="display:flex;flex-direction:column;gap:10px;min-width:0">
+                <sc-if value="{{ m.hasCot }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:8px;min-width:0">
+                    <button type="button" onClick="{{ m.toggle }}" aria-expanded="{{ m.cotOpen }}" style="align-self:flex-start;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0;border:0;background:transparent;color:var(--m-mute);font:500 13px/20px 'Mona Sans',sans-serif;cursor:pointer" style-hover="color:var(--m-fg)"><i class="ph ph-brain" aria-hidden="true" style="font-size:16px"></i><span>{{ m.cotTitle }}</span><i class="{{ m.caret }}" aria-hidden="true" style="font-size:14px"></i></button>
+                    <sc-if value="{{ m.cotOpen }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-direction:column;min-width:0">
+                        <sc-for list="{{ m.steps }}" as="st" hint-placeholder-count="3">
+                          <div style="display:grid;grid-template-columns:16px minmax(0,1fr);gap:10px;min-width:0">
+                            <div style="display:flex;flex-direction:column;align-items:center;padding-top:2px"><i class="{{ st.icon }}" aria-hidden="true" style="font-size:16px;color:{{ st.ic }}"></i><sc-if value="{{ st.line }}" hint-placeholder-val="{{ true }}"><span style="flex:1;width:1px;min-height:8px;margin:4px 0;background:var(--m-line)"></span></sc-if></div>
+                            <div style="min-width:0;display:flex;flex-direction:column;gap:6px;padding-bottom:12px">
+                              <span style="font-size:13px;line-height:20px;color:{{ st.tc }}">{{ st.label }}</span>
+                              <sc-if value="{{ st.hasDesc }}" hint-placeholder-val="{{ false }}"><span style="font-size:12px;line-height:16px;color:var(--m-mute)">{{ st.desc }}</span></sc-if>
+                              <sc-if value="{{ st.hasSrc }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-wrap:wrap;gap:6px"><sc-for list="{{ st.src }}" as="b" hint-placeholder-count="3"><span style="display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 8px;border-radius:6px;background:var(--m-chip);font-size:12px;line-height:16px;font-weight:500;color:var(--m-fg2)"><i class="ph ph-file-text" aria-hidden="true" style="font-size:12px"></i>{{ b }}</span></sc-for></div></sc-if>
+                            </div>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.hasText }}" hint-placeholder-val="{{ true }}">
+                <div style="font-size:14px;line-height:20px;color:var(--m-fg);text-wrap:pretty;overflow-wrap:anywhere;white-space:pre-line">{{ m.text }}</div>
+                </sc-if>
+                <sc-if value="{{ m.hasCard }}" hint-placeholder-val="{{ false }}">
+                  <div style="border:1px solid var(--m-line);border-radius:14px;overflow:hidden;background:var(--m-group)">
+                    <div style="padding:10px 14px;font-size:13px;color:var(--m-mute);border-bottom:1px solid var(--m-line)">{{ m.cardTitle }}</div>
+                    <sc-for list="{{ m.items }}" as="it" hint-placeholder-count="3">
+                      <div style="display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 10px;padding:10px 14px;border-bottom:1px solid var(--m-line)">
+                        <span style="font-size:14px;font-weight:500;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.label }}</span>
+                        <span style="font-size:14px;font-variant-numeric:tabular-nums;text-align:right">{{ it.value }}</span>
+                        <span style="grid-column:1/-1;font-size:12px;color:var(--m-mute);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.forms }}</span>
+                      </div>
+                    </sc-for>
+                    <sc-if value="{{ m.pending }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:10px">
+                        <button type="button" onClick="{{ m.onSkip }}" style="height:40px;border:0;border-radius:10px;background:var(--m-chip);color:var(--m-fg);font:inherit;font-size:14px;font-weight:500;cursor:pointer" style-active="transform:scale(.97)">Only {{ cur.code }}</button>
+                        <button type="button" onClick="{{ m.onApply }}" style="height:40px;border:0;border-radius:10px;background:#5A5FF2;color:#FFFFFF;font:inherit;font-size:14px;font-weight:600;cursor:pointer" style-active="transform:scale(.97)">Fill all</button>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ m.done }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;align-items:center;gap:6px;padding:12px 14px;font-size:13px;color:var(--m-mute)"><i class="ph ph-check" aria-hidden="true" style="font-size:14px;color:var(--m-ok)"></i>{{ m.doneText }}</div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ m.hasJump }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-wrap:wrap;gap:4px 16px">
+                    <sc-for list="{{ m.jumps }}" as="j" hint-placeholder-count="2">
+                      <button type="button" onClick="{{ j.go }}" style="display:inline-flex;align-items:center;gap:4px;min-height:28px;padding:0;border:0;background:transparent;color:var(--m-link);font:500 13px/20px 'Mona Sans',sans-serif;text-align:left;cursor:pointer" style-hover="text-decoration:underline" style-active="opacity:.6">{{ j.label }}<i class="ph ph-arrow-right" aria-hidden="true" style="font-size:14px"></i></button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+        </sc-for>
+        <sc-if value="{{ showSugs }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-direction:column;padding-left:34px">
+            <sc-for list="{{ sugs }}" as="sg" hint-placeholder-count="3">
+              <button type="button" onClick="{{ sg.go }}" style="width:100%;display:grid;grid-template-columns:16px minmax(0,1fr);align-items:start;gap:10px;min-height:40px;padding:10px 0;border:0;border-top:1px solid var(--m-line);background:transparent;color:var(--m-fg2);font:400 14px/20px 'Mona Sans',sans-serif;text-align:left;cursor:pointer" style-hover="color:var(--m-fg)" style-active="opacity:.6"><i class="ph ph-arrow-bend-down-right" aria-hidden="true" style="font-size:16px;margin-top:2px;color:var(--m-mute)"></i><span style="min-width:0;text-wrap:pretty">{{ sg.label }}</span></button>
+            </sc-for>
+          </div>
+        </sc-if>
+        
+      </div>
+      <div style="flex:none;padding:8px 12px 0;display:flex;flex-direction:column;gap:10px">
+
+        <div style="display:flex;flex-direction:column;gap:4px;border:1.5px solid transparent;border-radius:14px;padding:10px 8px 8px 14px;background:linear-gradient(var(--m-fill),var(--m-fill)) padding-box,linear-gradient(90deg,#F08068,#F0A468 30%,#7B7FF5 75%,#5A5FF2) border-box">
+          <textarea value="{{ draft }}" onChange="{{ onDraft }}" onKeyDown="{{ onKey }}" rows="2" placeholder="Ask Mel to fill, check or explain…" aria-label="Message Mel" style="width:100%;box-sizing:border-box;border:0;outline:none;resize:none;font:inherit;font-size:16px;line-height:24px;color:var(--m-fg);background:transparent;max-height:120px;padding:0 6px 0 0"></textarea>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px">
+            <div style="display:flex;align-items:center;gap:2px;margin-left:-6px">
+              <button type="button" onClick="{{ voice }}" aria-label="Speak to Mel" title="Speak to Mel" style="width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:0;border-radius:10px;background:transparent;color:var(--m-mute);padding:0;cursor:pointer" style-hover="background:var(--m-chip);color:var(--m-fg)"><i class="ph ph-microphone" aria-hidden="true" style="font-size:18px"></i></button>
+            </div>
+            <button type="button" onClick="{{ sendDraft }}" disabled="{{ sendOff }}" aria-label="Send to Mel" title="Send" style="{{ sendStyle }}"><i class="ph ph-arrow-up" aria-hidden="true" style="font-size:18px"></i></button>
+          </div>
+        </div>
+      </div>
+      <div style="height:30px;flex:none;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;box-sizing:border-box"><span style="width:134px;height:5px;border-radius:3px;background:var(--m-fg)"></span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ addDocs }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-label="Add documents" style="position:absolute;inset:0;z-index:55;display:flex;flex-direction:column;background:var(--m-bg);color:var(--m-fg)">
+      <div style="flex:none;height:50px"></div>
+      <header style="flex:none;display:grid;grid-template-columns:48px minmax(0,1fr) 48px;align-items:center;gap:8px;height:52px;padding:0 12px">
+        <button type="button" onClick="{{ closeAddDocs }}" aria-label="Back to documents" title="Back to documents" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--m-glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--m-glass-edge);box-shadow:inset 0 1px 0 var(--m-glass-hi),inset 0 -1px 0 var(--m-glass-lo),0 8px 24px var(--m-glass-shadow);box-sizing:border-box;color:var(--m-fg);padding:0;cursor:pointer" style-active="transform:scale(.92)"><i class="ph ph-caret-left" aria-hidden="true" style="font-size:20px"></i></button>
+        <div style="min-width:0;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <span style="max-width:100%;font-size:16px;line-height:24px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Add documents</span>
+          <span style="max-width:100%;font-size:12px;line-height:16px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">5670 Kearny Mesa Road</span>
+        </div>
+        <button type="button" onClick="{{ uploadDoc }}" aria-label="Upload PDF" title="Upload PDF" style="width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--m-glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border:1px solid var(--m-glass-edge);box-shadow:inset 0 1px 0 var(--m-glass-hi),inset 0 -1px 0 var(--m-glass-lo),0 8px 24px var(--m-glass-shadow);box-sizing:border-box;color:var(--m-fg);padding:0;cursor:pointer" style-active="transform:scale(.92)"><i class="ph ph-upload-simple" aria-hidden="true" style="font-size:20px"></i></button>
+      </header>
+      <div style="flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:12px 16px 120px;display:flex;flex-direction:column;gap:20px">
+                <label style="flex:none;display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:10px;background:var(--m-group);border:1px solid var(--m-line);box-sizing:border-box">
+          <i class="ph ph-magnifying-glass" aria-hidden="true" style="font-size:16px;color:var(--m-fg2)"></i>
+          <input value="{{ libQ }}" onChange="{{ onLibQ }}" placeholder="Search forms" aria-label="Search forms" style="flex:1;min-width:0;border:0;outline:none;background:transparent;font:inherit;font-size:14px;line-height:20px;color:var(--m-fg);padding:0">
+        </label>
+        <sc-for list="{{ libGroups }}" as="lg" hint-placeholder-count="2">
+          <div style="flex:none;display:flex;flex-direction:column;gap:6px;min-width:0">
+            <span style="font-size:13px;line-height:20px;font-weight:600;color:var(--m-mute);padding:0 4px">{{ lg.title }}</span>
+            <div style="display:flex;flex-direction:column;border-radius:14px;overflow:hidden;background:var(--m-group);border:1px solid var(--m-line);--background:var(--m-fill)">
+              <sc-for list="{{ lg.items }}" as="li" hint-placeholder-count="4">
+                <sc-if value="{{ li.inPk }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;min-height:44px;padding:8px 14px;border-bottom:1px solid var(--m-line);font-size:13px;line-height:20px;color:var(--m-mute);min-width:0"><span style="min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ li.name }} · already in packet</span></div></sc-if>
+                <sc-if value="{{ li.pick }}" hint-placeholder-val="{{ true }}">
+                <label style="width:100%;display:grid;grid-template-columns:20px minmax(0,1fr);align-items:center;gap:12px;min-height:56px;padding:8px 14px;border:0;box-sizing:border-box;border-bottom:1px solid var(--m-line);background:transparent;color:var(--m-fg);font:inherit;text-align:left;cursor:pointer"><x-import component-from-global-scope="RadiusUIDesignSystem_c7220b.Checkbox" checked="{{ li.checkedV }}" disabled="{{ li.inPk }}" onChange="{{ li.toggle }}" aria-label="{{ li.name }}" hint-size="16px,16px"></x-import>
+                  <span style="min-width:0;display:flex;flex-direction:column;gap:2px">
+                    <span style="font-size:14px;line-height:20px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ li.name }}</span>
+                    <span style="font-size:12px;line-height:16px;color:var(--m-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ li.desc }}</span>
+                  </span>
+                </label>
+              </sc-if>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+        <sc-if value="{{ libEmpty }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;line-height:20px;color:var(--m-mute);text-align:center;padding:12px 0">No forms match “{{ libQ }}”</span></sc-if>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;padding:12px 16px 34px;pointer-events:none">
+        <button type="button" onClick="{{ confirmAddDocs }}" disabled="{{ libNone }}" style="pointer-events:auto;width:100%;height:48px;border:1px solid rgba(255,255,255,.18);border-radius:24px;background:#5A5FF2;color:#FFFFFF;font:inherit;font-size:14px;font-weight:600;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 10px 28px rgba(90,95,242,.35);box-sizing:border-box" style-disabled="background:var(--m-glass);-webkit-backdrop-filter:blur(24px) saturate(180%);backdrop-filter:blur(24px) saturate(180%);border-color:var(--m-glass-edge);box-shadow:inset 0 1px 0 var(--m-glass-hi),inset 0 -1px 0 var(--m-glass-lo),0 10px 28px var(--m-glass-shadow);color:var(--m-mute);cursor:default" style-active="transform:scale(.98)">{{ libCta }}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div role="status" style="position:absolute;left:16px;right:16px;bottom:252px;z-index:60;display:flex;justify-content:center;pointer-events:none">
+      <div style="display:flex;align-items:center;gap:8px;max-width:100%;padding:12px 16px;border-radius:12px;background:var(--m-toast);color:var(--m-toast-fg);font-size:14px;line-height:20px;box-shadow:0 10px 15px -3px rgba(0,0,0,.15)"><i class="ph ph-check-circle" aria-hidden="true" style="font-size:18px;color:#6DA544;flex:none"></i>{{ toast }}</div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:390,&quot;height&quot;:844}}">
+const SHARED=new Set(['addr','city','county','seller1','seller2','agent','lic','brokerage','apn','lp','ls','le','comm','bcomm','pp','dep','loan']);
+const LBL={addr:'Property address',city:'City',county:'County',apn:"Assessor's parcel no.",seller1:'Seller 1',seller2:'Seller 2',agent:'Listing agent',lic:'DRE license no.',brokerage:'Brokerage',lp:'Listing price',ls:'Listing start',le:'Listing end',comm:'Listing compensation (%)',bcomm:"Buyer's broker compensation (%)",excl:'Items excluded',incl:'Items included',terms:'Additional terms',pre1978:'Built before 1978',hoa:'In an HOA',nolead:'No knowledge of lead-based paint',norec:'No reports or records available',commAmt:'Compensation at listing price'};
+const REQ=new Set(['addr','city','county','apn','seller1','agent','lic','brokerage','lp','ls','le','comm','bcomm']);
+const DATEK=new Set(['ls','le']),NUMK={lp:'decimal',comm:'decimal',bcomm:'decimal',lic:'numeric',apn:'numeric'};
+const PH={lp:'$0',ls:'MM/DD/YYYY',le:'MM/DD/YYYY',comm:'0.0',bcomm:'0.0'};
+const T=v=>({t:'text',v}),F=(k,w)=>({t:'f',k,w}),C=k=>({t:'cb',k}),Cx=(k,w)=>({t:'calc',k,w}),A=(k,w)=>({t:'ta',k,w}),S=l=>({t:'sig',l});
+const H1=v=>({k:'h1',v}),K=v=>({k:'kicker',v}),H2=v=>({k:'h2',v}),P=v=>({k:'p',v}),R=(...s)=>({k:'row',s});
+const SIGS=[R(S('Seller 1 signature'),S('Seller 2 signature')),R(S('Broker / agent signature'))];
+const CAR='California Association of Realtors®';
+const DOCS={
+ cover:{plain:'Cover sheet',name:'Transaction cover sheet',code:'Cover',foot:'Radius Agent Realty · Cover sheet',pages:[[K('Radius Agent Realty'),H1('Transaction cover sheet'),P('Listing side · Nor Cal Standard Residential Purchase'),H2('Property'),R(T('Property address'),F('addr',440)),R(T('City'),F('city',200),T('County'),F('county',180)),R(T("Assessor's parcel no."),F('apn',200)),H2('Sellers'),R(T('Seller 1'),F('seller1',260)),R(T('Seller 2'),F('seller2',260)),H2('Listing terms'),R(T('Listing price'),F('lp',180)),R(T('Listing period'),F('ls',120),T('to'),F('le',120)),R(T('Listing compensation'),F('comm',70),T('%   Buyer’s broker'),F('bcomm',70),T('%')),R(T('Compensation at listing price'),Cx('commAmt',160)),H2('Listing agent'),R(T('Agent'),F('agent',230),T('DRE lic.'),F('lic',150)),R(T('Brokerage'),F('brokerage',280))]]},
+ rla:{plain:'Listing agreement',name:'RLA Residential Listing Agreement',code:'RLA',foot:'RLA · Revised 6/25',pages:[[K(CAR),H1('Residential listing agreement'),P('Exclusive authorization and right to sell'),H2('1. Exclusive right to sell'),R(T('Seller(s)'),F('seller1',210),T('and'),F('seller2',210)),R(T('hereby employs and grants'),F('brokerage',260),T('(“Broker”)')),R(T('beginning on'),F('ls',120),T('and ending at 11:59 p.m. on'),F('le',120)),R(T('the exclusive and irrevocable right to sell the real property in the City of'),F('city',150)),R(T('County of'),F('county',150),T("Assessor's parcel no."),F('apn',170)),R(T('described as'),F('addr',460)),H2('2. Listing price and terms'),R(T('The listing price shall be'),F('lp',170),T('Dollars, on the following terms: all cash, conventional or FHA/VA financing.')),H2('3. Property condition'),R(C('pre1978'),C('hoa')),P('Seller represents that, unless otherwise specified in writing, Seller is unaware of any recorded notice of default, pending bankruptcy or litigation affecting the property.')],[H2('4. Compensation to broker'),P('Notice: The amount or rate of real estate commissions is not fixed by law. They are set by each broker individually and may be negotiable between Seller and Broker.'),R(T('Seller agrees to pay Broker'),F('comm',70),T('percent of the listing price, or')),R(T('Estimated at the listing price'),Cx('commAmt',150)),R(T('Compensation offered to buyer’s broker'),F('bcomm',70),T('percent')),H2('5. Items excluded and included'),R(T('Excluded'),F('excl',400)),R(T('Included'),F('incl',400)),H2('6. Additional terms'),R(A('terms',600)),H2('7. Signatures'),P('By signing below, Seller acknowledges that Seller has read, understands, received a copy of and agrees to the terms of this agreement.'),...SIGS]]},
+ ad:{plain:'Agency disclosure',name:'AD Disclosure Regarding Agency Relationship',code:'AD',foot:'AD · Revised 12/24',pages:[[K(CAR),H1('Disclosure regarding real estate agency relationship'),P('A Seller’s agent under a listing agreement with the Seller acts as the agent for the Seller only. A Seller’s agent or a subagent of that agent has a fiduciary duty of utmost care, integrity, honesty and loyalty in dealings with the Seller.'),H2('Acknowledgment'),R(T('Seller'),F('seller1',240),T('Seller'),F('seller2',240)),R(T('Property'),F('addr',470)),R(T('Agent'),F('agent',230),T('DRE lic.'),F('lic',150)),R(T('Real estate broker (firm)'),F('brokerage',300)),...SIGS]]},
+ bca:{plain:'Broker pay advisory',name:'BCA Broker Compensation Advisory',code:'BCA',foot:'BCA · Revised 6/24',pages:[[K(CAR),H1('Broker compensation advisory'),P('The amount of compensation a broker receives is not set by law and is fully negotiable. This advisory explains how compensation may be paid and by whom.'),H2('Property and terms'),R(T('Property address'),F('addr',440)),R(T('Listing price'),F('lp',170)),R(T('Listing compensation'),F('comm',70),T('%   Offered to buyer’s broker'),F('bcomm',70),T('%')),H2('Seller acknowledgment'),R(T('Seller'),F('seller1',240),T('Seller'),F('seller2',240)),...SIGS]]},
+ hoa:{plain:'HOA documents',name:'HOA governing documents acknowledgment.pdf',code:'HOA',uploaded:true,foot:'Uploaded Sep 24 · 1 page',pages:[[K('Kearny Mesa Owners Association'),H1('Acknowledgment of receipt of governing documents'),P('The undersigned Seller acknowledges that the association has been requested to provide the current declaration, bylaws, articles of incorporation, operating rules, budget and the most recent reserve study for the property referenced below.'),P('Seller agrees to deliver all documents received from the association to Buyer within the time specified in the purchase agreement.'),P('Property: ______________________________________________   Unit/Lot: ____________'),P('Monthly assessment: $______________   Special assessments pending:  Yes  /  No'),P('Seller: _______________________________   Date: _______________'),P('Seller: _______________________________   Date: _______________')]]},
+ toa:{plain:'Overflow addendum',name:'TOA Text Overflow Addendum',code:'TOA',auto:true,foot:'TOA · Auto-generated from overflowing fields',pages:[[]]}
+};
+const ORDER=['cover','rla','ad','bca','hoa','toa'];
+const FIELDS={};ORDER.forEach(id=>{const out=[];let sec='Details';DOCS[id].pages.forEach((pg,pi)=>pg.forEach(l=>{if(l.k==='h2')sec=l.v.replace(/^\d+\.\s*/,'');if(l.k==='row')l.s.forEach(x=>{if(x.t!=='text')out.push({...x,sec:x.t==='sig'?'Signatures':sec,page:pi})})}));FIELDS[id]=out});
+const LIBM=[['hoair','HOA-IR','HOA information request','Required · property is in an HOA','s'],['fld','FLD','Lead-based paint disclosure','Homes built before 1978','s'],['avid','AVID','Agent visual inspection','Disclosure · agent inspection'],['spq','SPQ','Seller property questionnaire','Disclosure · seller questionnaire'],['sbsa','SBSA','Statewide buyer and seller advisory','Advisory · buyer and seller'],['rpa','RPA','Residential purchase agreement','Offer · price, deposit and financing'],['rla','RLA','Listing agreement','In this packet','p'],['ad','AD','Agency disclosure','In this packet','p'],['bca','BCA','Broker pay advisory','In this packet','p']];
+const CAP=300,ZL=[0.5083,0.75,1,1.25];
+const num=v=>{const n=parseFloat(String(v||'').replace(/[^\d.]/g,''));return isNaN(n)?null:n};
+const usd=n=>'$'+Math.round(n).toLocaleString('en-US');
+const fmt=d=>String(d.getMonth()+1).padStart(2,'0')+'/'+String(d.getDate()).padStart(2,'0')+'/'+d.getFullYear();
+const TOOLS=[['Signer fields',[['sig','Signature','ph ph-signature'],['init','Initials','ph ph-pen-nib'],['dsig','Sign date','ph ph-calendar-check'],['name','Name','ph ph-user']]],['Form fields',[['text','Text','ph ph-text-t'],['date','Date','ph ph-calendar-blank'],['cb','Checkbox','ph ph-check-square'],['drop','Dropdown','ph ph-caret-circle-down']]]];
+const TL={};TOOLS.forEach(g=>g[1].forEach(([t,l,i])=>TL[t]={l,i}));
+const tm=()=>new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+
+class Component extends DCLogic {
+  scrollRef=React.createRef();chatRef=React.createRef();
+  melMsgs(){return[{from:'mel',open:false,cot:{dur:'2s',steps:[{icon:'ph ph-magnifying-glass',label:'Read the transaction for 5670 Kearny Mesa Road',src:['Cover','RLA','AD','BCA']},{icon:'ph ph-users',label:'Matched sellers, agent and property to every form'},{icon:'ph ph-check-circle',label:'Filled what I could'}]},text:'I filled property, seller and agent details from the transaction. Describe the deal in your own words — price, dates, commission — and I’ll fill every matching field across the packet.'},{from:'mel',text:'Additional terms on the RLA are too long for the box, so I moved the full text to TOA ¶1. Sellers sign it in the same envelope.',jumps:[{label:'Open TOA',doc:'toa'},{label:'Go to the field',doc:'rla',k:'terms'}]}]}
+  toChatEnd(){requestAnimationFrame(()=>{const c=this.chatRef.current;if(c)c.scrollTop=c.scrollHeight})}
+  plan(text){const t=text.toLowerCase(),L=[{icon:'ph ph-magnifying-glass',label:'Reading your packet',src:ORDER.slice(0,4).map(id=>DOCS[id].code)}];
+    if(/missing|left|still|fill/.test(t))L.push({icon:'ph ph-list-checks',label:'Checking required fields',desc:ORDER.reduce((n,id)=>n+this.empties(id).length,0)+' required fields are empty'});
+    else if(/toa|overflow|addendum/.test(t))L.push({icon:'ph ph-text-align-left',label:'Measuring RLA ¶6 against the box',desc:'The box fits about 300 characters'});
+    else if(/\$|%|days?/.test(t))L.push({icon:'ph ph-currency-dollar',label:'Pulling price, dates and commission',desc:'Matching values to shared fields'});
+    else L.push({icon:'ph ph-lightbulb',label:'Working out what you need'});
+    L.push({icon:'ph ph-check-circle',label:'Preparing the answer'});return L}
+  ask(text){text=(text||'').trim();if(!text||this.state.typing)return;const steps=this.plan(text),t0=Date.now();this.setState(s=>({msgs:[...s.msgs,{from:'me',text},{from:'mel',live:true,stepAt:0,open:true,cot:{steps}}],draft:'',typing:true,usedSugs:{...s.usedSugs,[text]:1}}),()=>this.toChatEnd());clearInterval(this._mt);this._mt=setInterval(()=>{const msgs=this.state.msgs.slice(),i=msgs.length-1,m=msgs[i];if(!m||!m.live){clearInterval(this._mt);return}if(m.stepAt+1<m.cot.steps.length){msgs[i]={...m,stepAt:m.stepAt+1};this.setState({msgs},()=>this.toChatEnd());return}clearInterval(this._mt);const r=this.reply(text);msgs[i]={...r,cot:{steps:m.cot.steps,dur:Math.max(1,Math.round((Date.now()-t0)/1000))+'s'},open:false};this.setState({msgs,typing:false},()=>this.toChatEnd())},750)}
+  reply(text){const t=text.toLowerCase();
+    if(/missing|left|still/.test(t)){const out=[];ORDER.forEach(id=>this.empties(id).forEach(f=>{if(!out.some(o=>o.k===f.k&&SHARED.has(f.k)))out.push({doc:id,k:f.k})}));if(!out.length)return{from:'mel',text:'Nothing required is missing. The envelope is ready to send.'};return{from:'mel',text:out.length+' required fields are still empty: '+out.slice(0,5).map(o=>LBL[o.k]).join(', ')+(out.length>5?'…':'')+'.',jumps:out.slice(0,3).map(o=>({label:DOCS[o.doc].code+' · '+LBL[o.k],doc:o.doc,k:o.k}))}}
+    if(/toa|overflow|addendum/.test(t))return{from:'mel',text:'The RLA box fits about 300 characters. Your additional terms run longer, so the field reads “See attached Text Overflow Addendum ¶1” and the full text prints on the TOA. Edit it on either form — they stay in sync.',jumps:[{label:'Open TOA',doc:'toa'}]};
+    const items=[];const pm=/\$\s?([\d,.]+)\s*(k|m)?/i.exec(text);if(pm){let n=parseFloat(pm[1].replace(/,/g,''));if(/k/i.test(pm[2]||''))n*=1e3;if(/m/i.test(pm[2]||''))n*=1e6;items.push({k:'lp',v:usd(n)})}
+    const pc=[...text.matchAll(/([\d.]+)\s*%/g)].map(m=>m[1]);if(pc[0])items.push({k:'comm',v:pc[0]});if(pc[1])items.push({k:'bcomm',v:pc[1]});
+    const dm=/(\d+)\s*days?/i.exec(text);if(dm){const s=new Date(),e=new Date();e.setDate(e.getDate()+ +dm[1]);items.push({k:'ls',v:fmt(s)},{k:'le',v:fmt(e)})}
+    if(!items.length)return{from:'mel',text:'I can fill the listing price, listing period and compensation from a sentence like “Listed at $1,285,000 for 90 days, 2.5% and 2%”. I can also tell you what’s still missing.'};
+    return{from:'mel',text:'Here’s what I found. Review it before I fill the packet.',card:{title:items.length+' values · shared across the packet',items:items.map(i=>({...i,label:LBL[i.k],forms:ORDER.filter(id=>FIELDS[id].some(f=>f.k===i.k)).map(id=>DOCS[id].code).join(', ')})),state:'pending'}}}
+  applyCard(idx,only){const m=this.state.msgs[idx];if(!m||!m.card)return;const doc=this.state.doc;const vals={...this.state.vals};let n=0;m.card.items.forEach(i=>{if(only&&!FIELDS[doc].some(f=>f.k===i.k))return;vals[this.key(doc,i.k)]=i.v;n++});const msgs=this.state.msgs.slice();msgs[idx]={...m,card:{...m.card,state:'done',doneText:only?'Filled '+n+' fields on '+DOCS[doc].code:'Filled '+n+' values across '+ORDER.filter(id=>m.card.items.some(i=>FIELDS[id].some(f=>f.k===i.k))).length+' forms'}};this.setState({vals,msgs,saving:true});clearTimeout(this._st);this._st=setTimeout(()=>this.setState({saving:false,savedAt:tm()}),900)}
+  state={msgs:this.melMsgs(),draft:'',typing:false,usedSugs:{},melSeen:false,doc:'rla',view:'page',zoom:'fit',focus:null,sheet:null,page:0,placed:[],toast:null,saving:false,savedAt:tm(),
+    vals:{addr:'5670 Kearny Mesa Road',city:'San Diego',county:'San Diego',seller1:'Nora Zeglaya',seller2:'James Collins',agent:'Ashutosh iOSacc',lic:'02184577',brokerage:'Radius Agent Realty',hoa:true,'rla.terms':'Seller to leave the washer, dryer and garage refrigerator. Seller will complete the termite repairs noted in the 09/12 inspection report before closing, using a licensed contractor, and provide receipts to Buyer. Seller may stay in the property for up to 5 days after closing at no cost, provided it is left broom-clean. Seller will give Buyer a $2,500 credit at closing toward replacing the kitchen range. Seller will provide both garage remotes, all keys and the gate code at closing.'}};
+  componentWillUnmount(){clearInterval(this._mt);clearInterval(this._tipT);clearTimeout(this._st);clearTimeout(this._tt);clearTimeout(this._mt)}
+  key(id,k){return SHARED.has(k)?k:id+'.'+k}
+  get(id,k){return this.state.vals[this.key(id,k)]}
+  set(id,k,v){this.setState(s=>({vals:{...s.vals,[this.key(id,k)]:v},saving:true}));clearTimeout(this._st);this._st=setTimeout(()=>this.setState({saving:false,savedAt:tm()}),900)}
+  calc(id,k){const g=x=>this.get(id,x);if(k==='commAmt'){const p=num(g('lp')),r=num(g('comm'));return p!=null&&r!=null?usd(p*r/100):'—'}return''}
+  editable(id){return FIELDS[id].filter(f=>f.t==='f'||f.t==='ta')}
+  empties(id){return FIELDS[id].filter(f=>f.t==='f'&&REQ.has(f.k)&&!this.get(id,f.k))}
+  melDown=e=>{const y0=e.clientY,t0=this.state.melFull?58:200;const mv=ev=>this.setState({melDragTop:Math.max(58,Math.min(760,t0+ev.clientY-y0))});const up=()=>{window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);const t=this.state.melDragTop!=null?this.state.melDragTop:t0,d=t-t0;let full=this.state.melFull,close=false;if(d<-40)full=true;else if(d>60){if(full)full=false;else close=true}this.setState({melDragTop:null,melFull:full,sheet:close?null:this.state.sheet})};window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up)}
+  toastMsg(t){this.setState({toast:t});clearTimeout(this._tt);this._tt=setTimeout(()=>this.setState({toast:null}),2200)}
+  componentDidMount(){this._tipT=setInterval(()=>this.setState(s=>({tip:(s.tip||0)+1})),3800);this._lock=Date.now();requestAnimationFrame(()=>requestAnimationFrame(()=>this.scrollToDoc(this.state.doc,'auto')))}
+  scrollToDoc(id,bh){const sc=this.scrollRef.current;if(!sc)return;const el=sc.querySelector('[data-doc="'+id+'"]');if(!el){console.warn('[scrollToDoc] missing '+id);return}const a=sc.getBoundingClientRect(),b=el.getBoundingClientRect();sc.scrollTo({top:sc.scrollTop+b.top-a.top-112,left:0,behavior:bh||'smooth'})}
+  switchDoc(id){this._lock=Date.now();this.setState({doc:id,page:0,focus:null,sheet:null},()=>requestAnimationFrame(()=>this.scrollToDoc(id)))}
+  focusField(id,k){this._lock=Date.now();this.setState({focus:k,fdoc:id,doc:id,sheet:null},()=>requestAnimationFrame(()=>this.reveal(id,k)))}
+  reveal(id,k){const sc=this.scrollRef.current;if(!sc)return;const dk=id+'|'+k;const el=sc.querySelector(this.state.view==='page'?'[data-k="'+dk+'"]':'[data-lk="'+dk+'"]');if(!el){console.warn('[reveal] field not rendered: '+dk);return}const a=sc.getBoundingClientRect(),b=el.getBoundingClientRect();sc.scrollTo({top:sc.scrollTop+b.top-a.top-134,left:(this.state.zl||0)>0?sc.scrollLeft+b.left-a.left-20:0,behavior:'smooth'});if(this.state.view==='fields'){const inp=el.querySelector('input,textarea');if(inp)inp.focus({preventScroll:true})}}
+  step(d){const {focus}=this.state,fd=this.state.fdoc||this.state.doc,L=this.editable(fd),i=L.findIndex(f=>f.k===focus),n=L[i+d];if(n)this.focusField(fd,n.k)}
+  nextReq=()=>{const {focus}=this.state,doc=this.state.fdoc||this.state.doc;const [done,total]=this.prog();if(done===total){this.setState({focus:null});this.toastMsg('Documents saved');return}const Fd=FIELDS[doc],fi=focus?Fd.findIndex(f=>f.k===focus):-1,em=this.empties(doc);const t=em.find(f=>Fd.indexOf(f)>fi)||em.find(f=>f.k!==focus);if(t)return this.focusField(doc,t.k);const i0=ORDER.indexOf(doc);for(let n=1;n<ORDER.length;n++){const id=ORDER[(i0+n)%ORDER.length],e=this.empties(id);if(e.length)return this.focusField(id,e[0].k)}};
+  prog(){const req=new Set(),done=new Set();ORDER.forEach(id=>FIELDS[id].forEach(f=>{if(f.t==='f'&&REQ.has(f.k)){const K=this.key(id,f.k);req.add(K);if(this.state.vals[K])done.add(K)}}));return[done.size,req.size]}
+  onScroll=()=>{if(this._lock&&Date.now()-this._lock<700)return;const sc=this.scrollRef.current;if(!sc)return;const a=sc.getBoundingClientRect(),th=a.top+a.height*.4;let doc=this.state.doc,page=0;const sel=this.state.view==='page'?'[data-pg]':'[data-doc]';sc.querySelectorAll(sel).forEach(el=>{if(el.getBoundingClientRect().top<th){doc=el.getAttribute(this.state.view==='page'?'data-pdoc':'data-doc');page=+(el.getAttribute('data-pg')||0)}});if(doc!==this.state.doc||page!==this.state.page)this.setState({doc,page})};
+  addTool(t){const {doc,page}=this.state;this.setState(s=>({placed:[...s.placed,{id:Date.now(),doc,page,t}],sheet:null}));this.toastMsg(TL[t].l+' added to page '+(page+1))}
+  docStatus(id){const d=DOCS[id];if(d.auto)return['ph ph-check','var(--m-ok)','Auto-filled from RLA','Auto'];if(d.uploaded){const n=this.state.placed.filter(p=>p.doc===id).length;return n?['ph ph-circle','var(--m-warn)',n+' fields added','In progress']:['ph ph-circle-dashed','var(--m-mute)','No fields yet','No fields']}const r=FIELDS[id].filter(f=>f.t==='f'&&REQ.has(f.k)),left=this.empties(id).length;if(!left)return['ph ph-check','var(--m-mute)','All '+r.length+' required filled',new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),'done'];return['ph ph-circle','var(--m-warn)',left+' of '+r.length+' required left',left+' left']}
+  seg(on){return'width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:0;border-radius:16px;padding:0;font-size:16px;cursor:pointer;color:'+(on?'var(--m-fg)':'var(--m-mute)')+';transition:background .18s ease;background:'+(on?'var(--m-seg-on)':'transparent')+';box-shadow:'+(on?'0 1px 4px rgba(0,0,0,.14)':'none')}
+  renderVals(){
+    const st=this.state,doc=st.doc,D=DOCS[doc],isPage=st.view==='page';
+    const terms=this.state.vals['rla.terms']||'',over=terms.length>CAP;
+    const build=id=>{const Dd=DOCS[id];
+    const pagesSrc=Dd.auto?[[K(CAR),H1('Text overflow addendum No. 1'),P('This addendum is part of the RLA Residential Listing Agreement for 5670 Kearny Mesa Road, San Diego.'),H2('¶1 · RLA 6. Additional terms'),P(over?terms:'No overflowing text.'),H2('Signatures'),...SIGS]]:Dd.pages;
+    const segOf=x=>{
+      if(x.t==='text')return{isText:true,v:x.v};
+      if(x.t==='sig')return{isSig:true,label:x.l};
+      if(x.t==='calc')return{isCalc:true,w:x.w,display:this.calc(id,x.k)};
+      if(x.t==='cb'){const c=!!this.get(id,x.k);return{isCb:true,checked:c,label:LBL[x.k],icon:c?'ph ph-check-square':'ph ph-square',tap:e=>{e.stopPropagation();this.set(id,x.k,!c)}}}
+      const v=this.get(id,x.k)||'',req=REQ.has(x.k),foc=st.focus===x.k&&st.fdoc===id,isTa=x.t==='ta';
+      const shown=isTa&&over?'See attached Text Overflow Addendum ¶1':v;
+      const bg=foc?'#EEEEFE':(!v&&req?'#FFF1E8':(!v?'#F5F5F5':'transparent'));
+      const bb=foc?'#5A5FF2':(!v&&req?'#EA580C':'#171717');
+      return{isField:true,k:x.k,dk:id+'|'+x.k,label:LBL[x.k]||x.k,display:shown||LBL[x.k],
+        style:'position:relative;display:inline-flex;align-items:flex-end;width:'+x.w+'px;max-width:100%;height:'+(isTa?'96px':'28px')+';padding:0 6px 5px;box-sizing:border-box;border:0;border-bottom:1px solid '+bb+';border-radius:4px 4px 0 0;background:'+bg+';font:inherit;font-size:12px;text-align:left;cursor:pointer;'+(foc?'box-shadow:0 0 0 2px #5A5FF2;z-index:2;':''),
+        textStyle:'min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:'+(isTa?'normal':'nowrap')+';color:'+(shown?'#0A0A0A':'#A3A3A3')+(isTa&&over?';color:#4B50E0;font-style:italic':''),
+        tap:e=>{e.stopPropagation();this.focusField(id,x.k)}};
+    };
+    const pages=pagesSrc.map((pg,pi)=>({pi,label:'Page '+(pi+1)+' of '+pagesSrc.length,foot:Dd.foot,
+      lines:pg.map(l=>({isKicker:l.k==='kicker',isH1:l.k==='h1',isH2:l.k==='h2',isP:l.k==='p',isRow:l.k==='row',v:l.v,segs:l.k==='row'?l.s.map(segOf):[]})),
+      placed:st.placed.filter(p=>p.doc===id&&p.page===pi).map((p,i)=>({label:TL[p.t].l,icon:TL[p.t].i,style:'position:absolute;left:60px;bottom:'+(90+i*52)+'px;width:200px;height:40px;display:flex;align-items:center;gap:8px;padding:0 10px;box-sizing:border-box;border:1.5px dashed #5A5FF2;border-radius:6px;background:#EEEEFE;color:#4B50E0;font-size:13px;font-weight:600'}))}));
+    const gm=[];FIELDS[id].forEach(fl=>{let g=gm.find(x=>x.title===fl.sec);if(!g){g={title:fl.sec,items:[]};gm.push(g)}if(g.items.some(it=>it.k===fl.k&&!fl.l))return;
+      const v=this.get(id,fl.k)||'';
+      g.items.push({k:fl.k||fl.l,dk:id+'|'+(fl.k||fl.l),label:fl.l||LBL[fl.k],isInput:fl.t==='f',isArea:fl.t==='ta',isCb:fl.t==='cb',isCalc:fl.t==='calc',isSig:fl.t==='sig',
+        value:fl.t==='calc'?this.calc(id,fl.k):v,checked:!!v,missing:fl.t==='f'&&REQ.has(fl.k)&&!v,shared:SHARED.has(fl.k),over:fl.t==='ta'&&over,ph:PH[fl.k]||'',mode:NUMK[fl.k]||(DATEK.has(fl.k)?'numeric':'text'),
+        onChange:e=>this.set(id,fl.k,e.target.value),onToggle:()=>this.set(id,fl.k,!v),onFocus:()=>{if(st.focus!==fl.k||st.fdoc!==id)this.setState({focus:fl.k,fdoc:id,doc:id})}})});
+    const groups=Dd.auto?[{title:'¶1 · RLA 6. Additional terms',items:[{k:'terms',dk:'toa|terms',label:'Moved from RLA',isArea:true,value:terms,over:false,onChange:e=>this.set('rla','terms',e.target.value),onFocus:()=>{}}]}]:gm;
+    const [icon,ic,meta,stx]=this.docStatus(id);
+    return{id,code:Dd.code,short:Dd.plain,st:pagesSrc.length+(pagesSrc.length===1?' page':' pages'),ic:'var(--m-mute)',pages,groups,pc:pagesSrc.length,noFields:!!Dd.uploaded&&!st.placed.some(p=>p.doc===id)}};
+    const docsView=ORDER.map(build);const curV=docsView.find(v=>v.id===doc);const pagesSrc={length:curV.pc};
+    const [done,total]=this.prog(),pct=total?Math.round(done/total*100):0;
+    const left=this.empties(doc).length;
+    let fs=null;
+    const fd=st.fdoc||doc,FD=DOCS[fd];
+    if(isPage&&st.focus){const L=this.editable(fd),i=L.findIndex(f=>f.k===st.focus),f=L[i];if(f){const k=f.k,v=this.get(fd,k)||'',others=ORDER.filter(id=>id!==fd&&SHARED.has(k)&&FIELDS[id].some(x=>x.k===k)).map(id=>DOCS[id].code);
+      const btn=dis=>'width:44px;height:44px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;padding:0;cursor:'+(dis?'default':'pointer')+';color:'+(dis?'var(--m-line)':'var(--m-link)');
+      const d0=new Date();
+      fs={label:LBL[k]||k,meta:FD.code+' · '+(REQ.has(k)?'Required · ':'')+(i+1)+' of '+L.length,value:v,isInput:f.t==='f',isArea:f.t==='ta',isDate:DATEK.has(k),over:f.t==='ta'&&over,ph:PH[k]||LBL[k],mode:NUMK[k]||(DATEK.has(k)?'numeric':'text'),
+        shared:others.length>0,sharedText:'Also fills '+others.join(', '),first:i<=0,last:i>=L.length-1,prevStyle:btn(i<=0),nextStyle:btn(i>=L.length-1),
+        chips:[['Today',0],['In 30 days',30],['In 90 days',90]].map(([label,n])=>({label,go:()=>{const d=new Date(d0);d.setDate(d.getDate()+n);this.set(fd,k,fmt(d))}})),
+        onChange:e=>this.set(fd,k,e.target.value),onKey:e=>{if(e.key==='Enter'){e.preventDefault();this.step(1)}}}}}
+    const pc=pagesSrc.length;
+    return{
+      scrollRef:this.scrollRef,onScroll:this.onScroll,
+      saveIcon:st.saving?'ph ph-cloud-arrow-up':'ph ph-cloud-check',saveText:st.saving?'Saving…':'All changes saved · '+st.savedAt,
+      cur:{code:D.code,short:D.plain,pageText:(isPage?'Page '+(Math.min(st.page,pc-1)+1)+' of '+pc:pc+(pc===1?' page':' pages'))+(D.uploaded?' · Uploaded':'')},
+      isPage,isFields:!isPage,segPage:this.seg(isPage),segFields:this.seg(!isPage),
+      toPage:()=>{this._lock=Date.now();this.setState({view:'page'},()=>requestAnimationFrame(()=>st.focus?this.reveal(st.fdoc||doc,st.focus):this.scrollToDoc(doc)))},toFields:()=>{this._lock=Date.now();this.setState({view:'fields'},()=>requestAnimationFrame(()=>this.scrollToDoc(doc)))},
+      docsView,zoom:ZL[st.zl||0],zinOff:(st.zl||0)>=ZL.length-1,zoutOff:!(st.zl||0),
+      zoomIn:()=>this.setState(s=>({zl:Math.min(ZL.length-1,(s.zl||0)+1)}),()=>{if(st.focus)requestAnimationFrame(()=>this.reveal(st.fdoc||doc,st.focus))}),zoomOut:()=>this.setState(s=>({zl:Math.max(0,(s.zl||0)-1)}),()=>{if(st.focus)requestAnimationFrame(()=>this.reveal(st.fdoc||doc,st.focus))}),
+      zoomIcon:st.zoom==='full'?'ph ph-arrows-in':'ph ph-magnifying-glass-plus',zoomLabel:st.zoom==='full'?'Fit page to width':'Zoom to actual size',
+      toggleZoom:()=>this.setState(s=>({zoom:s.zoom==='full'?'fit':'full'}),()=>{if(st.focus)requestAnimationFrame(()=>this.reveal(st.fdoc||doc,st.focus))}),
+      progText:done+' of '+total+' filled',progPct:pct,pctColor:pct===100?'var(--m-ok)':'var(--m-fg)',dockTitle:D.name.replace(/\.pdf$/,''),dockFull:D.name.replace(/\.pdf$/,''),showName:()=>this.toastMsg(D.name.replace(/\.pdf$/,'')),dockSub:[left?left+' left here':'All filled here',isPage?'Page '+(Math.min(st.page,pc-1)+1)+' of '+pc:''].filter(Boolean).join(' · '),docLeft:(D.uploaded||D.auto?D.code:(left?D.code+' · '+left+' left':D.code+' · done'))+(isPage?' · Page '+(Math.min(st.page,pc-1)+1)+' of '+pc:''),
+      nextLabel:done===total?'Save':'Next field',nextIcon:done===total?'ph ph-floppy-disk':'ph ph-arrow-circle-down',nextReq:this.nextReq,
+      fs,prevF:()=>this.step(-1),nextF:()=>this.step(1),closeF:()=>this.setState({focus:null}),
+      melSheet:st.sheet==='mel',melUnread:!st.melSeen,chatRef:this.chatRef,typing:st.typing,
+      openMel:()=>this.setState({sheet:'mel',focus:null,melSeen:true},()=>this.toChatEnd()),
+      newChat:()=>this.setState({msgs:[this.melMsgs()[0]],usedSugs:{},draft:''}),
+      msgs:st.msgs.map((m,i)=>({isMe:m.from==='me',isMel:m.from==='mel',text:m.text,hasText:!!m.text,
+        hasCot:!!m.cot,cotOpen:!!m.open,caret:m.open?'ph ph-caret-up':'ph ph-caret-down',cotTitle:m.live?'Thinking…':(m.cot?'Thought for '+m.cot.dur:''),toggle:()=>this.setState(s=>{const a=s.msgs.slice();a[i]={...a[i],open:!a[i].open};return{msgs:a}}),
+        steps:m.cot?m.cot.steps.map((x,j)=>{const stt=!m.live||j<m.stepAt?'done':(j===m.stepAt?'active':'pending');return{icon:stt==='active'?'ph ph-circle-notch':x.icon,ic:stt==='active'?'var(--m-link)':(stt==='done'?'var(--m-fg2)':'var(--m-mute)'),tc:stt==='pending'?'var(--m-mute)':'var(--m-fg)',label:x.label,desc:x.desc,hasDesc:!!x.desc&&stt!=='pending',src:x.src||[],hasSrc:!!(x.src&&x.src.length)&&stt!=='pending',line:j<m.cot.steps.length-1}}):[],hasJump:!!(m.jumps&&m.jumps.length),
+        jumps:(m.jumps||[]).map(j=>({label:j.label,go:()=>{this.setState({sheet:null,view:'page'});if(j.k)this.focusField(j.doc,j.k);else this.switchDoc(j.doc)}})),
+        hasCard:!!m.card,cardTitle:m.card&&m.card.title,items:m.card?m.card.items:[],pending:!!m.card&&m.card.state==='pending',done:!!m.card&&m.card.state==='done',doneText:m.card&&m.card.doneText,
+        onApply:()=>this.applyCard(i,false),onSkip:()=>this.applyCard(i,true)})),
+      sugs:['Listed at $1,285,000 for 90 days, 2.5% and 2%','What’s still missing?','Why is there a TOA?'].filter(l=>!st.usedSugs[l]).map(label=>({label,go:()=>this.ask(label)})),
+      showSugs:!st.typing&&['Listed at $1,285,000 for 90 days, 2.5% and 2%','What’s still missing?','Why is there a TOA?'].some(l=>!st.usedSugs[l]),
+      draft:st.draft,onDraft:e=>this.setState({draft:e.target.value}),onKey:e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();this.ask(st.draft)}},
+      sendDraft:()=>this.ask(st.draft),voice:()=>this.toastMsg('Listening…'),sendOff:!st.draft.trim()||st.typing,
+      sendStyle:'flex:none;width:36px;height:36px;display:flex;align-items:center;justify-content:center;border:0;border-radius:50%;padding:0;color:'+(st.draft.trim()?'#FFFFFF':'var(--m-mute)')+';cursor:'+(st.draft.trim()?'pointer':'default')+';background:'+(st.draft.trim()?'#5A5FF2':'var(--m-chip)'),
+      anySheet:!!st.sheet,docsSheet:st.sheet==='docs',addSheet:st.sheet==='add',moreSheet:st.sheet==='more',uploadSheet:st.sheet==='upload',
+      moreAdd:()=>this.setState({sheet:'add'}),moreMel:()=>this.setState({sheet:'mel',melSeen:true},()=>this.toChatEnd()),openUpload:()=>this.setState({sheet:'upload'}),
+      fromLibrary:()=>{this.setState({sheet:null});this.toastMsg('Opening document library')},uploadDoc:()=>{this.setState({sheet:null});this.toastMsg('Choose a PDF to upload')},
+      resetDocs:()=>{this.setState(s=>({vals:{},placed:[],focus:null,sheet:null}));this.toastMsg('Documents reset')},
+      openDocs:()=>this.setState({sheet:'docs',focus:null}),openAdd:()=>this.setState({sheet:'add',focus:null}),openMore:()=>this.setState({sheet:'more',focus:null}),closeSheet:()=>this.setState({sheet:null,melFull:false}),
+      melTop:st.melDragTop!=null?st.melDragTop:(st.melFull?58:200),melTrans:st.melDragTop!=null?'none':'top .25s ease',melDown:this.melDown,
+      docCount:ORDER.length+' in packet',
+      docSub:(()=>{const c=ORDER.filter(id=>this.docStatus(id)[4]==='done'||this.docStatus(id)[3]==='Auto').length;return '5670 Kearny Mesa Rd · '+c+' of '+ORDER.length+' ready'})(),
+      hasBlock:ORDER.some(id=>this.empties(id).length),
+      blockText:(()=>{const parts=ORDER.filter(id=>this.empties(id).length).map(id=>this.empties(id).length+' required on '+DOCS[id].code);return parts.length?'Waiting on '+parts.join(', ')+'.':''})(),
+      docList:ORDER.map(id=>{const [icon,ic,meta,stx]=this.docStatus(id);return{name:DOCS[id].plain,meta,st:stx,fw:id===doc?600:400,icon,ic,on:id===doc,pick:()=>id===doc?this.setState({sheet:null}):this.switchDoc(id)}}),
+      addHint:'Places on page '+(Math.min(st.page,pc-1)+1)+' of '+D.code,
+      toolGroups:TOOLS.map(([title,tools])=>({title,tools:tools.map(([t,label,icon])=>({label,icon,add:()=>this.addTool(t)}))})),
+      download:()=>{this.setState({sheet:null});this.toastMsg(D.code+'.pdf saved to Files')},
+      send:()=>{this.setState({sheet:null});this.toastMsg(done===total?'Envelope sent to 2 signers':(total-done)+' required fields left before sending')},
+      goBack:()=>this.toastMsg('Saved · back to transaction'),
+      openAddDocs:()=>this.setState({sheet:null,addDocs:true,libSel:{},libQ:''}),closeAddDocs:()=>this.setState({addDocs:false,sheet:'docs'}),addDocs:!!st.addDocs,libQ:st.libQ||'',onLibQ:e=>this.setState({libQ:e.target.value}),
+      ...(()=>{const q=(st.libQ||'').toLowerCase(),sel=st.libSel||{};const mk=([id,code,name,desc,k])=>{const inPk=k==='p',on=!!sel[id];return{id,code,name,desc,inPk,on,checkedV:on,pick:!inPk,icon:inPk?'ph ph-check-circle':(on?'ph ph-check-square':'ph ph-square'),ic:inPk?'var(--m-mute)':(on?'var(--m-link)':'var(--m-mute)'),toggle:()=>this.setState(s=>({libSel:{...(s.libSel||{}),[id]:!(s.libSel||{})[id]}}))}};const L=LIBM.filter(r=>(r[4]!=='p'||q)&&(!q||(r[1]+' '+r[2]+' '+r[3]).toLowerCase().includes(q)));const g=[{title:'Suggested for this transaction',items:L.filter(r=>r[4]==='s').map(mk)},{title:'Library',items:L.filter(r=>r[4]!=='s').map(mk)}].filter(x=>x.items.length);const n=Object.values(sel).filter(Boolean).length;return{libGroups:g,libEmpty:!g.length,libNone:!n,libCta:n?'Add '+n+' document'+(n>1?'s':''):'Select documents to add',confirmAddDocs:()=>{this.setState({addDocs:false,libSel:{}});this.toastMsg(n+' document'+(n>1?'s':'')+' added to the packet')}}})(),
+      toast:st.toast,showTip:!st.tipOff,hideTip:()=>this.setState({tipOff:true}),
+      melTip:(()=>{const tips=[{t:'Want me to fill the empty fields?',go:()=>{this.setState({sheet:'mel',focus:null,melSeen:true});this.ask('What’s still missing?')}},{t:'Ask about the document',go:()=>this.setState({sheet:'mel',focus:null,melSeen:true},()=>this.toChatEnd())}];const c=tips[(st.tip||0)%tips.length];return{go:c.go,el:React.createElement('span',{key:st.tip||0,style:{minWidth:0,color:'var(--m-fg)',animation:'melsw .35s ease'}},c.t)}})()
+    };
+  }
+}
+</script>
+</body>
+</html>
